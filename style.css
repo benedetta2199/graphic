@@ -1,0 +1,15 @@
+@import url("https://webglfundamentals.org/webgl/resources/webgl-tutorials.css");
+body {
+  margin: 0;
+  overflow-y: hidden;
+}
+canvas {
+  width: 100vw;
+  height: 100vh;
+  display: block;
+  background: rgb(244,236,188);
+  /*background: linear-gradient(1800deg, rgba(244,236,188,1) 0%, rgba(244,223,188,1) 43%, rgba(244,188,214,1) 100%);*/
+  background: radial-gradient(ellipse  at center bottom, rgba(244,188,214,1) 0%, rgba(244,223,188,1) 89%, rgba(244,236,188,1) 100% );
+  background-size: 150vw 100vh;
+  background-position: -25vw 0;
+}
