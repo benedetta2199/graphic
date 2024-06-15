@@ -2,10 +2,14 @@
 import { parseOBJ, parseMTL, create1PixelTexture } from './objLoad.js';
 
 export async function loadPlane(gl, objHref,rotation) {
+  // Ottiene il contenuto del file obj tramite fetch
   const response = await fetch(objHref);
   const text = await response.text();
+  // Parsa il contenuto obj in un formato utilizzabile
   const obj = parseOBJ(text);
+  // Ottiene il percorso di base del file obj
   const baseHref = new URL(objHref, window.location.href);
+  // Carica e parsa i materiali (MTL) associati al modello
   const matTexts = await Promise.all(obj.materialLibs.map(async filename => {
     const matHref = new URL(filename, baseHref).href;
     const response = await fetch(matHref);
@@ -13,11 +17,12 @@ export async function loadPlane(gl, objHref,rotation) {
   }));
   const materials = parseMTL(matTexts.join('\n'));
 
+  // Oggetti texture predefiniti (bianco)
   const textures = {
     defaultWhite: create1PixelTexture(gl, [255, 255, 255, 255]),
   };
 
-  // Load texture for materials
+  // Carica le texture per i materiali definiti nel MTL
   for (const material of Object.values(materials)) {
     Object.entries(material)
       .filter(([key]) => key.endsWith('Map'))
@@ -32,6 +37,7 @@ export async function loadPlane(gl, objHref,rotation) {
       });
   }
 
+  // Proprietà predefinite per i materiali se non specificate nel MTL
   const defaultMaterial = {
     diffuse: [1, 1, 1],
     diffuseMap: textures.defaultWhite,
@@ -41,6 +47,7 @@ export async function loadPlane(gl, objHref,rotation) {
     opacity: 1,
   };
 
+  // Crea le parti del modello, associando materiali e dati geometrici
   const parts = obj.geometries.map(({ material, data }) => {
     if (data.color) {
       if (data.position.length === data.color.length) {
@@ -50,6 +57,7 @@ export async function loadPlane(gl, objHref,rotation) {
       data.color = { value: [1, 1, 1, 1] };
     }
 
+    // Crea le informazioni di buffer WebGL dai dati geometrici
     const bufferInfo = webglUtils.createBufferInfoFromArrays(gl, data);
     return {
       material: {
@@ -60,10 +68,13 @@ export async function loadPlane(gl, objHref,rotation) {
     };
   });
 
+  // Restituisce le parti del modello e l'oggetto parsato
   return { parts, obj };
 }
 
+// Funzione per ottenere le estensioni geometriche (bounding box) di un insieme di geometrie
 export function getGeometriesExtents(geometries) {
+  // Funzione interna per calcolare le estensioni (minimo e massimo) di un set di posizioni
   function getExtents(positions) {
     const min = positions.slice(0, 3);
     const max = positions.slice(0, 3);
@@ -77,6 +88,7 @@ export function getGeometriesExtents(geometries) {
     return { min, max };
   }
 
+  // Riduce le geometrie in un singolo oggetto contenente minimo e massimo delle estensioni
   return geometries.reduce(({ min, max }, { data }) => {
     const minMax = getExtents(data.position);
     return {

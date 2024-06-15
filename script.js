@@ -12,19 +12,22 @@ async function main() {
     return;
   }
 
+  // Crea un programma WebGL utilizzando shader vertex e fragment
   const meshProgramInfo = webglUtils.createProgramInfo(gl, [vs, fs]);
   
-  // Load first object
+  //Carica il primo oggetto (aereo) in modo asincrono
   const planeObjHref = './src/plane.obj';
   const { parts: planeParts, obj: planeObj } = await loadPlane(gl, planeObjHref, false);
+  // Calcola le dimensioni geometriche (bounding box) dell'oggetto aereo
   const planeExtents = getGeometriesExtents(planeObj.geometries);
 
-  // Load second object
+  // Carica il secondo oggetto (elica) in modo asincrono
   const elicaObjHref = './src/elica.obj';
   const { parts: elicaParts, obj: elicaObj } = await loadPlane(gl, elicaObjHref, true);
+  // Calcola le dimensioni geometriche (bounding box) dell'oggetto elica
   const elicaExtents = getGeometriesExtents(elicaObj.geometries);
 
-  // Combine extents for camera setup
+  // Combina le estensioni per impostare la telecamera
   const combinedExtents = {
     min: [
       Math.min(planeExtents.min[0], elicaExtents.min[0]),
@@ -38,8 +41,10 @@ async function main() {
     ],
   };
 
+  // Ottiene posizione della telecamera, target, offset oggetto, e piani di clipping basati sulle estensioni combinate
   const { cameraPosition, cameraTarget, objOffset, zNear, zFar } = setupCameraAndLight(gl, combinedExtents);
   
+  // Renderizza la scena con gli oggetti caricati e la configurazione della telecamera
   renderScene(gl, meshProgramInfo, planeParts, elicaParts, cameraPosition, cameraTarget, objOffset, zNear, zFar);
 }
 
