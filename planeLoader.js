@@ -1,7 +1,7 @@
 "use strict";
 import { parseOBJ, parseMTL, create1PixelTexture } from './objLoad.js';
 
-export async function loadPlane(gl, objHref) {
+export async function loadPlane(gl, objHref,rotation) {
   const response = await fetch(objHref);
   const text = await response.text();
   const obj = parseOBJ(text);

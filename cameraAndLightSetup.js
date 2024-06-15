@@ -21,9 +21,9 @@ export function degToRad(deg) {
   return deg * Math.PI / 180;
 }
 
-export function renderScene(gl, meshProgramInfo, parts, cameraPosition, cameraTarget, objOffset, zNear, zFar) {
+export function renderScene(gl, meshProgramInfo, planeParts, elicaParts, cameraPosition, cameraTarget, objOffset, zNear, zFar) {
   function render(time) {
-    time *= 0.001;  // convert to seconds
+    time *= 0.006;  // convert to seconds
 
     webglUtils.resizeCanvasToDisplaySize(gl.canvas);
     gl.viewport(0, 0, gl.canvas.width, gl.canvas.height);
@@ -47,12 +47,23 @@ export function renderScene(gl, meshProgramInfo, parts, cameraPosition, cameraTa
     gl.useProgram(meshProgramInfo.program);
     webglUtils.setUniforms(meshProgramInfo, sharedUniforms);
 
+    // Render plane parts
     let u_world = m4.identity();
     u_world = m4.translate(u_world, ...objOffset);
 
-    for (const { bufferInfo, material } of parts) {
+    for (const { bufferInfo, material } of planeParts) {
       webglUtils.setBuffersAndAttributes(gl, meshProgramInfo, bufferInfo);
       webglUtils.setUniforms(meshProgramInfo, { u_world }, material);
+      webglUtils.drawBufferInfo(gl, bufferInfo);
+    }
+
+    // Render elica parts with rotation
+    let u_world_elica = m4.xRotation(time);  // Rotate elica around Y axis
+    u_world_elica = m4.translate(u_world_elica, ...objOffset);
+
+    for (const { bufferInfo, material } of elicaParts) {
+      webglUtils.setBuffersAndAttributes(gl, meshProgramInfo, bufferInfo);
+      webglUtils.setUniforms(meshProgramInfo, { u_world: u_world_elica }, material);
       webglUtils.drawBufferInfo(gl, bufferInfo);
     }
 
@@ -60,3 +71,45 @@ export function renderScene(gl, meshProgramInfo, parts, cameraPosition, cameraTa
   }
   requestAnimationFrame(render);
 }
+
+
+
+  /*export function renderScene(gl, meshProgramInfo, parts, cameraPosition, cameraTarget, objOffset, zNear, zFar) {
+    function render(time) {
+      time *= 0.001;  // convert to seconds
+
+      webglUtils.resizeCanvasToDisplaySize(gl.canvas);
+      gl.viewport(0, 0, gl.canvas.width, gl.canvas.height);
+      gl.enable(gl.DEPTH_TEST);
+
+      const fieldOfViewRadians = degToRad(60);
+      const aspect = gl.canvas.clientWidth / gl.canvas.clientHeight;
+      const projection = m4.perspective(fieldOfViewRadians, aspect, zNear, zFar);
+
+      const up = [0, 1, 0];
+      const camera = m4.lookAt(cameraPosition, cameraTarget, up);
+      const view = m4.inverse(camera);
+
+      const sharedUniforms = {
+        u_lightDirection: m4.normalize([0, 3, 0]),
+        u_view: view,
+        u_projection: projection,
+        u_viewWorldPosition: cameraPosition,
+      };
+
+      gl.useProgram(meshProgramInfo.program);
+      webglUtils.setUniforms(meshProgramInfo, sharedUniforms);
+
+      let u_world = m4.identity();
+      u_world = m4.translate(u_world, ...objOffset);
+
+      for (const { bufferInfo, material } of parts) {
+        webglUtils.setBuffersAndAttributes(gl, meshProgramInfo, bufferInfo);
+        webglUtils.setUniforms(meshProgramInfo, { u_world }, material);
+        webglUtils.drawBufferInfo(gl, bufferInfo);
+      }
+
+      requestAnimationFrame(render);
+    }
+    requestAnimationFrame(render);
+  }*/

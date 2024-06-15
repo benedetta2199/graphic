@@ -13,13 +13,34 @@ async function main() {
   }
 
   const meshProgramInfo = webglUtils.createProgramInfo(gl, [vs, fs]);
-  const objHref = './src/plane.obj';
+  
+  // Load first object
+  const planeObjHref = './src/plane.obj';
+  const { parts: planeParts, obj: planeObj } = await loadPlane(gl, planeObjHref, false);
+  const planeExtents = getGeometriesExtents(planeObj.geometries);
 
-  const { parts, obj } = await loadPlane(gl, objHref);
-  const extents = getGeometriesExtents(obj.geometries);
+  // Load second object
+  const elicaObjHref = './src/elica.obj';
+  const { parts: elicaParts, obj: elicaObj } = await loadPlane(gl, elicaObjHref, true);
+  const elicaExtents = getGeometriesExtents(elicaObj.geometries);
 
-  const { cameraPosition, cameraTarget, objOffset, zNear, zFar } = setupCameraAndLight(gl, extents);
-  renderScene(gl, meshProgramInfo, parts, cameraPosition, cameraTarget, objOffset, zNear, zFar);
+  // Combine extents for camera setup
+  const combinedExtents = {
+    min: [
+      Math.min(planeExtents.min[0], elicaExtents.min[0]),
+      Math.min(planeExtents.min[1], elicaExtents.min[1]),
+      Math.min(planeExtents.min[2], elicaExtents.min[2]),
+    ],
+    max: [
+      Math.max(planeExtents.max[0], elicaExtents.max[0]),
+      Math.max(planeExtents.max[1], elicaExtents.max[1]),
+      Math.max(planeExtents.max[2], elicaExtents.max[2]),
+    ],
+  };
+
+  const { cameraPosition, cameraTarget, objOffset, zNear, zFar } = setupCameraAndLight(gl, combinedExtents);
+  
+  renderScene(gl, meshProgramInfo, planeParts, elicaParts, cameraPosition, cameraTarget, objOffset, zNear, zFar);
 }
 
 main();
