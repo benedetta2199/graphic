@@ -14,7 +14,7 @@ export function setupCameraAndLight(gl, extents) {
       m4.scaleVector(range, 0.5)),
     -1
   );
-  const cameraTarget = [0, 0, 0];
+  const cameraTarget = [10, -8, 30];
   const radius = m4.length(range) * 1.5;
   const cameraPosition = m4.addVectors(cameraTarget, [12, 12, radius]);
   const zNear = radius / 100;
