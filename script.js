@@ -2,7 +2,8 @@
 // from https://webglfundamentals.org/webgl/webgl-load-obj-w-mtl-w-textures.html
 "use strict";
 import { loadPlane, getGeometriesExtents } from './planeLoader.js';
-import { setupCameraAndLight, renderScene } from './cameraAndLightSetup.js';
+import { setupCameraAndLight} from './cameraAndLightSetup.js';
+import { renderScene } from './renderScene.js';
 import { vs, fs } from './const.js';
 
 async function main() {
