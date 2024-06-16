@@ -1,7 +1,7 @@
 // renderScene.js
 "use strict";
 
-import { updateMousePosition, canvasToWorld } from './mousePosition.js';
+import { setListener, canvasToWorld} from './mousePosition.js';
 
 /**
  * Renderizza la scena.
@@ -16,8 +16,8 @@ import { updateMousePosition, canvasToWorld } from './mousePosition.js';
  * @param {number} zFar - Piano di clipping lontano.
  */
 export function renderScene(gl, meshProgramInfo, planeParts, elicaParts, cameraPosition, cameraTarget, objOffset, zNear, zFar) {
-  // Aggiungi il listener per l'evento mousemove
-  gl.canvas.addEventListener('mousemove', updateMousePosition);
+  
+  setListener(gl);
 
   function render(time) {
     time *= 0.006; // Converte il tempo in secondi (velocità dell'elica)
@@ -49,14 +49,16 @@ export function renderScene(gl, meshProgramInfo, planeParts, elicaParts, cameraP
     gl.useProgram(meshProgramInfo.program);
     webglUtils.setUniforms(meshProgramInfo, sharedUniforms);
 
-    /**MOVIMENTO DELL'AEREO E DELL'ELICA */
     // Movimento dell'aereo in base alla posizione del mouse
     const worldMouseY = -canvasToWorld(gl.canvas.height, zNear, zFar);
+    
+    // Movimento dell'aereo in base alla posizione del mouse limitata
+    const combinedY = worldMouseY;
 
-    let u_world = m4.translation(-40, worldMouseY, -40); // Imposta la posizione dell'aereo in base alla posizione del mouse
+    let u_world = m4.translation(-40, combinedY, -40); // Imposta la posizione dell'aereo in base alla posizione del mouse e della tastiera
     u_world = m4.xRotate(u_world, 0.1); // Rotazione attorno all'asse X
 
-    const oscillationAngle = Math.sin(time) * degToRad(2); // Oscillazione sinusoidale
+    const oscillationAngle = Math.sin(time) * degToRad(3); // Oscillazione sinusoidale
     u_world = m4.zRotate(u_world, oscillationAngle); // Applica rotazione attorno all'asse Z
 
     let u_world_elica = u_world; // in modo che l'elica sia posizionata correttamente rispetto all'aereo
