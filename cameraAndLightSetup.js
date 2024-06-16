@@ -19,7 +19,7 @@ export function setupCameraAndLight(gl, extents) {
   );
 
   // Posizione del punto di mira della telecamera
-  const cameraTarget = [-15, 20, 0];
+  const cameraTarget = [-5, 20, 0];
   // Calcola la distanza della telecamera dall'oggetto basata sulla dimensione dell'oggetto
   const radius = m4.length(range) * 1.5;
   // Posizione della telecamera
