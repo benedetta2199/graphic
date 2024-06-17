@@ -26,8 +26,8 @@ export function setupCameraAndLight(gl, extents) {
   // Posizione della telecamera
   const cameraPosition = m4.addVectors(cameraTarget, [0, 10, radius]);
   // Piani di clipping per la telecamera
-  const zNear = radius / 100;
-  const zFar = radius * 3;
+  const zNear = radius / 20;
+  const zFar = radius * 6;
 
   // Restituisce un oggetto con le informazioni sulla telecamera e le luci
   return { cameraPosition, cameraTarget, objOffset, zNear, zFar };
