@@ -16,7 +16,7 @@ import { setListener, canvasToWorld} from './mousePosition.js';
  */
 export function renderScene(gl, meshProgramInfo, planeParts, elicaParts, worldParts, cameraPosition, cameraTarget, objOffset, zNear, zFar) {
   
-  setListener(gl);
+  setListener(gl)
 
   function render(time) {
     time *= 0.006; // Converte il tempo in secondi (velocità dell'elica)
@@ -54,7 +54,8 @@ export function renderScene(gl, meshProgramInfo, planeParts, elicaParts, worldPa
     // Movimento dell'aereo in base alla posizione del mouse limitata
     const combinedY = worldMouseY;
 
-    let u_world = m4.translation(-40, combinedY, -40); // Imposta la posizione dell'aereo in base alla posizione del mouse e della tastiera
+    const posRel = gl.canvas.width/56;
+    let u_world = m4.translation(-posRel, combinedY, -posRel); // Imposta la posizione dell'aereo in base alla posizione del mouse e della tastiera
     u_world = m4.xRotate(u_world, 0.1); // Rotazione attorno all'asse X
 
     const oscillationAngle = Math.sin(time) * degToRad(3); // Oscillazione sinusoidale
@@ -79,8 +80,16 @@ export function renderScene(gl, meshProgramInfo, planeParts, elicaParts, worldPa
       webglUtils.setUniforms(meshProgramInfo, { u_world: u_world_elica }, material);
       webglUtils.drawBufferInfo(gl, bufferInfo);
     }
+    const prop = 5;
+    //let u_world_world = m4.translation(0, -(prop*2.5), -(prop*4)); // Posiziona l'oggetto world in basso
+    let u_world_world = m4.translation(0, -(prop*2.5), -(prop*10)); // Posiziona l'oggetto world in basso
+    //u_world_world = m4.yRotate(u_world_world, 2); // Applica rotazione attorno all'asse Y
+    //u_world_world = m4.scale(u_world_world, 20, 20, 15); // Scala l'oggetto orizzontalmente (asse X)
+    const fixedRotationAngle = degToRad(75); // Angolo fisso di 45 gradi
+    u_world_world = m4.xRotate(u_world_world, fixedRotationAngle); // Applica rotazione fissa attorno all'asse Y
+    u_world_world = m4.yRotate(u_world_world, time/15); // Applica rotazione attorno all'asse Y
+    u_world_world = m4.scale(u_world_world, prop*4, prop*3, prop*4); // Scala l'oggetto orizzontalmente (asse X)
 
-    const u_world_world = m4.translation(-5, 25, 51); // Posiziona l'oggetto world in basso
     for (const { bufferInfo, material } of worldParts) {
       webglUtils.setBuffersAndAttributes(gl, meshProgramInfo, bufferInfo);
       webglUtils.setUniforms(meshProgramInfo, { u_world: u_world_world }, material);
