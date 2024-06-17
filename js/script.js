@@ -28,8 +28,14 @@ async function main() {
   // Calcola le dimensioni geometriche (bounding box) dell'oggetto elica
   const elicaExtents = getGeometriesExtents(elicaObj.geometries);
 
+  // Carica il terzo oggetto (world) in modo asincrono
+  const worldObjHref = './src/world.obj';
+  const { parts: worldParts, obj: worldObj } = await loadPlane(gl, worldObjHref, false);
+  // Calcola le dimensioni geometriche (bounding box) dell'oggetto world
+  const worldExtents = getGeometriesExtents(worldObj.geometries);
+
   // Combina le estensioni per impostare la telecamera
-  const combinedExtents = {
+  /*const combinedExtents = {
     min: [
       Math.min(planeExtents.min[0], elicaExtents.min[0]),
       Math.min(planeExtents.min[1], elicaExtents.min[1]),
@@ -40,13 +46,29 @@ async function main() {
       Math.max(planeExtents.max[1], elicaExtents.max[1]),
       Math.max(planeExtents.max[2], elicaExtents.max[2]),
     ],
+  };*/
+
+  // Combina le estensioni per impostare la telecamera
+  const combinedExtents = {
+    min: [
+      Math.min(planeExtents.min[0], elicaExtents.min[0], worldExtents.min[0]),
+      Math.min(planeExtents.min[1], elicaExtents.min[1], worldExtents.min[1]),
+      Math.min(planeExtents.min[2], elicaExtents.min[2], worldExtents.min[2]),
+    ],
+    max: [
+      Math.max(planeExtents.max[0], elicaExtents.max[0], worldExtents.max[0]),
+      Math.max(planeExtents.max[1], elicaExtents.max[1], worldExtents.max[1]),
+      Math.max(planeExtents.max[2], elicaExtents.max[2], worldExtents.max[2]),
+    ],
   };
 
   // Ottiene posizione della telecamera, target, offset oggetto, e piani di clipping basati sulle estensioni combinate
   const { cameraPosition, cameraTarget, objOffset, zNear, zFar } = setupCameraAndLight(gl, combinedExtents);
   
   // Renderizza la scena con gli oggetti caricati e la configurazione della telecamera
-  renderScene(gl, meshProgramInfo, planeParts, elicaParts, cameraPosition, cameraTarget, objOffset, zNear, zFar);
+  //renderScene(gl, meshProgramInfo, planeParts, elicaParts, cameraPosition, cameraTarget, objOffset, zNear, zFar);
+  renderScene(gl, meshProgramInfo, planeParts, elicaParts, worldParts, cameraPosition, cameraTarget, objOffset, zNear, zFar);
+
 }
 
 main();

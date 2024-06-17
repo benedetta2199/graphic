@@ -1,3 +1,4 @@
+// renderScene.js
 "use strict";
 
 import { setListener, canvasToWorld} from './mousePosition.js';
@@ -14,7 +15,7 @@ import { setListener, canvasToWorld} from './mousePosition.js';
  * @param {number} zNear - Piano di clipping vicino.
  * @param {number} zFar - Piano di clipping lontano.
  */
-export function renderScene(gl, meshProgramInfo, planeParts, elicaParts, worldParts, cameraPosition, cameraTarget, objOffset, zNear, zFar) {
+export function renderScene(gl, meshProgramInfo, planeParts, elicaParts, cameraPosition, cameraTarget, objOffset, zNear, zFar) {
   
   setListener(gl);
 
@@ -77,13 +78,6 @@ export function renderScene(gl, meshProgramInfo, planeParts, elicaParts, worldPa
     for (const { bufferInfo, material } of elicaParts) {
       webglUtils.setBuffersAndAttributes(gl, meshProgramInfo, bufferInfo);
       webglUtils.setUniforms(meshProgramInfo, { u_world: u_world_elica }, material);
-      webglUtils.drawBufferInfo(gl, bufferInfo);
-    }
-
-    const u_world_world = m4.translation(-5, 25, 51); // Posiziona l'oggetto world in basso
-    for (const { bufferInfo, material } of worldParts) {
-      webglUtils.setBuffersAndAttributes(gl, meshProgramInfo, bufferInfo);
-      webglUtils.setUniforms(meshProgramInfo, { u_world: u_world_world }, material);
       webglUtils.drawBufferInfo(gl, bufferInfo);
     }
 

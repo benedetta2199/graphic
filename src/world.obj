@@ -1,6 +1,6 @@
 # Blender 4.1.1
 # www.blender.org
-mtllib word.mtl
+mtllib world.mtl
 o Cilindro.002
 v -1.993631 0.133407 1.944307
 v -2.026772 -0.364530 1.686675
