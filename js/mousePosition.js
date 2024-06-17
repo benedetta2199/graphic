@@ -31,7 +31,8 @@ export function canvasToWorld(canvasHeight, zNear, zFar) {
   const y = mouseY;
   const ndcY = (y / canvasHeight) * 2 - 1; // Converti da pixel a coordinate NDC (Normalized Device Coordinates)
   const viewY = ndcY * (zFar - zNear) / 2; // Converti da NDC a coordinate del mondo
-  const constViewY = clamp(viewY, -140, -40);
+  console.log(canvasHeight);
+  const constViewY = clamp(viewY, -132, -50);
   return constViewY;
 }
 
@@ -52,11 +53,11 @@ function clamp(value, min, max) {
  * @param {KeyboardEvent} event - Evento keydown
  */
 export function handleKeyDown(event) {
-    const passo = 25;
+    const passo = 3;
     if (event.key === "ArrowUp") {
-      mouseY =  Math.max(100, mouseY-passo); // Incrementa la posizione Y
+      mouseY =  mouseY-passo; // Incrementa la posizione Y
     } else if (event.key === "ArrowDown") {
-      mouseY = Math.min(window.innerHeight-100, mouseY+passo); // Decrementa la posizione Y
+      mouseY = mouseY+passo; // Decrementa la posizione Y
     }
     //mouseY = clamp(mouseY, -57, 35); // Limita la posizione Y
 }

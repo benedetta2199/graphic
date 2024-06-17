@@ -1,6 +1,6 @@
 @import url("https://webglfundamentals.org/webgl/resources/webgl-tutorials.css");
 @import url('https://fonts.googleapis.com/css2?family=Quicksand:wght@300..700&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Playwrite+FR+Moderne:wght@100..400&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Poly:ital@0;1&display=swap');
 
 /*COLORS: {
   green: 0x819603,
@@ -21,8 +21,9 @@ body {
 }
 body *{margin: 0;}
 
-h1,h2,h3,h4,h5{font-family: "Playwrite FR Moderne", cursive; }
-h1{font-size: 16px;}
+h1,h2,h3,h4,h5{font-family: "Poly", cursive; }
+h1{font-size: 38px;}
+h2{font-size: 20px;}
 
 canvas {
   width: 100vw;
@@ -30,9 +31,23 @@ canvas {
   display: block;
   background: rgb(244,236,188);
   /*background: linear-gradient(1800deg, rgba(244,236,188,1) 0%, rgba(244,223,188,1) 43%, rgba(244,188,214,1) 100%);*/
-  background: radial-gradient(ellipse  at center bottom, rgba(244,188,214,1) 0%, rgba(244,223,188,1) 89%, rgba(244,236,188,1) 100% );
+  background: radial-gradient(ellipse  at center bottom, #397cb6 0%, #ccdfef 89%, #f4dfbc 100% );
   background-size: 150vw 100vh;
   background-position: -25vw 0;
+}
+
+.point{
+  position: absolute;
+  top: 2vh;
+  right: 1vw;
+  border-radius: 5px;
+  width: 20vw;
+  padding: 5px 20px;
+  color: rgba(255, 255, 255, 0.8);
+}
+.point h2{
+  margin-top: 10px;
+  padding-left: 20px;
 }
 
 .menu{
@@ -43,7 +58,6 @@ canvas {
   width: 20vw;
   padding: 5px 20px;
   background-color: rgb(243, 240, 223, 0.4);
-
 }
 
 .menu hr{

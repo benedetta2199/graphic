@@ -38,7 +38,7 @@ export function renderScene(gl, meshProgramInfo, planeParts, elicaParts, worldPa
 
     // Parametri uniformi condivisi per i shader
     const sharedUniforms = {
-      u_lightDirection: m4.normalize([0, 25, 5]), // Direzione della luce
+      u_lightDirection: m4.normalize([20,100,100]), // Direzione della luce
       u_view: view,
       u_projection: projection,
       u_viewWorldPosition: cameraPosition, // Posizione della telecamera nella scena
@@ -87,7 +87,7 @@ export function renderScene(gl, meshProgramInfo, planeParts, elicaParts, worldPa
     //u_world_world = m4.scale(u_world_world, 20, 20, 15); // Scala l'oggetto orizzontalmente (asse X)
     const fixedRotationAngle = degToRad(75); // Angolo fisso di 45 gradi
     u_world_world = m4.xRotate(u_world_world, fixedRotationAngle); // Applica rotazione fissa attorno all'asse Y
-    u_world_world = m4.yRotate(u_world_world, time/15); // Applica rotazione attorno all'asse Y
+    u_world_world = m4.yRotate(u_world_world, time/20); // Applica rotazione attorno all'asse Y
     u_world_world = m4.scale(u_world_world, prop*4, prop*3, prop*4); // Scala l'oggetto orizzontalmente (asse X)
 
     for (const { bufferInfo, material } of worldParts) {
