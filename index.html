@@ -7,6 +7,26 @@
 </head>
 <body>
   <canvas id="canvas"></canvas>
+  <div class="menu">
+    <h1>Come giocare:</h1>
+    <p>Raccogli tutti gli oggetti X e schiva gli Y</p>
+    <hr/>
+    <div style="display: flex;">
+      <div style="margin: auto 3px auto 0; width: 32px;" class="button">
+        <img src="./src/mouse.svg" alt="" width="21"/>
+      </div>
+      <p>Muovi il mouse per spostare l'areoplanino</p>
+    </div>
+    
+    <hr/>
+    <div style="display: flex;">
+      <div style="width: 32px !important;" >
+        <span class="button">▲</span>
+        <span class="button">▼</span>
+      </div>
+      <p>Muovi le frecce da tastiera per spostare l'areoplanino</p>
+    </div>
+  </div>
   <!--
   for most samples webgl-utils only provides shader compiling/linking and
   canvas resizing because why clutter the examples with code that's the same in every sample.
@@ -17,7 +37,7 @@
   <script src="https://webglfundamentals.org/webgl/resources/webgl-utils.js"></script>
   <script src="https://webglfundamentals.org/webgl/resources/m4.js"></script>
   <!-- partial -->
-  <script  type="module" src="./script.js"></script>
+  <script  type="module" src="./js/script.js"></script>
 
 </body>
 </html>
