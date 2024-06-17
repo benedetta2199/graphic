@@ -41,8 +41,6 @@ canvas {
   top: 2vh;
   right: 1vw;
   border-radius: 5px;
-  width: 20vw;
-  padding: 5px 20px;
   color: rgba(255, 255, 255, 0.8);
 }
 .point h2{

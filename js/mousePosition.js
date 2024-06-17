@@ -31,7 +31,6 @@ export function canvasToWorld(canvasHeight, zNear, zFar) {
   const y = mouseY;
   const ndcY = (y / canvasHeight) * 2 - 1; // Converti da pixel a coordinate NDC (Normalized Device Coordinates)
   const viewY = ndcY * (zFar - zNear) / 2; // Converti da NDC a coordinate del mondo
-  console.log(canvasHeight);
   const constViewY = clamp(viewY, -132, -50);
   return constViewY;
 }

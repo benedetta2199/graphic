@@ -31,11 +31,9 @@ async function main() {
   // Carica il terzo oggetto (world) in modo asincrono
   const worldObjHref = './src/world.obj';
   const { parts: worldParts, obj: worldObj } = await loadPlane(gl, worldObjHref, false);
-  // Calcola le dimensioni geometriche (bounding box) dell'oggetto world
-  const worldExtents = getGeometriesExtents(worldObj.geometries);
 
   // Combina le estensioni per impostare la telecamera
-  /*const combinedExtents = {
+  const combinedExtents = {
     min: [
       Math.min(planeExtents.min[0], elicaExtents.min[0]),
       Math.min(planeExtents.min[1], elicaExtents.min[1]),
@@ -45,20 +43,6 @@ async function main() {
       Math.max(planeExtents.max[0], elicaExtents.max[0]),
       Math.max(planeExtents.max[1], elicaExtents.max[1]),
       Math.max(planeExtents.max[2], elicaExtents.max[2]),
-    ],
-  };*/
-
-  // Combina le estensioni per impostare la telecamera
-  const combinedExtents = {
-    min: [
-      Math.min(planeExtents.min[0], elicaExtents.min[0], worldExtents.min[0]),
-      Math.min(planeExtents.min[1], elicaExtents.min[1], worldExtents.min[1]),
-      Math.min(planeExtents.min[2], elicaExtents.min[2], worldExtents.min[2]),
-    ],
-    max: [
-      Math.max(planeExtents.max[0], elicaExtents.max[0], worldExtents.max[0]),
-      Math.max(planeExtents.max[1], elicaExtents.max[1], worldExtents.max[1]),
-      Math.max(planeExtents.max[2], elicaExtents.max[2], worldExtents.max[2]),
     ],
   };
 

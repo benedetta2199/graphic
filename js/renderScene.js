@@ -1,6 +1,8 @@
 "use strict";
 
-import { setListener, canvasToWorld} from './mousePosition.js';
+import { setListener} from './mousePosition.js';
+import { renderObj, u_worldElica, u_worldPlane, u_worldWorld } from './renderObj.js';
+import { degToRad } from './utils.js';
 
 /**
  * Renderizza la scena.
@@ -48,67 +50,22 @@ export function renderScene(gl, meshProgramInfo, planeParts, elicaParts, worldPa
     gl.useProgram(meshProgramInfo.program);
     webglUtils.setUniforms(meshProgramInfo, sharedUniforms);
 
-    // Movimento dell'aereo in base alla posizione del mouse
-    const worldMouseY = -canvasToWorld(gl.canvas.height, zNear, zFar);
+
+    /**AREOPLANO */
+    let u_world = u_worldPlane(gl.canvas.width, gl.canvas.height, zNear, zFar, time); 
+    //u_world = m4.translate(u_world, ...objOffset);
+    renderObj(gl,meshProgramInfo, planeParts, u_world);
+    /**ELICA */
+    //u_world_elica = m4.translate(u_world_elica, ...objOffset); // Prima applica la traslazione per centrare l'oggetto
+    renderObj(gl,meshProgramInfo, elicaParts, u_worldElica(u_world, time));
     
-    // Movimento dell'aereo in base alla posizione del mouse limitata
-    const combinedY = worldMouseY;
-
-    const posRel = gl.canvas.width/56;
-    let u_world = m4.translation(-posRel, combinedY, -posRel); // Imposta la posizione dell'aereo in base alla posizione del mouse e della tastiera
-    u_world = m4.xRotate(u_world, 0.1); // Rotazione attorno all'asse X
-
-    const oscillationAngle = Math.sin(time) * degToRad(3); // Oscillazione sinusoidale
-    u_world = m4.zRotate(u_world, oscillationAngle); // Applica rotazione attorno all'asse Z
-
-    let u_world_elica = u_world; // in modo che l'elica sia posizionata correttamente rispetto all'aereo
-
-    u_world = m4.translate(u_world, ...objOffset);
-
-    for (const { bufferInfo, material } of planeParts) {
-      webglUtils.setBuffersAndAttributes(gl, meshProgramInfo, bufferInfo);
-      webglUtils.setUniforms(meshProgramInfo, { u_world }, material);
-      webglUtils.drawBufferInfo(gl, bufferInfo);
-    }
-
-    // Renderizza le parti dell'elica con rotazione intorno all'asse X
-    u_world_elica = m4.translate(u_world_elica, ...objOffset); // Prima applica la traslazione per centrare l'oggetto
-    u_world_elica = m4.xRotate(u_world_elica, -time); // Infine applica la rotazione
-
-    for (const { bufferInfo, material } of elicaParts) {
-      webglUtils.setBuffersAndAttributes(gl, meshProgramInfo, bufferInfo);
-      webglUtils.setUniforms(meshProgramInfo, { u_world: u_world_elica }, material);
-      webglUtils.drawBufferInfo(gl, bufferInfo);
-    }
-    const prop = 5;
-    //let u_world_world = m4.translation(0, -(prop*2.5), -(prop*4)); // Posiziona l'oggetto world in basso
-    let u_world_world = m4.translation(0, -(prop*2.5), -(prop*10)); // Posiziona l'oggetto world in basso
-    //u_world_world = m4.yRotate(u_world_world, 2); // Applica rotazione attorno all'asse Y
-    //u_world_world = m4.scale(u_world_world, 20, 20, 15); // Scala l'oggetto orizzontalmente (asse X)
-    const fixedRotationAngle = degToRad(75); // Angolo fisso di 45 gradi
-    u_world_world = m4.xRotate(u_world_world, fixedRotationAngle); // Applica rotazione fissa attorno all'asse Y
-    u_world_world = m4.yRotate(u_world_world, time/20); // Applica rotazione attorno all'asse Y
-    u_world_world = m4.scale(u_world_world, prop*4, prop*3, prop*4); // Scala l'oggetto orizzontalmente (asse X)
-
-    for (const { bufferInfo, material } of worldParts) {
-      webglUtils.setBuffersAndAttributes(gl, meshProgramInfo, bufferInfo);
-      webglUtils.setUniforms(meshProgramInfo, { u_world: u_world_world }, material);
-      webglUtils.drawBufferInfo(gl, bufferInfo);
-    }
-
+    /**MONDO */
+    renderObj(gl,meshProgramInfo, worldParts, u_worldWorld(time));
+    
     // Richiede il rendering della scena alla prossima animazione frame
     requestAnimationFrame(render);
   }
 
   // Avvia il ciclo di rendering della scena
   requestAnimationFrame(render);
-}
-
-/**
- * Converte gradi in radianti.
- * @param {number} deg - Valore in gradi.
- * @returns {number} - Valore in radianti.
- */
-function degToRad(deg) {
-  return deg * Math.PI / 180;
 }
