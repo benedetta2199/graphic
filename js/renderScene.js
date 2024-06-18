@@ -13,7 +13,8 @@ import { degToRad, rand } from './utils.js';
   const rotation=Math.random()*359;
   const opacity=Math.random()*0.5+0.2;
   const n=rand(4,9);
-  setCloud(n);
+  const clouds = [];
+  
   let i=0;
 
 
@@ -73,14 +74,25 @@ export function renderScene(gl, meshProgramInfo, planeParts, elicaParts, worldPa
     //u_world_elica = m4.translate(u_world_elica, ...objOffset); // Prima applica la traslazione per centrare l'oggetto
     renderObj(gl,meshProgramInfo, elicaParts, u_worldElica(u_world, time));
 
-     /** CLOUD */
-    //const n = rand(4,9);
-    
-    renderCloud(gl,meshProgramInfo, cubeParts, n, time);
-    
-    
     /**MONDO */
     renderObj(gl,meshProgramInfo, worldParts, u_worldWorld(time));
+
+     /** CLOUD */
+    //const n = rand(4,9);
+    if(i%300==0){
+      clouds.push(setCloud(n,time));
+      console.log(clouds.length)
+    }
+
+    clouds.forEach(c => {
+      renderCloud(gl,meshProgramInfo, cubeParts, time, c);
+    });
+    
+    
+    
+    
+    
+    
     
    
     
