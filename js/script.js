@@ -33,8 +33,8 @@ async function main() {
   const { parts: worldParts, obj: worldObj } = await loadPlane(gl, worldObjHref, false);
 
   // Carica il terzo oggetto (world) in modo asincrono
-  const cloudObjHref = './src/cloud.obj';
-  const { parts: cloudParts, obj: cloudObj } = await loadPlane(gl, cloudObjHref, false);
+  const cubeObjHref = './src/cube.obj';
+  const { parts: cubeParts, obj: cubeObj } = await loadPlane(gl, cubeObjHref, false);
 
   // Combina le estensioni per impostare la telecamera
   const combinedExtents = {
@@ -55,7 +55,7 @@ async function main() {
   
   // Renderizza la scena con gli oggetti caricati e la configurazione della telecamera
   //renderScene(gl, meshProgramInfo, planeParts, elicaParts, cameraPosition, cameraTarget, objOffset, zNear, zFar);
-  renderScene(gl, meshProgramInfo, planeParts, elicaParts, worldParts, cloudParts, cameraPosition, cameraTarget, objOffset, zNear, zFar);
+  renderScene(gl, meshProgramInfo, planeParts, elicaParts, worldParts, cubeParts, cameraPosition, cameraTarget, objOffset, zNear, zFar);
 
 }
 

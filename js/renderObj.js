@@ -21,15 +21,15 @@ export function u_worldPlane(width, height, zNear, zFar, time){
   u_world = m4.xRotate(u_world, 0.1); // Rotazione attorno all'asse X
   const oscillationAngle = Math.sin(time) * degToRad(3); // Oscillazione sinusoidale
   u_world = m4.zRotate(u_world, oscillationAngle); // Applica rotazione attorno all'asse Z
-
+  //console.log(u_world[12]+" "+u_world[13]+" "+u_world[14]);
   return u_world;
 }
 
 export function u_worldElica(u_world_elica, time){
   u_world_elica = m4.xRotate(u_world_elica, -time); // Infine applica la rotazione
-
   return u_world_elica;
 }
+
 
 export function u_worldWorld(time){
     const prop = 5;
@@ -37,8 +37,8 @@ export function u_worldWorld(time){
     let u_world_world = m4.translation(0, -(prop*2.5), -(prop*10)); // Posiziona l'oggetto world in basso
     //u_world_world = m4.yRotate(u_world_world, 2); // Applica rotazione attorno all'asse Y
     //u_world_world = m4.scale(u_world_world, 20, 20, 15); // Scala l'oggetto orizzontalmente (asse X)
-    const fixedRotationAngle = degToRad(75); // Angolo fisso di 45 gradi
-    u_world_world = m4.xRotate(u_world_world, fixedRotationAngle); // Applica rotazione fissa attorno all'asse Y
+    //const fixedRotationAngle = ; // Angolo fisso di 45 gradi
+    u_world_world = m4.xRotate(u_world_world, degToRad(75)); // Applica rotazione fissa attorno all'asse Y
     u_world_world = m4.yRotate(u_world_world, time/20); // Applica rotazione attorno all'asse Y
     u_world_world = m4.scale(u_world_world, prop*4, prop*3, prop*4); // Scala l'oggetto orizzontalmente (asse X)
 

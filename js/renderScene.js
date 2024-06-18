@@ -1,16 +1,21 @@
 "use strict";
 
+import { renderCloud, setCloud } from './cloud.js';
 import { setListener } from './mousePosition.js';
-import { renderObj, u_worldCloud, u_worldElica, u_worldPlane, u_worldWorld } from './renderObj.js';
-import { degToRad } from './utils.js';
+import { renderObj, u_worldElica, u_worldPlane, u_worldWorld } from './renderObj.js';
+import { degToRad, rand } from './utils.js';
 
 /*Z tra -20 e -50
   Y tra 40 e 150*/
-    const y=Math.random()*110+40;
-    const z=-(Math.random()*30+20);
-    const scale=Math.random()*2+1.5;
-    const rotation=Math.random()*359;
-    const opacity=Math.random()*0.5+0.2;
+  const y=Math.random()*110+40;
+  const z=-(Math.random()*30+20);
+  const scale=Math.random()*2+1.5;
+  const rotation=Math.random()*359;
+  const opacity=Math.random()*0.5+0.2;
+  const n=rand(4,9);
+  setCloud(n);
+  let i=0;
+
 
 /**
  * Renderizza la scena.
@@ -24,12 +29,13 @@ import { degToRad } from './utils.js';
  * @param {number} zNear - Piano di clipping vicino.
  * @param {number} zFar - Piano di clipping lontano.
  */
-export function renderScene(gl, meshProgramInfo, planeParts, elicaParts, worldParts, cloudParts, cameraPosition, cameraTarget, objOffset, zNear, zFar) {
+export function renderScene(gl, meshProgramInfo, planeParts, elicaParts, worldParts, cubeParts, cameraPosition, cameraTarget, objOffset, zNear, zFar) {
   
-  setListener(gl)
+  setListener(gl);
 
   function render(time) {
     time *= 0.006; // Converte il tempo in secondi (velocità dell'elica)
+    i++;
 
     // Ridimensiona il canvas WebGL alla dimensione dello schermo
     webglUtils.resizeCanvasToDisplaySize(gl.canvas);
@@ -66,12 +72,19 @@ export function renderScene(gl, meshProgramInfo, planeParts, elicaParts, worldPa
     /**ELICA */
     //u_world_elica = m4.translate(u_world_elica, ...objOffset); // Prima applica la traslazione per centrare l'oggetto
     renderObj(gl,meshProgramInfo, elicaParts, u_worldElica(u_world, time));
+
+     /** CLOUD */
+    //const n = rand(4,9);
+    
+    renderCloud(gl,meshProgramInfo, cubeParts, n, time);
+    
     
     /**MONDO */
     renderObj(gl,meshProgramInfo, worldParts, u_worldWorld(time));
     
-    /** CLOUD */
-    renderObj(gl, meshProgramInfo, cloudParts, u_worldCloud(time, y, z, scale, rotation),opacity);
+   
+    
+    //renderObj(gl, meshProgramInfo, cloudParts, u_worldCloud(time, y, z, scale, rotation),opacity);
     
     // Richiede il rendering della scena alla prossima animazione frame
     requestAnimationFrame(render);

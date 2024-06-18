@@ -65,6 +65,9 @@ void main () {
 }
 `;
 
+export function rand(min, max) {
+    return Math.random()*(max-min)+min;
+}
 
 /**
  * Converte gradi in radianti.
@@ -73,4 +76,5 @@ void main () {
  */
 export function degToRad(deg) {
     return deg * Math.PI / 180;
-  }
+}
+
