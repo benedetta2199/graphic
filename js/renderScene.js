@@ -1,8 +1,16 @@
 "use strict";
 
-import { setListener} from './mousePosition.js';
-import { renderObj, u_worldElica, u_worldPlane, u_worldWorld } from './renderObj.js';
+import { setListener } from './mousePosition.js';
+import { renderObj, u_worldCloud, u_worldElica, u_worldPlane, u_worldWorld } from './renderObj.js';
 import { degToRad } from './utils.js';
+
+/*Z tra -20 e -50
+  Y tra 40 e 150*/
+    const y=Math.random()*110+40;
+    const z=-(Math.random()*30+20);
+    const scale=Math.random()*2+1.5;
+    const rotation=Math.random()*359;
+    const opacity=Math.random()*0.5+0.2;
 
 /**
  * Renderizza la scena.
@@ -16,7 +24,7 @@ import { degToRad } from './utils.js';
  * @param {number} zNear - Piano di clipping vicino.
  * @param {number} zFar - Piano di clipping lontano.
  */
-export function renderScene(gl, meshProgramInfo, planeParts, elicaParts, worldParts, cameraPosition, cameraTarget, objOffset, zNear, zFar) {
+export function renderScene(gl, meshProgramInfo, planeParts, elicaParts, worldParts, cloudParts, cameraPosition, cameraTarget, objOffset, zNear, zFar) {
   
   setListener(gl)
 
@@ -62,6 +70,9 @@ export function renderScene(gl, meshProgramInfo, planeParts, elicaParts, worldPa
     /**MONDO */
     renderObj(gl,meshProgramInfo, worldParts, u_worldWorld(time));
     
+    /** CLOUD */
+    renderObj(gl, meshProgramInfo, cloudParts, u_worldCloud(time, y, z, scale, rotation),opacity);
+    
     // Richiede il rendering della scena alla prossima animazione frame
     requestAnimationFrame(render);
   }
@@ -69,3 +80,26 @@ export function renderScene(gl, meshProgramInfo, planeParts, elicaParts, worldPa
   // Avvia il ciclo di rendering della scena
   requestAnimationFrame(render);
 }
+
+/*// Aggiungi un array per tenere traccia delle nuvole
+const clouds = [];
+let lastCloudCreationTime = 0;
+const cloudSpawnInterval = 5000; // 5 secondi
+
+// Funzione per creare una nuova nuvola
+function createCloud(gl, meshProgramInfo, cloudParts, canvasWidth) {
+  const initialX = canvasWidth * 2; // Posizione iniziale della nuvola
+  const initialY = Math.random() * canvasWidth - canvasWidth / 2; // Posizione Y casuale
+  clouds.push({ x: initialX, y: initialY, parts: cloudParts });
+}
+
+// Funzione per aggiornare la posizione delle nuvole e rimuoverle se fuori dallo schermo
+function updateClouds(canvasWidth) {
+  for (let i = clouds.length - 1; i >= 0; i--) {
+    const cloud = clouds[i];
+    cloud.x -= 1; // Movimento orizzontale verso sinistra
+    if (cloud.x < -canvasWidth / 2) {
+      clouds.splice(i, 1); // Rimuove la nuvola se esce dallo schermo
+    }
+  }
+}*/

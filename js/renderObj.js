@@ -45,4 +45,12 @@ export function u_worldWorld(time){
   return u_world_world;
 }
 
+export function u_worldCloud(time, y, z, scale, rotation){
+  const acc= time*(3.5-scale);
+  let u_world = m4.translation(100-acc, y, z); // Posiziona l'oggetto world in basso
+  u_world = m4.xRotate(u_world, degToRad(rotation)); // Applica rotazione fissa attorno all'asse X
+  u_world = m4.scale(u_world, scale, scale, scale); // Scala l'oggetto orizzontalmente (asse X)
+
+return u_world;
+}
 

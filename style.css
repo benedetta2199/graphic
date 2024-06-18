@@ -32,6 +32,7 @@ canvas {
   background: rgb(244,236,188);
   /*background: linear-gradient(1800deg, rgba(244,236,188,1) 0%, rgba(244,223,188,1) 43%, rgba(244,188,214,1) 100%);*/
   background: radial-gradient(ellipse  at center bottom, #397cb6 0%, #ccdfef 89%, #f4dfbc 100% );
+  /*background: radial-gradient(ellipse  at center bottom, #000b15 0%, #072d4d 89%, #816a43 100% );*/
   background-size: 150vw 100vh;
   background-position: -25vw 0;
 }
