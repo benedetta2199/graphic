@@ -4,7 +4,7 @@
 import { loadPlane, getGeometriesExtents } from './planeLoader.js';
 import { setupCameraAndLight} from './cameraAndLightSetup.js';
 import { renderScene } from './renderScene.js';
-import { vs, fs } from './const.js';
+import { vs, fs } from './utils.js';
 
 async function main() {
   const canvas = document.querySelector("#canvas");
