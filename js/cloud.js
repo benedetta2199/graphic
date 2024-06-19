@@ -4,20 +4,25 @@ import { renderObj } from './renderObj.js';
 import { rand } from './utils.js';
 
 const size = 4;
-
 /*  range X > 110
     range Y 40-145
     range Z < -50
 */
-export function setCloud(n){
+export function setCloud(n,time){
     const data = [];
     const yCloud = rand(40, 145);
-    const zCloud = rand(50, 90);
+    const zCloud = rand(50, 150);
     
     for (let i = 0; i < n; i++) {
         const s = rand(1, size);
-        const rangeX = s * size/2;
-        data[i]={elemS: s, elemT: [120-rand(-rangeX, rangeX), yCloud + rand(-s, s), -(zCloud + rand(0, s))], elemV: s/rand(200,400)};
+        const rangeX = s * n/3;
+        //const oscillationAngle = Math.sin(time) * degToRad(3); // Oscillazione sinusoidale
+        data[i]={
+            elemS: s, 
+            elemT: [150-rand(-rangeX, rangeX)+(time), yCloud + rand(-s, s), -(zCloud + rand(0, s))], 
+            elemR: s/rand(size*25,size*100),
+            elemO: rand(-0.5,0.5)
+        };
     }
 
     return data;
@@ -26,10 +31,11 @@ export function setCloud(n){
 function u_worldCube(i, time, data) {
     const elemT= data.elemT;
     const elemS= data.elemS;
-    const elemV= data.elemV;
-    var u_world = m4.translation(elemT[0]-time, elemT[1], elemT[2]); // Posiziona l'oggetto 
-    u_world = m4.xRotate(u_world, elemV*time); // Applica rotazione fissa attorno all'asse Y
-    u_world = m4.yRotate(u_world, -elemV*time); // Applica rotazione attorno all'asse Yworld
+    const elemR= data.elemR;
+    const elemO= data.elemO;
+    var u_world = m4.translation(elemT[0]-(time), elemT[1]+Math.sin(time*elemO), elemT[2]+Math.sin(time*elemO)); // Posiziona l'oggetto 
+    u_world = m4.yRotate(u_world, elemR*time); // Applica rotazione fissa attorno all'asse Y
+    u_world = m4.xRotate(u_world, -elemR*time); // Applica rotazione attorno all'asse Yworld
     u_world = m4.scale(u_world, elemS, elemS, elemS); // Scala l'oggetto
     return u_world;
 }

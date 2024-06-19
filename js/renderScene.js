@@ -5,15 +5,7 @@ import { setListener } from './mousePosition.js';
 import { renderObj, u_worldElica, u_worldPlane, u_worldWorld } from './renderObj.js';
 import { degToRad, rand } from './utils.js';
 
-/*Z tra -20 e -50
-  Y tra 40 e 150*/
-  const y=Math.random()*110+40;
-  const z=-(Math.random()*30+20);
-  const scale=Math.random()*2+1.5;
-  const rotation=Math.random()*359;
-  const opacity=Math.random()*0.5+0.2;
-  const n=rand(4,9);
-  const clouds = [];
+  const clouds = [setCloud(rand(4,9),0)];
   
   let i=0;
 
@@ -78,10 +70,12 @@ export function renderScene(gl, meshProgramInfo, planeParts, elicaParts, worldPa
     renderObj(gl,meshProgramInfo, worldParts, u_worldWorld(time));
 
      /** CLOUD */
-    //const n = rand(4,9);
-    if(i%300==0){
-      clouds.push(setCloud(n,time));
-      console.log(clouds.length)
+    if(i%600==0){
+      clouds.push(setCloud(rand(3,9),time));
+      console.log(clouds.length);
+      if(clouds.length>8){
+        clouds.shift();
+      }
     }
 
     clouds.forEach(c => {

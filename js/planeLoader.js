@@ -1,5 +1,5 @@
 "use strict";
-import { parseOBJ, parseMTL, create1PixelTexture } from './objLoad.js';
+import { parseOBJ, parseMTL, create1PixelTexture, createTexture } from './objLoad.js';
 
 export async function loadPlane(gl, objHref,rotation) {
   // Ottiene il contenuto del file obj tramite fetch
