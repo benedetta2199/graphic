@@ -1,5 +1,5 @@
 "use strict";
-import { parseOBJ, parseMTL, create1PixelTexture, createTexture } from './objLoad.js';
+import { parseOBJ, parseMTL, create1PixelTexture, createTexture, generateTangents } from './objLoad.js';
 
 export async function loadPlane(gl, objHref, color = null) {
   // Ottiene il contenuto del file obj tramite fetch
@@ -47,6 +47,59 @@ export async function loadPlane(gl, objHref, color = null) {
     opacity: 1,
   };
 
+  const parts = obj.geometries.map(({material, data}) => {
+
+    if (data.color) {
+      if (data.position.length === data.color.length) {
+        // it's 3. The our helper library assumes 4 so we need
+        // to tell it there are only 3.
+        data.color = { numComponents: 3, data: data.color };
+      }
+    } else {
+      // there are no vertex colors so just use constant white
+      data.color = { value: [1, 1, 1, 1] };
+    }
+
+    // generate tangents if we have the data to do so.
+    if (data.texcoord && data.normal) {
+      data.tangent = generateTangents(data.position, data.texcoord);
+    } else {
+      // There are no tangents
+      data.tangent = { value: [1, 0, 0] };
+    }
+
+    if (!data.texcoord) {
+      data.texcoord = { value: [0, 0] };
+    }
+
+    if (!data.normal) {
+      // we probably want to generate normals if there are none
+      data.normal = { value: [0, 0, 1] };
+    }
+
+    // Se viene fornito un colore, sovrascrivi il materiale diffuso
+    const materialProps = {
+      ...defaultMaterial,
+      ...materials[material],
+    };
+
+    if (color) {
+      materialProps.diffuse = color.map(c => c / 255); // Convert RGB to [0, 1]
+    }
+
+    // create a buffer for each array by calling
+    // gl.createBuffer, gl.bindBuffer, gl.bufferData
+    const bufferInfo = webglUtils.createBufferInfoFromArrays(gl, data);
+    return {
+      material: materialProps,
+      bufferInfo,
+    };
+  });
+  return { parts, obj };
+}
+
+
+ /* 
   // Crea le parti del modello, associando materiali e dati geometrici
   const parts = obj.geometries.map(({ material, data }) => {
     if (data.color) {
@@ -62,9 +115,7 @@ export async function loadPlane(gl, objHref, color = null) {
       ...defaultMaterial,
       ...materials[material],
     };
-
     if (color) {
-      console.log("Applying color:", color);
       materialProps.diffuse = color.map(c => c / 255); // Convert RGB to [0, 1]
     }
 
@@ -78,7 +129,8 @@ export async function loadPlane(gl, objHref, color = null) {
 
   // Restituisce le parti del modello e l'oggetto parsato
   return { parts, obj };
-}
+}*/
+
 
 // Funzione per ottenere le estensioni geometriche (bounding box) di un insieme di geometrie
 export function getGeometriesExtents(geometries) {

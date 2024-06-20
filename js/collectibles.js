@@ -14,7 +14,7 @@ export function setObstacle(time){
     const s = rand(1, size);
     const data={
       elemS: s, 
-      elemT: [120, rand(48, 130), -rand(10, 30)], 
+      elemT: [120, rand(40, 125), -rand(10, 30)], 
       elemR: [rand(0,1),rand(0,1),rand(0,1)],
       elemO: rand(-0.5,0.5)
     };

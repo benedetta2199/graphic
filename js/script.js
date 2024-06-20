@@ -39,10 +39,8 @@ async function main() {
 
   // Carica il terzo oggetto (world) in modo asincrono
   const sphereObjHref = './src/icosfera.obj';
-  const c = [parseInt(rand(50,255)),parseInt(rand(50,255)),parseInt(rand(50,255))];
   //const c = color[parseInt(rand(0,color.length))];
-  console.log(c);
-  const { parts: sphereParts, obj: sphereObj } = await loadPlane(gl, sphereObjHref, c);
+  const { parts: sphereParts, obj: sphereObj } = await loadPlane(gl, sphereObjHref, [parseInt(rand(50,255)),parseInt(rand(50,255)),parseInt(rand(50,255))]);
 
   // Carica il terzo oggetto (world) in modo asincrono
   const coinObjHref = './src/coin.obj';
