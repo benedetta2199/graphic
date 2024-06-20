@@ -50,7 +50,7 @@ void main () {
   vec3 halfVector = normalize(u_lightDirection + surfaceToViewDirection);
 
   float fakeLight = dot(u_lightDirection, normal) * .5 + .5;
-  float specularLight = clamp(dot(normal, halfVector), 0.0, 1.0);
+  float specularLight = clamp(dot(normal, halfVector), 0.05, 1.0);
 
   vec4 diffuseMapColor = texture2D(diffuseMap, v_texcoord);
   vec3 effectiveDiffuse = diffuse * diffuseMapColor.rgb * v_color.rgb;

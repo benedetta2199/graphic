@@ -3,10 +3,11 @@
 import { renderCloud, setCloud } from './cloud.js';
 import { setListener } from './mousePosition.js';
 import { renderObj, u_worldElica, u_worldPlane, u_worldWorld } from './renderObj.js';
+import { renderObstacle, setObstacle } from './collectibles.js';
 import { degToRad, rand } from './utils.js';
 
   const clouds = [setCloud(rand(4,9),0)];
-  
+  const d = setObstacle(0);
   let i=0;
 
 
@@ -22,7 +23,7 @@ import { degToRad, rand } from './utils.js';
  * @param {number} zNear - Piano di clipping vicino.
  * @param {number} zFar - Piano di clipping lontano.
  */
-export function renderScene(gl, meshProgramInfo, planeParts, elicaParts, worldParts, cubeParts, cameraPosition, cameraTarget, objOffset, zNear, zFar) {
+export function renderScene(gl, meshProgramInfo, parts, cameraPosition, cameraTarget, objOffset, zNear, zFar) {
   
   setListener(gl);
 
@@ -61,13 +62,20 @@ export function renderScene(gl, meshProgramInfo, planeParts, elicaParts, worldPa
     /**AREOPLANO */
     let u_world = u_worldPlane(gl.canvas.width, gl.canvas.height, zNear, zFar, time); 
     //u_world = m4.translate(u_world, ...objOffset);
-    renderObj(gl,meshProgramInfo, planeParts, u_world);
+    renderObj(gl,meshProgramInfo, parts.plane, u_world);
     /**ELICA */
     //u_world_elica = m4.translate(u_world_elica, ...objOffset); // Prima applica la traslazione per centrare l'oggetto
-    renderObj(gl,meshProgramInfo, elicaParts, u_worldElica(u_world, time));
+    renderObj(gl,meshProgramInfo, parts.elica, u_worldElica(u_world, time));
 
     /**MONDO */
-    renderObj(gl,meshProgramInfo, worldParts, u_worldWorld(time));
+    renderObj(gl,meshProgramInfo, parts.world, u_worldWorld(time));
+
+    /**OSTACOLO */
+    renderObstacle(gl,meshProgramInfo, parts.obstacle, time, d);
+
+    /**MONETE */
+    renderObstacle(gl,meshProgramInfo, parts.coin, time, d);
+
 
      /** CLOUD */
     if(i%600==0){
@@ -77,20 +85,9 @@ export function renderScene(gl, meshProgramInfo, planeParts, elicaParts, worldPa
         clouds.shift();
       }
     }
-
     clouds.forEach(c => {
-      renderCloud(gl,meshProgramInfo, cubeParts, time, c);
-    });
-    
-    
-    
-    
-    
-    
-    
-   
-    
-    //renderObj(gl, meshProgramInfo, cloudParts, u_worldCloud(time, y, z, scale, rotation),opacity);
+      renderCloud(gl,meshProgramInfo, parts.cube, time, c);
+    });    
     
     // Richiede il rendering della scena alla prossima animazione frame
     requestAnimationFrame(render);
@@ -99,26 +96,3 @@ export function renderScene(gl, meshProgramInfo, planeParts, elicaParts, worldPa
   // Avvia il ciclo di rendering della scena
   requestAnimationFrame(render);
 }
-
-/*// Aggiungi un array per tenere traccia delle nuvole
-const clouds = [];
-let lastCloudCreationTime = 0;
-const cloudSpawnInterval = 5000; // 5 secondi
-
-// Funzione per creare una nuova nuvola
-function createCloud(gl, meshProgramInfo, cloudParts, canvasWidth) {
-  const initialX = canvasWidth * 2; // Posizione iniziale della nuvola
-  const initialY = Math.random() * canvasWidth - canvasWidth / 2; // Posizione Y casuale
-  clouds.push({ x: initialX, y: initialY, parts: cloudParts });
-}
-
-// Funzione per aggiornare la posizione delle nuvole e rimuoverle se fuori dallo schermo
-function updateClouds(canvasWidth) {
-  for (let i = clouds.length - 1; i >= 0; i--) {
-    const cloud = clouds[i];
-    cloud.x -= 1; // Movimento orizzontale verso sinistra
-    if (cloud.x < -canvasWidth / 2) {
-      clouds.splice(i, 1); // Rimuove la nuvola se esce dallo schermo
-    }
-  }
-}*/

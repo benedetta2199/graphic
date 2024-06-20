@@ -39,7 +39,7 @@ export function renderScene(gl, meshProgramInfo, planeParts, elicaParts, cameraP
 
     // Parametri uniformi condivisi per i shader
     const sharedUniforms = {
-      u_lightDirection: m4.normalize([20, 50, 10]), // Direzione della luce
+      u_lightDirection: m4.normalize([0, 0, 10]), // Direzione della luce
       u_view: view,
       u_projection: projection,
       u_viewWorldPosition: cameraPosition, // Posizione della telecamera nella scena

@@ -7,21 +7,33 @@
 </head>
 <body>
   <canvas id="canvas"></canvas>
+  <div id="game-menu">
+    <div style="display: flex; align-items: center;">
+      <h2>Energy</h2>
+      <div id="energy-bar-container">
+          <div id="energy-bar"></div>
+      </div>
+    </div>
+    <h2>Vite</h2>
+  </div>
+
   <div class="menu">
     <h2>Come giocare:</h1>
     <p>Raccogli tutti gli oggetti X e schiva gli Y</p>
     <hr/>
-    <div style="display: flex;">
+    <div style="display: flex; align-items: center;">
       <div>
         <img src="./src/mouse.svg" alt="" width="21"/>
       </div>
       <p>Muovi il mouse per spostare l'areoplanino</p>
     </div>
-    
+   
     <hr/>
-    <div style="display: flex;">
-      <div>
+    <div style="display: flex; align-items: center;">
+      <div  style="display: column; margin-right: 5px
+      ;">
         <span class="button">▲</span>
+        <br/>
         <span class="button">▼</span>
       </div>
       <p>Muovi le frecce da tastiera per spostare l'areoplanino</p>
@@ -29,7 +41,6 @@
   </div>
   <div class="point">
     <h1>Punteggio 00 </h1>
-    <h2>Vite</h2>
   </div>
   <!--
   for most samples webgl-utils only provides shader compiling/linking and

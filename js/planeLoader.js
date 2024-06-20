@@ -1,7 +1,7 @@
 "use strict";
 import { parseOBJ, parseMTL, create1PixelTexture, createTexture } from './objLoad.js';
 
-export async function loadPlane(gl, objHref,rotation) {
+export async function loadPlane(gl, objHref, color = null) {
   // Ottiene il contenuto del file obj tramite fetch
   const response = await fetch(objHref);
   const text = await response.text();
@@ -57,13 +57,21 @@ export async function loadPlane(gl, objHref,rotation) {
       data.color = { value: [1, 1, 1, 1] };
     }
 
+    // Se viene fornito un colore, sovrascrivi il materiale diffuso
+    const materialProps = {
+      ...defaultMaterial,
+      ...materials[material],
+    };
+
+    if (color) {
+      console.log("Applying color:", color);
+      materialProps.diffuse = color.map(c => c / 255); // Convert RGB to [0, 1]
+    }
+
     // Crea le informazioni di buffer WebGL dai dati geometrici
     const bufferInfo = webglUtils.createBufferInfoFromArrays(gl, data);
     return {
-      material: {
-        ...defaultMaterial,
-        ...materials[material],
-      },
+      material: materialProps,
       bufferInfo,
     };
   });

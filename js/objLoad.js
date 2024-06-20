@@ -149,6 +149,7 @@ export function parseOBJ(text) {
       const parts = line.split(/\s+/).slice(1);
       const handler = keywords[keyword];
       if (!handler) {
+        /*da rimuovere nel caso*/
         console.warn('unhandled keyword:', keyword);  // eslint-disable-line no-console
         continue;
       }
@@ -215,7 +216,7 @@ export function parseMTL(text) {
     return materials;
   }
 
-export function create1PixelTexture(gl, pixel) {
+  export function create1PixelTexture(gl, pixel) {
   const texture = gl.createTexture();
 	gl.bindTexture(gl.TEXTURE_2D, texture);
 	gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, 1, 1, 0, gl.RGBA, gl.UNSIGNED_BYTE,
@@ -246,6 +247,34 @@ export function createTexture(gl, url) {
 		}
 	});
 	return texture;
+}
+
+export function createColoredTexture(gl, width, height, color) {
+  // Crea un canvas per manipolare l'immagine della texture
+  const canvas = document.createElement('canvas');
+  const ctx = canvas.getContext('2d');
+  canvas.width = width;
+  canvas.height = height;
+
+  // Riempie il canvas con il colore specificato
+  ctx.fillStyle = `rgba(${color[0]}, ${color[1]}, ${color[2]}, ${color[3] || 255})`;
+  ctx.fillRect(0, 0, width, height);
+
+  // Crea una nuova texture con l'immagine colorata
+  const texture = gl.createTexture();
+  gl.bindTexture(gl.TEXTURE_2D, texture);
+  gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, canvas);
+
+  // Gestisce le impostazioni delle texture
+  if (isPowerOf2(width) && isPowerOf2(height)) {
+    gl.generateMipmap(gl.TEXTURE_2D);
+  } else {
+    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
+    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
+    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR);
+  }
+
+  return texture;
 }
 
 function parseMapArgs(unparsedArgs) {
