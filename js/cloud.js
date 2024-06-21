@@ -28,7 +28,7 @@ export function setCloud(n,time){
     return data;
 }
 
-function u_worldCube(i, time, data) {
+function u_worldCube(data, time) {
     const elemT= data.elemT;
     const elemS= data.elemS;
     const elemR= data.elemR;
@@ -42,6 +42,6 @@ function u_worldCube(i, time, data) {
 
 export function renderCloud(gl, meshProgramInfo, cube, time, data) {
     for(var i = 0; i < data.length; i++) {
-        renderObj(gl, meshProgramInfo, cube, u_worldCube(i,time, data[i]));
+        renderObj(gl, meshProgramInfo, cube, u_worldCube(data[i], time));
     }    
 }

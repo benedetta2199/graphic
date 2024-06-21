@@ -84,6 +84,7 @@ export async function loadPlane(gl, objHref, color = null) {
     };
 
     if (color) {
+      console.log(color)
       materialProps.diffuse = color.map(c => c / 255); // Convert RGB to [0, 1]
     }
 
@@ -98,6 +99,31 @@ export async function loadPlane(gl, objHref, color = null) {
   return { parts, obj };
 }
 
+export function changeColor(gl, materials, color=null) {
+  /*const textures = {
+    defaultWhite: create1PixelTexture(gl, [255, 255, 255, 255]),
+  };
+
+  // Copia le proprietà del materiale esistente
+  const defaultMaterial = {
+    diffuse: [1, 1, 1],
+    diffuseMap: textures.defaultWhite,
+    ambient: [0, 0, 0],
+    specular: [1, 1, 1],
+    shininess: 20,
+    opacity: 1,
+  };
+
+
+  const materialProps = {
+    ...defaultMaterial,
+    ...materials
+  };
+
+  materialProps.diffuse = color.map(c => c / 255); // Converti RGB in [0, 1]
+
+  return materialProps;*/
+}
 
  /* 
   // Crea le parti del modello, associando materiali e dati geometrici

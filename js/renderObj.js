@@ -3,10 +3,16 @@
 import { canvasToWorld} from './mousePosition.js';
 import { degToRad } from './utils.js';
 
-export function renderObj(gl,meshProgramInfo, part, u_world) {
+export function renderObj(gl,meshProgramInfo, part, u_world, color =null) {
   for (const { bufferInfo, material } of part) {
     webglUtils.setBuffersAndAttributes(gl, meshProgramInfo, bufferInfo);
-    webglUtils.setUniforms(meshProgramInfo, { u_world: u_world }, material);
+    /*if(color){
+      webglUtils.setUniforms(meshProgramInfo, { u_world: u_world, u_color: material.diffuse }, material);
+  
+    }else{
+      webglUtils.setUniforms(meshProgramInfo, { u_world: u_world }, material);
+    }*/
+      webglUtils.setUniforms(meshProgramInfo, { u_world: u_world }, material);
     webglUtils.drawBufferInfo(gl, bufferInfo);
   }
 }

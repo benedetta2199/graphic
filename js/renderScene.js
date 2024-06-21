@@ -3,11 +3,12 @@
 import { renderCloud, setCloud } from './cloud.js';
 import { setListener } from './mousePosition.js';
 import { renderObj, u_worldElica, u_worldPlane, u_worldWorld } from './renderObj.js';
-import { renderObstacle, setObstacle } from './collectibles.js';
+import { renderCoin, renderObstacle, setCoin, setObstacle } from './collectibles.js';
 import { degToRad, rand } from './utils.js';
 
   const clouds = [setCloud(rand(4,9),0)];
-  const d = setObstacle(0);
+  const obstacles = [setObstacle(0)];
+  const coins = [setCoin(rand(1,6), 0)];
   let i=0;
 
 
@@ -49,7 +50,7 @@ export function renderScene(gl, meshProgramInfo, parts, cameraPosition, cameraTa
     // Parametri uniformi condivisi per i shader
     const sharedUniforms = {
       //[20,100,100] -> [60,60,40]
-      u_lightDirection: m4.normalize([60,100,40]), // Direzione della luce
+      u_lightDirection: m4.normalize([60,60,30]), // Direzione della luce
       u_view: view,
       u_projection: projection,
       u_viewWorldPosition: cameraPosition, // Posizione della telecamera nella scena
@@ -72,16 +73,33 @@ export function renderScene(gl, meshProgramInfo, parts, cameraPosition, cameraTa
     renderObj(gl,meshProgramInfo, parts.world, u_worldWorld(time));
 
     /**OSTACOLO */
-    renderObstacle(gl,meshProgramInfo, parts.obstacle, time, d);
+    if(i%1200==0){
+      obstacles.push(setObstacle(time));
+      if(obstacles.length>5){
+        obstacles.shift();
+      }
+    }
+    obstacles.forEach(c => {
+      renderObstacle(gl,meshProgramInfo, parts.obstacle, time, c);
+    }); 
+    
 
     /**MONETE */
-    renderObstacle(gl,meshProgramInfo, parts.coin, time, d);
+    if(i%900==0){
+      coins.push(setCoin(rand(1,6),time));
+      if(coins.length>8){
+        coins.shift();
+      }
+    }
+    coins.forEach(c => {
+      renderCoin(gl,meshProgramInfo, parts.coin, time, c);
+    }); 
+    //renderObstacle(gl,meshProgramInfo, parts.coin, time, d);
 
 
      /** CLOUD */
     if(i%600==0){
       clouds.push(setCloud(rand(3,9),time));
-      console.log(clouds.length);
       if(clouds.length>8){
         clouds.shift();
       }
