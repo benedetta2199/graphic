@@ -4,44 +4,31 @@
   <meta charset="UTF-8">
   <title>CodePen - WebGL - load obj - w/mtl, textures</title>
   <link rel="stylesheet" href="style.css">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0"/>
 </head>
 <body>
+  <div class="point">
+    00
+  </div>
   <canvas id="canvas"></canvas>
-  <div id="game-menu">
-    <div style="display: flex; align-items: center;">
-      <h2>Energy</h2>
-      <div id="energy-bar-container">
-          <div id="energy-bar"></div>
-      </div>
-    </div>
-    <h2>Vite</h2>
+
+  <div class="button">
+    <button id="button-up">▲</button>
+    <button id="button-down">▼</button>
   </div>
 
-  <div class="menu">
-    <h2>Come giocare:</h1>
-    <p>Raccogli tutti gli oggetti X e schiva gli Y</p>
-    <hr/>
-    <div style="display: flex; align-items: center;">
-      <div>
-        <img src="./src/mouse.svg" alt="" width="21"/>
-      </div>
-      <p>Muovi il mouse per spostare l'areoplanino</p>
+  <button id="menu-button" class="menu-button" onclick="toggleMenu()">☰</button>
+  <div id="menu" class="menu">
+    <button id="menu-close" class="menu-close" onclick="toggleMenu()">🗙</button>
+    <div class="menu-items">
+      AAAA
     </div>
-   
-    <hr/>
-    <div style="display: flex; align-items: center;">
-      <div  style="display: column; margin-right: 5px
-      ;">
-        <span class="button">▲</span>
-        <br/>
-        <span class="button">▼</span>
-      </div>
-      <p>Muovi le frecce da tastiera per spostare l'areoplanino</p>
+    <div class="menu-items">
+      BBB
     </div>
   </div>
-  <div class="point">
-    <h1>Punteggio 00 </h1>
-  </div>
+
+  
   <!--
   for most samples webgl-utils only provides shader compiling/linking and
   canvas resizing because why clutter the examples with code that's the same in every sample.
@@ -53,6 +40,17 @@
   <script src="https://webglfundamentals.org/webgl/resources/m4.js"></script>
   <!-- partial -->
   <script  type="module" src="./js/script.js"></script>
+  <script>
+    function toggleMenu() {
+      var menu = document.getElementById('menu');
+      if (menu.style.visibility === 'hidden') {
+          menu.style.visibility = 'visible';
+          //blocca il render??
+      } else {
+          menu.style.visibility = 'hidden';
+      }
+    }
+    </script>
 
 </body>
 </html>

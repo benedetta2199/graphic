@@ -23,11 +23,11 @@ export function u_worldPlane(width, height, zNear, zFar, time){
   //posizione relativa dell'aereo per visualizzazione smartphone
   const posRel = width/56;
   // Imposta la posizione dell'aereo in base alla posizione del mouse e della tastiera
-  let u_world = m4.translation(-posRel, worldMouseY, -posRel); 
-  u_world = m4.xRotate(u_world, 0.1); // Rotazione attorno all'asse X
+  let u_world = m4.translation(-posRel, worldMouseY, -25); 
+  u_world = m4.xRotate(u_world, degToRad(20)); // Rotazione attorno all'asse X
+  u_world = m4.yRotate(u_world, degToRad(5)); // Rotazione attorno all'asse X
   const oscillationAngle = Math.sin(time) * degToRad(3); // Oscillazione sinusoidale
   u_world = m4.zRotate(u_world, oscillationAngle); // Applica rotazione attorno all'asse Z
-  //console.log(u_world[12]+" "+u_world[13]+" "+u_world[14]);
   return u_world;
 }
 

@@ -1,12 +1,44 @@
 // mouseHandler.js
 "use strict";
 
-export let mouseY = 0; // Variabile per memorizzare la posizione Y del mouse
+export let mouseY = 200; // Variabile per memorizzare la posizione Y del mouse
+
+//let isClick=false; // Per tenere traccia dell'interval
+let intervalId = null;
 
 export function setListener(gl){
   // Aggiungi il listener per l'evento mousemove
   gl.canvas.addEventListener('mousemove', updateMousePosition);
   window.addEventListener('keydown', handleKeyDown);
+  document.addEventListener('keyup', (event) => {
+    if (event.key === 'ArrowUp' || event.key === 'ArrowDown') {
+        clearInterval(intervalId);
+        intervalId = null;
+    }
+  })
+
+  //smarphone
+  const buttonUp = document.getElementById('button-up');
+  const buttonDown = document.getElementById('button-down');
+  buttonDown.addEventListener('touchstart', (e) => {
+    increment();
+    intervalId = setInterval(increment, 20);
+  });
+
+  buttonUp.addEventListener('touchstart', (e) => {
+    decrement();
+    intervalId = setInterval(decrement, 20);
+  });
+
+  buttonUp.addEventListener('touchend', () => {clearInterval(intervalId);});
+  buttonDown.addEventListener('touchend', () => {clearInterval(intervalId);});
+
+
+  /*//document.getElementById('button-up').addEventListener('click', handleButtonUp);
+  //document.getElementById('button-down').addEventListener('click', handleButtonDown);
+  document.getElementById('button-down').addEventListener('mousedown', handleButtonLoopDown);
+  document.getElementById('button-down').addEventListener('mouseup', stopDecreasingMouseY);
+  //document.getElementById('button-up').addEventListener('mousedown', handleButtonLoopUp);*/
 }
 
 /**
@@ -17,6 +49,47 @@ export function updateMousePosition(event) {
   const canvas = event.target;
   const rect = canvas.getBoundingClientRect();
   mouseY = event.clientY - rect.top;
+}
+
+function increment() {
+  mouseY++;
+}
+
+function decrement() {
+  mouseY--;
+}
+
+
+
+function handleButtonLoopDown() {
+  const passo = 0.01;
+  isClick=true;
+  while(isClick){
+    mouseY -= passo;
+    //console.log('mouseY:', mouseY); // Per vedere l'aggiornamento in console
+  }
+  console.log('mouseY:', mouseY); 
+}
+
+function stopDecreasingMouseY() {
+  isClick=false;
+
+}
+
+/**
+ * Listener per il bottone button-up
+ */
+function handleButtonUp() {
+  const passo=3
+  mouseY =  mouseY-passo;
+}
+
+/**
+ * Listener per il bottone button-down
+ */
+function handleButtonDown() {
+  const passo=3
+  mouseY =  mouseY+passo;
 }
 
 /**
@@ -54,9 +127,17 @@ function clamp(value, min, max) {
 export function handleKeyDown(event) {
     const passo = 3;
     if (event.key === "ArrowUp") {
-      mouseY =  mouseY-passo; // Incrementa la posizione Y
+      //mouseY =  mouseY-passo; // Incrementa la posizione Y
+      decrement();
+      if (intervalId === null) {
+        intervalId = setInterval(decrement, 20);
+      }
     } else if (event.key === "ArrowDown") {
-      mouseY = mouseY+passo; // Decrementa la posizione Y
+      increment();
+      if (intervalId === null) {
+        intervalId = setInterval(increment, 20);
+    }
+      //mouseY = mouseY+passo; // Decrementa la posizione Y
     }
     //mouseY = clamp(mouseY, -57, 35); // Limita la posizione Y
 }

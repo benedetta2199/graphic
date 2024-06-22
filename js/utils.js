@@ -62,8 +62,8 @@ void main () {
   vec3 surfaceToViewDirection = normalize(v_surfaceToView);
   vec3 halfVector = normalize(u_lightDirection + surfaceToViewDirection);
  
-  float fakeLight = dot(u_lightDirection, normal) * .5 + .5;
-  float specularLight = clamp(dot(normal, halfVector), 0.05, 1.0);
+  float fakeLight = dot(u_lightDirection, normal) * 0.5 + .5;
+  float specularLight = clamp(dot(normal, halfVector), 0.001, 1.0);
   vec4 specularMapColor = texture2D(specularMap, v_texcoord);
   vec3 effectiveSpecular = specular * specularMapColor.rgb;
  

@@ -77,16 +77,10 @@ export async function loadPlane(gl, objHref, color = null) {
       data.normal = { value: [0, 0, 1] };
     }
 
-    // Se viene fornito un colore, sovrascrivi il materiale diffuso
     const materialProps = {
       ...defaultMaterial,
       ...materials[material],
     };
-
-    if (color) {
-      console.log(color)
-      materialProps.diffuse = color.map(c => c / 255); // Convert RGB to [0, 1]
-    }
 
     // create a buffer for each array by calling
     // gl.createBuffer, gl.bindBuffer, gl.bufferData
