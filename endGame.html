@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Congratulazioni!</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="container">
+    <h1>Congratulazioni!</h1>
+    <p id="points"></p>
+    <p id="playTime"></p>
+    <button onclick=playAgain() >GIOCA ANCORA</button>
+  </div>
+  <canvas id="canvas"></canvas>
+
+  <!--
+  for most samples webgl-utils only provides shader compiling/linking and
+  canvas resizing because why clutter the examples with code that's the same in every sample.
+  See https://webglfundamentals.org/webgl/lessons/webgl-boilerplate.html
+  and https://webglfundamentals.org/webgl/lessons/webgl-resizing-the-canvas.html
+  for webgl-utils, m3, m4, and webgl-lessons-ui.
+  -->
+  <script src="https://webglfundamentals.org/webgl/resources/webgl-utils.js"></script>
+  <script src="https://webglfundamentals.org/webgl/resources/m4.js"></script>
+  <!-- partial -->
+  <script  type="module" src="./js/scriptEnd.js"></script>
+
+  <script>
+    function getQueryParams() {
+      const params = new URLSearchParams(window.location.search);
+      return {
+        points: params.get('points'),
+        playTime: params.get('playTime')
+      };
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+      const { points, playTime } = getQueryParams();
+      document.getElementById('points').textContent = `Punti ottenuto: ${points}`;
+      document.getElementById('playTime').textContent = `Tempo di gioco: ${playTime}`;
+    });
+
+    function playAgain(){
+        const url = new URL(window.location.href);
+        url.pathname = '/index.html';
+        window.location.href = url.href;
+    }
+  </script>
+</body>
+</html>

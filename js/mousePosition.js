@@ -1,7 +1,11 @@
 // mouseHandler.js
 "use strict";
 
+import { endGame, zFar, zNear } from "./utils.js";
+
 export let mouseY = 200; // Variabile per memorizzare la posizione Y del mouse
+export let posRelX = window.innerWidth/56;
+export let height;
 
 //let isClick=false; // Per tenere traccia dell'interval
 let intervalId = null;
@@ -32,13 +36,42 @@ export function setListener(gl){
 
   buttonUp.addEventListener('touchend', () => {clearInterval(intervalId);});
   buttonDown.addEventListener('touchend', () => {clearInterval(intervalId);});
+}
 
+export function checkCollisionObstacle(pos) {
+  let flag= false;
+  const y=-canvasToWorld(height);
 
-  /*//document.getElementById('button-up').addEventListener('click', handleButtonUp);
-  //document.getElementById('button-down').addEventListener('click', handleButtonDown);
-  document.getElementById('button-down').addEventListener('mousedown', handleButtonLoopDown);
-  document.getElementById('button-down').addEventListener('mouseup', stopDecreasingMouseY);
-  //document.getElementById('button-up').addEventListener('mousedown', handleButtonLoopUp);*/
+  if(pos.y<y+9 && pos.y>y-9){
+    if(pos.x< -posRelX+11 && pos.x> -posRelX){
+      endGame();
+    }
+  }
+  
+  /*// Coordinate e raggio della sfera
+  const [sx, sy] = sphere.position;
+  const sr = sphere.radius;
+
+  // Coordinate e dimensioni del parallelepipedo (aereo)
+  const [bx, by] = box.position;
+  const [bw, bh] = box.size;
+
+  // Trova il punto più vicino sulla scatola alla sfera
+  const nearestX = Math.max(bx, Math.min(sx, bx + bw));
+  const nearestY = Math.max(by, Math.min(sy, by + bh));
+
+  // Calcola la distanza tra il punto più vicino e il centro della sfera
+  const deltaX = sx - nearestX;
+  const deltaY = sy - nearestY;
+
+  // Se la distanza è minore o uguale al raggio della sfera, c'è una collisione
+  return (deltaX * deltaX + deltaY * deltaY) <= (sr * sr);*/
+
+  /*if(posRelX==x){
+    if(y>mouseY-5 && y<mouseY+5){
+      console.log("boom")
+    }
+  }*/
 }
 
 /**
@@ -51,46 +84,9 @@ export function updateMousePosition(event) {
   mouseY = event.clientY - rect.top;
 }
 
-function increment() {
-  mouseY++;
-}
+function increment() {mouseY++;}
 
-function decrement() {
-  mouseY--;
-}
-
-
-
-function handleButtonLoopDown() {
-  const passo = 0.01;
-  isClick=true;
-  while(isClick){
-    mouseY -= passo;
-    //console.log('mouseY:', mouseY); // Per vedere l'aggiornamento in console
-  }
-  console.log('mouseY:', mouseY); 
-}
-
-function stopDecreasingMouseY() {
-  isClick=false;
-
-}
-
-/**
- * Listener per il bottone button-up
- */
-function handleButtonUp() {
-  const passo=3
-  mouseY =  mouseY-passo;
-}
-
-/**
- * Listener per il bottone button-down
- */
-function handleButtonDown() {
-  const passo=3
-  mouseY =  mouseY+passo;
-}
+function decrement() {mouseY--;}
 
 /**
  * Funzione per convertire le coordinate del mouse da canvas a coordinate del mondo
@@ -100,8 +96,14 @@ function handleButtonDown() {
  * @param {number} zFar - Piano di clipping lontano
  * @returns {number} - Posizione Y in coordinate del mondo
  */
-export function canvasToWorld(canvasHeight, zNear, zFar) {
-  const y = mouseY;
+export function canvasToWorld(canvasHeight,coord=null) {
+  let y;
+  height = canvasHeight;
+  if(coord){
+    y=coord
+  }else{
+    y = mouseY;
+  }
   const ndcY = (y / canvasHeight) * 2 - 1; // Converti da pixel a coordinate NDC (Normalized Device Coordinates)
   const viewY = ndcY * (zFar - zNear) / 2; // Converti da NDC a coordinate del mondo
   const constViewY = clamp(viewY, -132, -50);

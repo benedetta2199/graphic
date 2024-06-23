@@ -98,12 +98,57 @@ canvas {
 }
 
 .menu-items {
-  list-style-type: none;
   padding: 5px 2px;
   margin: 0;
   width: 100%;
+  text-align: center;
 }
 
+.menu-items div{
+  display: flex;
+  justify-content: space-around;
+  width: 100%;
+}
+
+
+.menu button{
+  border: rgb(244,244,244, 0.4);
+  background-color: #397cb6;
+  color: #ccdfef;
+  text-transform: uppercase;
+  padding: 5px 10px;
+  border-radius: 5px;
+  margin: 5px auto;
+}
+
+.container {
+  position: absolute;
+  width: 40vw;
+  height: 50vh;
+  left: 30vw;
+  top: 25vh;
+  background-color: rgb(244,244,244, 0.9);
+  padding: 20px;
+  border-radius: 15px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.container *{
+  margin: 5px;
+}
+
+.container button{
+  border: rgb(244,244,244, 0.4);
+  background-color: #397cb6;
+  color: #ccdfef;
+  padding: 10px;
+  border-radius: 5px;
+  margin: 5px auto;
+}
 
 
 @media only screen and (min-width: 768px) {
@@ -121,6 +166,7 @@ canvas {
     height: min-content;
     position: absolute;
     background-color: rgb(244,244,244, 0.7);
+    visibility: visible;
   }
   .menu-button {display: none;}
   .menu-close {display: none; }

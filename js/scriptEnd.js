@@ -3,8 +3,8 @@
 // from https://webglfundamentals.org/webgl/webgl-load-obj-w-mtl-textures.html
 "use strict";
 import { loadPlane, getGeometriesExtents } from './planeLoader.js';
-import { setupCameraAndLight} from './cameraAndLightSetup.js';
-import { renderScene } from './renderScene.js';
+import { setupCameraAndLight} from './cameraAndLightSetupEnd.js';
+import { renderScene } from './renderSceneEnd.js';
 import { vs, fs, rand, setPlaneClipping } from './utils.js';
 
 async function main() {
@@ -41,23 +41,12 @@ async function main() {
   const cubeObjHref = './src/cube.obj';
   const { parts: cubeParts, obj: cubeObj } = await loadPlane(gl, cubeObjHref);
 
-  // Carica il terzo oggetto (world) in modo asincrono
-  const sphereObjHref = './src/icosfera.obj';
-  //const c = color[parseInt(rand(0,color.length))];
-  const { parts: sphereParts, obj: sphereObj } = await loadPlane(gl, sphereObjHref, [parseInt(rand(50,255)),parseInt(rand(50,255)),parseInt(rand(50,255))]);
-
-  // Carica il terzo oggetto (world) in modo asincrono
-  const coinObjHref = './src/coin.obj';
-  const { parts: coinParts, obj: coinObj } = await loadPlane(gl, coinObjHref);
-
   const parts = {
     plane: planeParts,
     elica: elicaParts,
     world: worldParts,
     foto: fotoParts,
     cube: cubeParts,
-    obstacle : sphereParts,
-    coin: coinParts,
   };
 
   // Combina le estensioni per impostare la telecamera

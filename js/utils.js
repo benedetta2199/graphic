@@ -265,3 +265,36 @@ export function degToRad(deg) {
     return deg * Math.PI / 180;
 }
 
+export let zNear=0;
+export let zFar=0;
+
+export function setPlaneClipping(zN,zF){
+  zNear=zN;
+  zFar=zF;
+}
+
+const startTime = new Date();
+
+export function endGame(){
+  const endTime = new Date();
+  const playTimeMs = endTime - startTime;
+  const playTimeSeconds = Math.floor((playTimeMs / 1000) % 60);
+  const playTimeMinutes = Math.floor((playTimeMs / (1000 * 60)) % 60);
+  const formattedPlayTime = `${playTimeMinutes}m ${playTimeSeconds}s`;
+
+  const points=0;
+
+  const url = new URL(window.location.href);
+  url.pathname = '/endGame.html';
+  url.searchParams.set('points', points);
+  url.searchParams.set('playTime', formattedPlayTime);
+  window.location.href = url.href;
+  /*
+  const endTime = new Date();
+  const url = new URL(window.location.href);
+  url.pathname = '/end-game.html';
+  url.searchParams.set('points', points);
+  url.searchParams.set('playTime', playTime);
+  window.location.href = url.href;*/
+}
+

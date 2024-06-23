@@ -1,5 +1,6 @@
 "use strict";
 
+import { checkCollisionObstacle } from './mousePosition.js';
 import { changeColor } from './planeLoader.js';
 import { renderObj } from './renderObj.js';
 import { degToRad, rand } from './utils.js';
@@ -17,8 +18,8 @@ export function setObstacle(time){
     const vel = rand(0.5,1.5);
     const data={
       elemS: s, 
-      elemT: [rand(110,170)+time*speed*vel, rand(40, 125), -rand(20, 30)], 
-      elemR: [rand(0,1),rand(0,1),rand(0,1)],
+      elemT: {x:rand(110,170)+time*speed*vel, y:rand(40, 125), z:-rand(20, 30)}, 
+      elemR: {x:rand(0,1), y:rand(0,1),z:rand(0,1)},
       elemO: rand(-0.5,0.5),
       color: [rand(120,255),rand(120,255),rand(120,255)],
       speed: vel
@@ -34,29 +35,32 @@ function u_worldObstacle(time, data) {
   const rotationY = Math.PI/2 * Math.sin(time*speed/100 * frequency); // Rotazione oscillatoria (mezza circonferenza)
 
   const oscillation = Math.sin(time*speed * frequency) * amplitude;
-    
     const elemT= data.elemT;
     const elemS= data.elemS;
     const elemR= data.elemR;
     const elemO= data.elemO;
-    var u_world = m4.translation(elemT[0]-(time*speed*data.speed), elemT[1]+Math.sin(time*speed*elemO), elemT[2]+Math.sin(time*speed*elemO)); // Posiziona l'oggetto 
+    const pos = {x: elemT.x-(time*speed*data.speed), y:elemT.y+Math.sin(time*speed*elemO)};
+    var u_world = m4.translation(pos.x,pos.y, elemT.z+Math.sin(time*speed*elemO)); // Posiziona l'oggetto 
     //var u_world = m4.translation(-35,50,-35); // Posiziona l'oggetto 
-    u_world = m4.xRotate(u_world, 0-elemR[0] );
-    u_world = m4.yRotate(u_world, 90-rotationY-elemR[1] );
-    u_world = m4.zRotate(u_world, 45+elemR[2] );
+    u_world = m4.xRotate(u_world, 0-elemR.x );
+    u_world = m4.yRotate(u_world, 90-rotationY-elemR.y );
+    u_world = m4.zRotate(u_world, 45+elemR.z );
     //u_world = m4.yRotate(u_world, elemR*time*speed); // Applica rotazione fissa attorno all'asse Y
     //u_world = m4.xRotate(u_world, -elemR*time*speed); // Applica rotazione attorno all'asse Yworld
     u_world = m4.scale(u_world, elemS, elemS, elemS); // Scala l'oggetto
     //console.log(u_world)
-    return u_world;
+    const collision = checkCollisionObstacle(pos);
+    return {u_world, collision};
 }
 
 export function renderObstacle(gl, meshProgramInfo, obstacle, time, data) {
   for (const { bufferInfo, material } of obstacle) {
     webglUtils.setBuffersAndAttributes(gl, meshProgramInfo, bufferInfo);
     const updatedMaterial = { ...material, diffuse: data.color.map(c => c / 255) };
-    webglUtils.setUniforms(meshProgramInfo, { u_world: u_worldObstacle(time, data), u_color: data.color }, updatedMaterial);
+    const {u_world, collision} = u_worldObstacle(time, data);
+    webglUtils.setUniforms(meshProgramInfo, { u_world: u_world, u_color: data.color }, updatedMaterial);
     webglUtils.drawBufferInfo(gl, bufferInfo);
+    return collision;
   }
 }
 

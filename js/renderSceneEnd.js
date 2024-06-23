@@ -1,15 +1,11 @@
 "use strict";
 
-import { renderCloud, setCloud } from './cloud.js';
-import { checkCollisionObstacle, setListener } from './mousePosition.js';
-import { renderObj, u_worldElica, u_worldFoto, u_worldPlane, u_worldWorld } from './renderObj.js';
-import { renderCoin, renderObstacle, setCoin, setObstacle } from './collectibles.js';
+import { renderCloud, setCloud } from './cloudEnd.js';
+import { renderObj, u_worldElica, u_worldFoto, u_worldPlane, u_worldWorld } from './renderObjEnd.js';
 import { degToRad, rand } from './utils.js';
 import { zFar, zNear } from "./utils.js";
 
-  const clouds = [setCloud(rand(4,9),0)];
-  let obstacles = [setObstacle(0)];
-  const coins = [setCoin(rand(1,6), 0)];
+  const clouds = [setCloud(rand(3,6),0, {min:0, max:40})];
   let i=0;
 
 
@@ -24,8 +20,6 @@ import { zFar, zNear } from "./utils.js";
  * @param {Array} objOffset - Offset dell'oggetto.
  */
 export function renderScene(gl, meshProgramInfo, parts, cameraPosition, cameraTarget, objOffset) {
-  
-  setListener(gl);
 
   function render(time) {
     time *= 0.006; // Converte il tempo in secondi (velocità dell'elica)
@@ -61,7 +55,7 @@ export function renderScene(gl, meshProgramInfo, parts, cameraPosition, cameraTa
 
 
     /**AREOPLANO */
-    let u_world = u_worldPlane(gl.canvas.width, gl.canvas.height, zNear, zFar, time); 
+    let u_world = u_worldPlane(gl.canvas.width, gl.canvas.height, time); 
     //u_world = m4.translate(u_world, ...objOffset);
     renderObj(gl,meshProgramInfo, parts.plane, u_world);
     /**ELICA */
@@ -71,54 +65,14 @@ export function renderScene(gl, meshProgramInfo, parts, cameraPosition, cameraTa
     /**MONDO */
     renderObj(gl,meshProgramInfo, parts.world, u_worldWorld(time));
 
-    /**OSTACOLO */
-    if(i%1200==0){
-      obstacles.push(setObstacle(time));
-      if(obstacles.length>5){
-        obstacles.shift();
-      }
-    }
-    const newObstacle = []
-    obstacles.forEach(c => {
-      //checkCollisionObstacle(c.elemT);
-      const isCollision = renderObstacle(gl,meshProgramInfo, parts.obstacle, time, c);
-      if(!isCollision){
-        newObstacle.push(c);
-      }
-      //console.log(meshProgramInfo)
-      // Estrai la posizione dal centro del bounding box
-      //const bf = parts.obstacle[0].bufferInfo.a_position;
-      //console.log(bf)
-      /*const centerX = (boundingBox.min[0] + boundingBox.max[0]) / 2;
-      const centerY = (boundingBox.min[1] + boundingBox.max[1]) / 2;
-      const centerZ = (boundingBox.min[2] + boundingBox.max[2]) / 2;
-      const center = m4.transformPoint(u_world, [centerX, centerY, centerZ]);
-
-      // Calcola il raggio approssimato (utilizzando la metà della diagonale del bounding box)
-      const radius = m4.length(m4.subtractVectors(boundingBox.max, boundingBox.min)) / 2;
-      
-      console.log(centerX+" "+centerY+" "+centerZ+" "+radius);*/
-    }); 
-    obstacles=newObstacle;
-    
-
-    /**MONETE */
-    if(i%900==0){
-      coins.push(setCoin(rand(1,6),time));
-      if(coins.length>8){
-        coins.shift();
-      }
-    }
-    coins.forEach(c => {
-      renderCoin(gl,meshProgramInfo, parts.coin, time, c);
-    }); 
-    //renderObstacle(gl,meshProgramInfo, parts.coin, time, d);
-
+    /**FOTO */
+    renderObj(gl,meshProgramInfo, parts.foto, u_worldFoto(u_world));
 
      /** CLOUD */
-    if(i%600==0){
-      clouds.push(setCloud(rand(3,9),time));
-      if(clouds.length>8){
+    if(i%300==0){
+      clouds.push(setCloud(rand(3,6),time, {min:-20, max:40}));
+      console.log("clouds")
+      if(clouds.length>20){
         clouds.shift();
       }
     }
