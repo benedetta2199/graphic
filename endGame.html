@@ -24,22 +24,6 @@
   -->
   <script src="https://webglfundamentals.org/webgl/resources/webgl-utils.js"></script>
   <script src="https://webglfundamentals.org/webgl/resources/m4.js"></script>
-  <!-- partial -->
-  <script  type="module" src="./js/scriptEnd.js"></script>
 
-  <script type="module">
-    import { getPlayTime } from './js/utils.js';
-
-    document.addEventListener('DOMContentLoaded', () => {
-      document.getElementById('points').textContent = `Punti ottenuto: ${localStorage.getItem('point')}`;
-      document.getElementById('playTime').textContent = `Tempo di gioco: ${getPlayTime()}`;
-    });
-    
-    document.getElementById('playAgainButton').addEventListener('click', () =>{
-        const url = new URL(window.location.href);
-        url.pathname = '/index.html';
-        window.location.href = url.href;
-    });
-  </script>
 </body>
 </html>

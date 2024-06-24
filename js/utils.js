@@ -1,3 +1,5 @@
+import { main } from "./scriptEnd.js";
+
 export const vs = `
 attribute vec4 a_position;
 attribute vec3 a_normal;
@@ -319,7 +321,45 @@ export function getPlayTime(){
   return playTimeMinutes+"m "+playTimeSeconds+"s";
 }
 
-export async function endGame(){
+export async function loadEndGameContent() {
+  const response = await fetch('/endGame.html');
+  const text = await response.text();
+  localStorage.setItem('endGameContent', text);
+}
+
+export function endGame() {
+  localStorage.setItem('point', getPoint());
+  localStorage.setItem('endTime', new Date());
+  
+  const endGameContent = localStorage.getItem('endGameContent');
+  if (endGameContent) {
+    // Inietta il contenuto nella pagina corrente
+    document.body.innerHTML = endGameContent;
+    initializeEndGamePage();
+  } else {
+    // Fallback nel caso il contenuto non sia stato precaricato correttamente
+    window.location.href = '/endGame.html';
+  }
+}
+
+function initializeEndGamePage() {
+  const points = localStorage.getItem('point');
+  const endTime = new Date(localStorage.getItem('endTime'));
+  const startTime = new Date(localStorage.getItem('startTime'));
+  const playTime = Math.floor((endTime - startTime) / 1000);
+  const formattedPlayTime = `${Math.floor(playTime / 60)}m ${playTime % 60}s`;
+
+  document.getElementById('points').textContent = `Punti ottenuti: ${points}`;
+  document.getElementById('playTime').textContent = `Tempo di gioco: ${formattedPlayTime}`;
+
+  document.getElementById('playAgainButton').addEventListener('click', () => {
+    window.location.href = '/index.html';
+  });
+
+  main();
+}
+
+/*export async function endGame(){
   //const points=0;
   localStorage.setItem('point', point);
   localStorage.setItem('endTime', new Date());
@@ -335,6 +375,6 @@ export async function endGame(){
   url.pathname = '/end-game.html';
   url.searchParams.set('points', points);
   url.searchParams.set('playTime', playTime);
-  window.location.href = url.href;*/
-}
+  window.location.href = url.href;
+}*/
 

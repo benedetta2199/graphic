@@ -5,9 +5,11 @@
 import { loadPlane, getGeometriesExtents } from './planeLoader.js';
 import { setupCameraAndLight} from './cameraAndLightSetupEnd.js';
 import { renderScene } from './renderSceneEnd.js';
-import { vs, fs, rand, setPlaneClipping } from './utils.js';
+import { vs, fs, setPlaneClipping } from './utils.js';
 
-async function main() {
+export async function main() {
+  console.log("ciso");
+  
   const canvas = document.querySelector("#canvas");
   const gl = canvas.getContext("webgl");
   if (!gl) {
@@ -74,4 +76,3 @@ async function main() {
 
 }
 
-main();

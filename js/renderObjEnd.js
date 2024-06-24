@@ -1,6 +1,6 @@
 "use strict";
 
-import { canvasToWorld, posRelX} from './mousePosition.js';
+import { posRelX} from './mousePosition.js';
 import { degToRad } from './utils.js';
 
 export function renderObj(gl,meshProgramInfo, part, u_world, color =null) {

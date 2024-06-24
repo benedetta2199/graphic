@@ -43,10 +43,14 @@ export function checkCollisionObstacle(pos) {
 
   if(pos.y<y+9 && pos.y>y-9){
     if(pos.x< -posRelX+11.9 && pos.x> -posRelX){
-      localStorage.setItem('point', getPoint());
+      /*localStorage.setItem('point', getPoint());
       localStorage.setItem('endTime', new Date());
-      window.location.href = '/endGame.html';
-      //endGame();
+      const endGameContent = localStorage.getItem('endGameContent');
+      document.open();
+      document.write(endGameContent);
+      document.close();*/
+      //window.location.href = '/endGame.html';
+      endGame();
       //localStorage.setItem('point', point);
     }
   }

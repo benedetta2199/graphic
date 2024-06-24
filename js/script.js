@@ -5,11 +5,12 @@
 import { loadPlane, getGeometriesExtents } from './planeLoader.js';
 import { setupCameraAndLight} from './cameraAndLightSetup.js';
 import { renderScene } from './renderScene.js';
-import { vs, fs, rand, setPlaneClipping } from './utils.js';
+import { vs, fs, rand, setPlaneClipping, loadEndGameContent } from './utils.js';
 
 async function main() {
 
   localStorage.setItem('startTime', new Date());
+  loadEndGameContent();
   
   const canvas = document.querySelector("#canvas");
   const gl = canvas.getContext("webgl");
