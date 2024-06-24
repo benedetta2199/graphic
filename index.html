@@ -37,7 +37,33 @@
     <div class="menu-items">
       ATTIIVA DISATTIVA L'OPACITà??
     </div>
+    <div class="menu-items">
+      <button id="audioControl">ATTIVA L'AUDIO</button>
+    </div>
+
+    <div class="menu-items">
+      <h3>Tempo di creazione</h3>
+      <label for="obstacleTiming">Ostacoli: </label>
+      <input type="range" id="obstacleTiming" min="90" max="2000" value="1000">
+      <label for="coinTiming">Monete: </label>
+      <input type="range" id="coinTiming" min="90" max="2000" value="1100">
+      <label for="cloudTiming">Nuvole: </label>
+      <input type="range" id="cloudTiming" min="90" max="2000" value="600">
   </div>
+
+  <div class="menu-items">
+      <h3>Velocità</h3>
+      <label for="obstacleSpeed">Ostacoli: </label>
+      <input type="range" id="obstacleSpeed" min="1" max="5" step="0.1" value="1">
+      <label for="coinSpeed">Monete: </label>
+      <input type="range" id="coinSpeed" min="1" max="5" step="0.1" value="2">
+      <label for="cloudSpeed">Nuvole: </label>
+      <input type="range" id="cloudSpeed" min="1" max="5" step="0.1" value="1">
+  </div>
+    
+  </div>
+
+  <audio id="backgroundAudio" src="./src/music.mp3" loop></audio>
 
   
   <!--
@@ -52,7 +78,11 @@
   <!-- partial -->
   <script  type="module" src="./js/script.js"></script>
   <script type="module">
-    import { setLevel, setAlpha, alpha } from "./js/utils.js";
+    import { setLevel, setAlpha, alpha, timing, speed} from "./js/utils.js";
+
+    var audio = document.getElementById("backgroundAudio");
+    var audioControlButton = document.getElementById("audioControl");
+    const btAlpha = document.getElementById('alpha');
     
     function toggleMenu() {
       var menu = document.getElementById('menu');
@@ -63,15 +93,50 @@
           menu.style.visibility = 'hidden';
       }
     }
+
+    document.getElementById('obstacleTiming').addEventListener('input', (event) => {
+      timing.obstacle = event.target.value;
+    });
+
+    document.getElementById('coinTiming').addEventListener('input', (event) => {
+        timing.coin = event.target.value;
+    });
+
+    document.getElementById('cloudTiming').addEventListener('input', (event) => {
+        timing.cloud = event.target.value;
+    });
+
+    // Listener per gli slider di velocità
+    document.getElementById('obstacleSpeed').addEventListener('input', (event) => {
+        speed.obstacle = event.target.value;
+    });
+
+    document.getElementById('coinSpeed').addEventListener('input', (event) => {
+        speed.coin = event.target.value;
+    });
+
+    document.getElementById('cloudSpeed').addEventListener('input', (event) => {
+        speed.cloud = event.target.value;
+    });
+
     document.getElementById('level1').addEventListener('click', ()=>setLevel(1));
     document.getElementById('level2').addEventListener('click', ()=>setLevel(2));
     document.getElementById('level3').addEventListener('click', ()=>setLevel(3));
-    const btAlpha = document.getElementById('alpha');
     btAlpha.addEventListener('click', (e)=>{
       btAlpha.textContent= alpha ? "ATTIVA L'OPACITÀ":"DISATTIVA L'OPACITÀ";
       setAlpha();
     });
-    
+
+    audioControlButton.addEventListener("click", function () {
+    if (audio.paused) {
+        audio.play();
+        audioControlButton.textContent = "DISATTIVA L'AUDIO";
+    } else {
+        audio.pause();
+        audioControlButton.textContent = "ATTIVA L'AUDIO";
+    }
+    });
+        
     </script>
 
 </body>

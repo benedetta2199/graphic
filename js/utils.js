@@ -281,30 +281,7 @@ export function setAlpha(){
 
 export let timing={obstacle:1000, coin:1100, cloud:600}
 export let speed={obstacle:1, coin:2, cloud:1}
-let speedTime=0.006;
-export function getSpeedTime(){
-  return speedTime;
-}
-const defSpeed=0.006;
-export function setLevel(level){
-  console.log(level)
-  speedTime=defSpeed*level;
 
-  let multip;
-  switch(level){
-    case 1: multip=1; break;
-    case 2: multip=1.5; break;
-    case 3: multip=2; break;
-  }
-  timing.obstacle /= multip;
-  timing.coin /= multip;
-  timing.cloud /= multip;
-
-  // Moltiplica i valori di speed per il livello
-  //speed.obstacle *= multip;
-  //speed.coin *= multip;
-  //speed.cloud *= multip;
-}
 /*export function setTiming(level){
   const timeDefault={obstacle:1200, coin:900, cloud:600};
   const speedDefault={obstacle:1, coin:2, cloud:1}
@@ -335,6 +312,7 @@ export function incrementPoint(){
   point++;
   elemPoint.textContent = getPoint();
   if(point>999){
+    point=999;
     endGame();
   }
 }

@@ -4,7 +4,7 @@ import { renderCloud, setCloud } from './cloud.js';
 import { checkCollisionObstacle, setListener } from './mousePosition.js';
 import { renderObj, u_worldElica, u_worldFoto, u_worldPlane, u_worldWorld } from './renderObj.js';
 import { renderCoin, renderObstacle, setCoin, setObstacle } from './collectibles.js';
-import { degToRad, isPaused, rand, speed, getSpeedTime, timing, alpha, zFar, zNear } from './utils.js';
+import { degToRad, isPaused, rand, speed, timing, alpha, zFar, zNear } from './utils.js';
 
   const clouds = [setCloud(rand(4,9),0)];
   const obstacles = [setObstacle(0)];
@@ -31,9 +31,7 @@ export function renderScene(gl, meshProgramInfo, parts, cameraPosition, cameraTa
       return;
     }
 
-    const t = getSpeedTime();
-    console.log(t);
-    time *= t; // Converte il tempo in secondi (velocità dell'elica)
+    time *= 0.006;
     i++;
 
     // Ridimensiona il canvas WebGL alla dimensione dello schermo
@@ -88,7 +86,7 @@ export function renderScene(gl, meshProgramInfo, parts, cameraPosition, cameraTa
     /**OSTACOLO */
     if(i%timing.obstacle==0){
       obstacles.push(setObstacle(time));
-      if(obstacles.length>5){
+      if(obstacles.length>5000/(timing.obstacle*speed.obstacle)){
         obstacles.shift();
       }
     }
@@ -99,10 +97,13 @@ export function renderScene(gl, meshProgramInfo, parts, cameraPosition, cameraTa
     /**MONETE */
     if(i%timing.coin==0){
       const n = rand(1,6);
+      const ampiezza = rand(3,8);
+      const yRot = rand(45,90);
+      const y = rand(40,120);
       for(let i=0; i<n; i++){
-        coins.push(setCoin(time, i, rand(3,8), rand(45,90)));
+        coins.push(setCoin(time, i, y, ampiezza, yRot));
       }
-      if(coins.length>20){
+      if(coins.length>30000/(timing.coin*speed.coin)){
         coins.shift();
       }
     }
@@ -120,7 +121,7 @@ export function renderScene(gl, meshProgramInfo, parts, cameraPosition, cameraTa
      /** CLOUD */
     if(i%timing.cloud==0){
       clouds.push(setCloud(rand(3,9),time));
-      if(clouds.length>8){
+      if(clouds.length>5000/(timing.cloud*speed.cloud)){
         clouds.shift();
       }
     }

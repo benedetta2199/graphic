@@ -57,10 +57,10 @@ export function renderObstacle(gl, meshProgramInfo, obstacle, time, data) {
 }
 
 /*COIN*/
-export function setCoin(time, i, yDistr, yRot){
+export function setCoin(time, i, yDistr, ampiezza, yRot){
   return{
       elemS: 6, 
-      elemT: {x:120+i*rand(8,12)+(time*speed.coin), y:60+Math.sin(i)*yDistr, z:-23},
+      elemT: {x:120+i*rand(8,12)+(time*speed.coin), y:yDistr+Math.sin(i)*ampiezza, z:-23},
       elemR: {x: rand(20,60), y:yRot, z:0},
       elemO: rand(-0.5,0.5)
   };
