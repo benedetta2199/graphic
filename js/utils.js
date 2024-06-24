@@ -279,7 +279,7 @@ export function setAlpha(){
   alpha = !alpha;
 }
 
-export let timing={obstacle:1200, coin:900, cloud:600}
+export let timing={obstacle:1000, coin:1100, cloud:600}
 export let speed={obstacle:1, coin:2, cloud:1}
 let speedTime=0.006;
 export function getSpeedTime(){
@@ -293,17 +293,17 @@ export function setLevel(level){
   let multip;
   switch(level){
     case 1: multip=1; break;
-    case 2: multip=2; break;
-    case 3: multip=3; break;
+    case 2: multip=1.5; break;
+    case 3: multip=2; break;
   }
-  timing.obstacle /= level;
-  timing.coin /= level;
-  timing.cloud /= level;
+  timing.obstacle /= multip;
+  timing.coin /= multip;
+  timing.cloud /= multip;
 
   // Moltiplica i valori di speed per il livello
-  speed.obstacle *= level;
-  speed.coin *= level;
-  speed.cloud *= level;
+  //speed.obstacle *= multip;
+  //speed.coin *= multip;
+  //speed.cloud *= multip;
 }
 /*export function setTiming(level){
   const timeDefault={obstacle:1200, coin:900, cloud:600};

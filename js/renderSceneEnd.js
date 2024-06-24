@@ -1,5 +1,6 @@
 "use strict";
 
+import { setupCameraAndLight } from './cameraAndLightSetupEnd.js';
 import { renderCloud, setCloud } from './cloudEnd.js';
 import { renderObj, u_worldElica, u_worldFoto, u_worldPlane, u_worldWorld } from './renderObjEnd.js';
 import { degToRad, rand } from './utils.js';
@@ -7,6 +8,11 @@ import { zFar, zNear } from "./utils.js";
 
   const clouds = [setCloud(rand(3,6),0, {min:0, max:40})];
   let i=0;
+  
+export let posCamTarget = [0,0,0];
+export let posCamPos = [0,0,0];
+export let posPlane = [0,0,0];
+
 
 
 /**
@@ -19,9 +25,17 @@ import { zFar, zNear } from "./utils.js";
  * @param {Array} cameraTarget - Punto di mira della telecamera.
  * @param {Array} objOffset - Offset dell'oggetto.
  */
-export function renderScene(gl, meshProgramInfo, parts, cameraPosition, cameraTarget, objOffset) {
+export function renderScene(gl, meshProgramInfo, parts, cP, cT, objOffset) {
+
+  let cPtemp = [];
+  let cameraTarget = [];
 
   function render(time) {
+    for(let j=0; j<3; j++){
+      cPtemp[j] = cP[j] + posCamPos[j];
+      cameraTarget[j] =  cT[j] + posCamTarget[j];
+    }
+    const cameraPosition = m4.addVectors(cameraTarget, cPtemp);
     time *= 0.006; // Converte il tempo in secondi (velocità dell'elica)
     i++;
 
@@ -29,6 +43,12 @@ export function renderScene(gl, meshProgramInfo, parts, cameraPosition, cameraTa
     webglUtils.resizeCanvasToDisplaySize(gl.canvas);
     gl.viewport(0, 0, gl.canvas.width, gl.canvas.height);
     gl.enable(gl.DEPTH_TEST);
+    gl.enable(gl.BLEND);
+    gl.blendFunc(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA);
+
+    /***PERSONALIZZA */
+    //const cameraTarget = [camPos.x, camPos.y, camPos.z];
+    //const cameraPosition = m4.addVectors(cameraTarget, [camTarget.x, camTarget.y, camTarget.z])
 
     // Angolo di campo visivo della telecamera e prospettiva
     const fieldOfViewRadians = degToRad(60);
@@ -56,6 +76,7 @@ export function renderScene(gl, meshProgramInfo, parts, cameraPosition, cameraTa
 
     /**AREOPLANO */
     let u_world = u_worldPlane(gl.canvas.width, gl.canvas.height, time); 
+    u_world = m4.translate(u_world, posPlane[0], posPlane[1], posPlane[2]);
     //u_world = m4.translate(u_world, ...objOffset);
     renderObj(gl,meshProgramInfo, parts.plane, u_world);
     /**ELICA */

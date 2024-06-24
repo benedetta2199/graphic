@@ -126,9 +126,9 @@ canvas {
 .container {
   position: absolute;
   width: 80vw;
-  height: 60vh;
+  min-height: 60vh;
   left: 10vw;
-  top: 20vh;
+  top: 8vh;
   background-color: rgb(244,244,244, 0.9);
   padding: 20px;
   border-radius: 15px;
@@ -180,5 +180,6 @@ canvas {
     top: 25vh;
   }
   
+  hr{margin: 10px !important;}
 
   }

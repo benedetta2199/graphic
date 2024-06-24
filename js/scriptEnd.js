@@ -71,7 +71,8 @@ export async function main() {
   
   // Renderizza la scena con gli oggetti caricati e la configurazione della telecamera
   //renderScene(gl, meshProgramInfo, planeParts, elicaParts, cameraPosition, cameraTarget, objOffset, zNear, zFar);
-  renderScene(gl, meshProgramInfo, parts, cameraPosition, cameraTarget, objOffset);
+  renderScene(gl, meshProgramInfo, parts, cameraPosition, cameraTarget, combinedExtents);
 
 }
 
+main()

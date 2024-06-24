@@ -24,7 +24,7 @@ export function setupCameraAndLight(gl, extents) {
   // Calcola la distanza della telecamera dall'oggetto basata sulla dimensione dell'oggetto
   const radius = m4.length(range) * 1.5;
   // Posizione della telecamera
-  const cameraPosition = m4.addVectors(cameraTarget, [120, 0, 0]);
+  const cameraPosition = m4.addVectors(cameraTarget, [120, -100, 0]);
   // Piani di clipping per la telecamera
   const zNear = radius / 20;
   const zFar = radius * 6;
