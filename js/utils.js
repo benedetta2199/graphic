@@ -252,6 +252,9 @@ void main () {
 }
 `;
 */
+
+let point=0;
+
 export function rand(min, max) {
     return Math.random()*(max-min)+min;
 }
@@ -268,27 +271,64 @@ export function degToRad(deg) {
 export let zNear=0;
 export let zFar=0;
 
+export let timing={obstacle:1200, coin:900, cloud:600}
+export function setTiming(level){
+  const tObsDefault=1200;
+  const tCoinsDefault=900;
+  const tCloudDefault=600;
+  let increment = 0;
+  switch(level){
+    case 1:
+      increment = 1; break;
+    case 2:
+      increment = 1.2; break;
+    case 3:
+      increment = 1.5; break;
+  }
+    timing.obstacle = tObsDefault*increment;
+    timing.coin = tCoinsDefault*increment;
+    timing.cloud = tCloudDefault*increment;
+}
+
 export function setPlaneClipping(zN,zF){
   zNear=zN;
   zFar=zF;
 }
 
-const startTime = new Date();
+const elemPoint = document.getElementById('point');
+export function incrementPoint(){  
+  point++;
+  elemPoint.textContent = getPoint();
+  if(point>999){
+    endGame();
+  }
+}
 
-export function endGame(){
-  const endTime = new Date();
-  const playTimeMs = endTime - startTime;
+export function getPoint(){
+  const str = '000'+point;
+  return str.substring(str.length-3);
+}
+
+
+export function getPlayTime(){
+  const endTime = new Date(localStorage.getItem('endTime'));
+  const startTime = new Date(localStorage.getItem('startTime'));
+  const playTimeMs = Math.abs(endTime - startTime);
   const playTimeSeconds = Math.floor((playTimeMs / 1000) % 60);
   const playTimeMinutes = Math.floor((playTimeMs / (1000 * 60)) % 60);
-  const formattedPlayTime = `${playTimeMinutes}m ${playTimeSeconds}s`;
+  return playTimeMinutes+"m "+playTimeSeconds+"s";
+}
 
-  const points=0;
-
-  const url = new URL(window.location.href);
-  url.pathname = '/endGame.html';
-  url.searchParams.set('points', points);
-  url.searchParams.set('playTime', formattedPlayTime);
-  window.location.href = url.href;
+export async function endGame(){
+  //const points=0;
+  localStorage.setItem('point', point);
+  localStorage.setItem('endTime', new Date());
+  window.location.href = '/endGame.html';
+  //const url = new URL(window.location.href);
+  //url.pathname = '/endGame.html';
+  //url.searchParams.set('points', points);
+  //url.searchParams.set('playTime', formattedPlayTime);
+  //window.location.href = url.href;
   /*
   const endTime = new Date();
   const url = new URL(window.location.href);

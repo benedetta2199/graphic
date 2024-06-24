@@ -1,7 +1,7 @@
 // mouseHandler.js
 "use strict";
 
-import { endGame, zFar, zNear } from "./utils.js";
+import { endGame, getPoint, incrementPoint, zFar, zNear } from "./utils.js";
 
 export let mouseY = 200; // Variabile per memorizzare la posizione Y del mouse
 export let posRelX = window.innerWidth/56;
@@ -39,14 +39,55 @@ export function setListener(gl){
 }
 
 export function checkCollisionObstacle(pos) {
+  const y=-canvasToWorld(height);
+
+  if(pos.y<y+9 && pos.y>y-9){
+    if(pos.x< -posRelX+11.9 && pos.x> -posRelX){
+      localStorage.setItem('point', getPoint());
+      localStorage.setItem('endTime', new Date());
+      window.location.href = '/endGame.html';
+      //endGame();
+      //localStorage.setItem('point', point);
+    }
+  }
+  
+  /*// Coordinate e raggio della sfera
+  const [sx, sy] = sphere.position;
+  const sr = sphere.radius;
+
+  // Coordinate e dimensioni del parallelepipedo (aereo)
+  const [bx, by] = box.position;
+  const [bw, bh] = box.size;
+
+  // Trova il punto più vicino sulla scatola alla sfera
+  const nearestX = Math.max(bx, Math.min(sx, bx + bw));
+  const nearestY = Math.max(by, Math.min(sy, by + bh));
+
+  // Calcola la distanza tra il punto più vicino e il centro della sfera
+  const deltaX = sx - nearestX;
+  const deltaY = sy - nearestY;
+
+  // Se la distanza è minore o uguale al raggio della sfera, c'è una collisione
+  return (deltaX * deltaX + deltaY * deltaY) <= (sr * sr);*/
+
+  /*if(posRelX==x){
+    if(y>mouseY-5 && y<mouseY+5){
+      console.log("boom")
+    }
+  }*/
+}
+
+export function checkCollisionCoin(pos) {
   let flag= false;
   const y=-canvasToWorld(height);
 
   if(pos.y<y+9 && pos.y>y-9){
     if(pos.x< -posRelX+11 && pos.x> -posRelX){
-      endGame();
+      flag=true;
+      incrementPoint();
     }
   }
+  return flag;
   
   /*// Coordinate e raggio della sfera
   const [sx, sy] = sphere.position;

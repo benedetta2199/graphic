@@ -11,9 +11,9 @@
     <h1>Congratulazioni!</h1>
     <p id="points"></p>
     <p id="playTime"></p>
-    <button onclick=playAgain() >GIOCA ANCORA</button>
+    <button id="playAgainButton" >GIOCA ANCORA</button>
   </div>
-  <canvas id="canvas"></canvas>
+  <canvas id="canvas" class="h100"></canvas>
 
   <!--
   for most samples webgl-utils only provides shader compiling/linking and
@@ -27,26 +27,19 @@
   <!-- partial -->
   <script  type="module" src="./js/scriptEnd.js"></script>
 
-  <script>
-    function getQueryParams() {
-      const params = new URLSearchParams(window.location.search);
-      return {
-        points: params.get('points'),
-        playTime: params.get('playTime')
-      };
-    }
+  <script type="module">
+    import { getPlayTime } from './js/utils.js';
 
     document.addEventListener('DOMContentLoaded', () => {
-      const { points, playTime } = getQueryParams();
-      document.getElementById('points').textContent = `Punti ottenuto: ${points}`;
-      document.getElementById('playTime').textContent = `Tempo di gioco: ${playTime}`;
+      document.getElementById('points').textContent = `Punti ottenuto: ${localStorage.getItem('point')}`;
+      document.getElementById('playTime').textContent = `Tempo di gioco: ${getPlayTime()}`;
     });
-
-    function playAgain(){
+    
+    document.getElementById('playAgainButton').addEventListener('click', () =>{
         const url = new URL(window.location.href);
         url.pathname = '/index.html';
         window.location.href = url.href;
-    }
+    });
   </script>
 </body>
 </html>

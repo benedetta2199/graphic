@@ -8,6 +8,9 @@ import { renderScene } from './renderScene.js';
 import { vs, fs, rand, setPlaneClipping } from './utils.js';
 
 async function main() {
+
+  localStorage.setItem('startTime', new Date());
+  
   const canvas = document.querySelector("#canvas");
   const gl = canvas.getContext("webgl");
   if (!gl) {
