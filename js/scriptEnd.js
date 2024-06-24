@@ -74,5 +74,3 @@ export async function main() {
   renderScene(gl, meshProgramInfo, parts, cameraPosition, cameraTarget, combinedExtents);
 
 }
-
-main()
