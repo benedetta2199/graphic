@@ -21,7 +21,6 @@ export function u_worldPlane(width, height, time){
   let u_world = m4.translation(0, 120+Math.sin(time*0.2)*2, posRelX + width*0.03); 
   u_world = m4.xRotate(u_world, degToRad(20)); // Rotazione attorno all'asse X
   u_world = m4.yRotate(u_world, degToRad(25)); // Rotazione attorno all'asse X
-
   u_world = m4.scale(u_world, 1.5,1.5,1.5);
   u_world = m4.zRotate(u_world, degToRad(-30)); // Applica rotazione attorno all'asse Z
   return u_world;

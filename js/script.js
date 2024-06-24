@@ -20,6 +20,7 @@ async function main() {
 
   // Crea un programma WebGL utilizzando shader vertex e fragment
   const meshProgramInfo = webglUtils.createProgramInfo(gl, [vs, fs]);
+  //**gl.useProgram(meshProgramInfo); 
   
   //Carica il primo oggetto (aereo) in modo asincrono
   const planeObjHref = './src/plane.obj';

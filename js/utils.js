@@ -256,6 +256,7 @@ void main () {
 */
 
 let point=0;
+export let isPaused=false;
 
 export function rand(min, max) {
     return Math.random()*(max-min)+min;
@@ -272,12 +273,41 @@ export function degToRad(deg) {
 
 export let zNear=0;
 export let zFar=0;
+export let alpha=true;
+
+export function setAlpha(){
+  alpha = !alpha;
+}
 
 export let timing={obstacle:1200, coin:900, cloud:600}
-export function setTiming(level){
-  const tObsDefault=1200;
-  const tCoinsDefault=900;
-  const tCloudDefault=600;
+export let speed={obstacle:1, coin:2, cloud:1}
+let speedTime=0.006;
+export function getSpeedTime(){
+  return speedTime;
+}
+const defSpeed=0.006;
+export function setLevel(level){
+  console.log(level)
+  speedTime=defSpeed*level;
+
+  let multip;
+  switch(level){
+    case 1: multip=1; break;
+    case 2: multip=2; break;
+    case 3: multip=3; break;
+  }
+  timing.obstacle /= level;
+  timing.coin /= level;
+  timing.cloud /= level;
+
+  // Moltiplica i valori di speed per il livello
+  speed.obstacle *= level;
+  speed.coin *= level;
+  speed.cloud *= level;
+}
+/*export function setTiming(level){
+  const timeDefault={obstacle:1200, coin:900, cloud:600};
+  const speedDefault={obstacle:1, coin:2, cloud:1}
   let increment = 0;
   switch(level){
     case 1:
@@ -287,10 +317,13 @@ export function setTiming(level){
     case 3:
       increment = 1.5; break;
   }
-    timing.obstacle = tObsDefault*increment;
-    timing.coin = tCoinsDefault*increment;
-    timing.cloud = tCloudDefault*increment;
-}
+    timing.obstacle = timeDefault.obstacle*increment;
+    timing.coin = timeDefault.coin*increment;
+    timing.cloud = timeDefault*increment;
+    speed.obstacle = speedDefault.obstacle*increment;
+    speed.coin = speedDefault.coin*increment;
+    speed.cloud = speedDefault.cloud*increment;
+}*/
 
 export function setPlaneClipping(zN,zF){
   zNear=zN;
@@ -327,7 +360,9 @@ export async function loadEndGameContent() {
   localStorage.setItem('endGameContent', text);
 }
 
+let isEnd=false
 export function endGame() {
+  isPaused = true
   localStorage.setItem('point', getPoint());
   localStorage.setItem('endTime', new Date());
   
@@ -335,7 +370,10 @@ export function endGame() {
   if (endGameContent) {
     // Inietta il contenuto nella pagina corrente
     document.body.innerHTML = endGameContent;
-    initializeEndGamePage();
+    if(!isEnd){
+      initializeEndGamePage();
+      isEnd=true
+    }
   } else {
     // Fallback nel caso il contenuto non sia stato precaricato correttamente
     window.location.href = '/endGame.html';

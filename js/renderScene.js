@@ -4,8 +4,7 @@ import { renderCloud, setCloud } from './cloud.js';
 import { checkCollisionObstacle, setListener } from './mousePosition.js';
 import { renderObj, u_worldElica, u_worldFoto, u_worldPlane, u_worldWorld } from './renderObj.js';
 import { renderCoin, renderObstacle, setCoin, setObstacle } from './collectibles.js';
-import { degToRad, rand, timing } from './utils.js';
-import { zFar, zNear } from "./utils.js";
+import { degToRad, isPaused, rand, speed, getSpeedTime, timing, alpha, zFar, zNear } from './utils.js';
 
   const clouds = [setCloud(rand(4,9),0)];
   const obstacles = [setObstacle(0)];
@@ -28,13 +27,31 @@ export function renderScene(gl, meshProgramInfo, parts, cameraPosition, cameraTa
   setListener(gl);
 
   function render(time) {
-    time *= 0.006; // Converte il tempo in secondi (velocità dell'elica)
+    if (isPaused) {
+      return;
+    }
+
+    const t = getSpeedTime();
+    console.log(t);
+    time *= t; // Converte il tempo in secondi (velocità dell'elica)
     i++;
 
     // Ridimensiona il canvas WebGL alla dimensione dello schermo
     webglUtils.resizeCanvasToDisplaySize(gl.canvas);
     gl.viewport(0, 0, gl.canvas.width, gl.canvas.height);
+
+    
     gl.enable(gl.DEPTH_TEST);
+
+    //ALPHA
+    //console.log(alpha)
+    if(alpha){
+      gl.enable(gl.BLEND);
+      gl.blendFunc(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA);
+    }else{
+      gl.disable(gl.BLEND); 
+    }
+
 
     // Angolo di campo visivo della telecamera e prospettiva
     const fieldOfViewRadians = degToRad(60);

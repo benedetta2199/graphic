@@ -8,7 +8,6 @@ import { renderScene } from './renderSceneEnd.js';
 import { vs, fs, setPlaneClipping } from './utils.js';
 
 export async function main() {
-  console.log("ciso");
   
   const canvas = document.querySelector("#canvas");
   const gl = canvas.getContext("webgl");

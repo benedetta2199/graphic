@@ -23,11 +23,13 @@
     <div class="menu-items">
       SETTA IL LIVELLO DI GIOCO
       <div>
-        <button>LIV. 1</button><button>LIV. 2</button><button>LIV. 3</button>
+        <button id="level1">LIV. 1</button>
+        <button id="level2">LIV. 2</button>
+        <button id="level3">LIV. 3</button>
       </div>
     </div>
     <div class="menu-items">
-      <button>METTI IN PAUSA</button>
+      <button id="alpha">DISATTIVA L'OPACITÀ </button>
     </div>
     <div class="menu-items">
       ATTIVA DISATTIVA TEXTURE
@@ -49,7 +51,9 @@
   <script src="https://webglfundamentals.org/webgl/resources/m4.js"></script>
   <!-- partial -->
   <script  type="module" src="./js/script.js"></script>
-  <script>
+  <script type="module">
+    import { setLevel, setAlpha, alpha } from "./js/utils.js";
+    
     function toggleMenu() {
       var menu = document.getElementById('menu');
       if (menu.style.visibility === 'hidden') {
@@ -59,6 +63,15 @@
           menu.style.visibility = 'hidden';
       }
     }
+    document.getElementById('level1').addEventListener('click', ()=>setLevel(1));
+    document.getElementById('level2').addEventListener('click', ()=>setLevel(2));
+    document.getElementById('level3').addEventListener('click', ()=>setLevel(3));
+    const btAlpha = document.getElementById('alpha');
+    btAlpha.addEventListener('click', (e)=>{
+      btAlpha.textContent= alpha ? "ATTIVA L'OPACITÀ":"DISATTIVA L'OPACITÀ";
+      setAlpha();
+    });
+    
     </script>
 
 </body>

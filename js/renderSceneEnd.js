@@ -71,7 +71,6 @@ export function renderScene(gl, meshProgramInfo, parts, cameraPosition, cameraTa
      /** CLOUD */
     if(i%300==0){
       clouds.push(setCloud(rand(3,6),time, {min:-20, max:40}));
-      console.log("clouds")
       if(clouds.length>20){
         clouds.shift();
       }
