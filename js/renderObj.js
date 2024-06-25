@@ -1,7 +1,7 @@
 "use strict";
 
 import { canvasToWorld, posRelX} from './mousePosition.js';
-import { degToRad, normalMapEnabled, texturesEnabled } from './utils.js';
+import { degToRad } from './utils.js';
 
 
 export function renderObj(gl, meshProgramInfo, part, u_world) {

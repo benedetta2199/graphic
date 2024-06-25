@@ -2,7 +2,7 @@
 
 import { checkCollisionCoin, checkCollisionObstacle } from './mousePosition.js';
 import { renderObj } from './renderObj.js';
-import { degToRad, rand, speed, texturesEnabled } from './utils.js';
+import { degToRad, rand, speed } from './utils.js';
 
 /*OBSTACLE*/
 const sizeO = 5;

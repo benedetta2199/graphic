@@ -1,7 +1,8 @@
 // mouseHandler.js
 "use strict";
 
-import { endGame, getPoint, incrementPoint, zFar, zNear } from "./utils.js";
+import { incrementPoint, zFar, zNear } from "./utils.js";
+import { endGame } from "./endGame.js";
 
 export let mouseY = 200; // Variabile per memorizzare la posizione Y del mouse
 export let posRelX = window.innerWidth/56;

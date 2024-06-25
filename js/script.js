@@ -5,7 +5,8 @@
 import { loadPlane, getGeometriesExtents } from './planeLoader.js';
 import { setupCameraAndLight} from './cameraAndLightSetup.js';
 import { renderScene } from './renderScene.js';
-import { vs, fs, rand, setPlaneClipping, loadEndGameContent } from './utils.js';
+import { vs, fs, rand, setPlaneClipping } from './utils.js';
+import { loadEndGameContent } from './endGame.js';
 
 async function main() {
 
