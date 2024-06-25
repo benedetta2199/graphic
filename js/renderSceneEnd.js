@@ -6,105 +6,100 @@ import { renderObj, u_worldElica, u_worldFoto, u_worldPlane, u_worldWorld } from
 import { degToRad, rand } from './utils.js';
 import { zFar, zNear } from "./utils.js";
 
-  const clouds = [setCloud(rand(3,6),0, {min:0, max:40})];
-  let i=0;
-  
-export let posCamTarget = [0,0,0];
-export let posCamPos = [0,0,0];
-export let posPlane = [0,0,0];
-export let light = [60,60,30];
+// Initial settings
+const clouds = [setCloud(rand(3, 6), 0, { min: 0, max: 40 })];
+let frameCount = 0;
 
-
+export let posCamTarget = [0, 0, 0];
+export let posCamPos = [0, 0, 0];
+export let posPlane = [0, 0, 0];
+export let light = [60, 60, 30];
 
 /**
- * Renderizza la scena.
- * @param {WebGLRenderingContext} gl - Contesto WebGL.
- * @param {Object} meshProgramInfo - Informazioni sul programma shader.
- * @param {Array} planeParts - Parti dell'oggetto piano.
- * @param {Array} elicaParts - Parti dell'elica.
- * @param {Array} cameraPosition - Posizione della telecamera.
- * @param {Array} cameraTarget - Punto di mira della telecamera.
- * @param {Array} objOffset - Offset dell'oggetto.
+ * Render the scene.
+ * @param {WebGLRenderingContext} gl - WebGL context.
+ * @param {Object} meshProgramInfo - Shader program information.
+ * @param {Object} parts - Object parts to render.
+ * @param {Array} cP - Camera position.
+ * @param {Array} cT - Camera target.
+ * @param {Array} objOffset - Object offset.
  */
 export function renderScene(gl, meshProgramInfo, parts, cP, cT, objOffset) {
-
   let cPtemp = [];
   let cameraTarget = [];
 
+  /**
+   * Render function called for each animation frame.
+   * @param {number} time - Time in milliseconds.
+   */
   function render(time) {
-    for(let j=0; j<3; j++){
+    // Update camera position and target based on inputs
+    for (let j = 0; j < 3; j++) {
       cPtemp[j] = cP[j] + posCamPos[j];
-      cameraTarget[j] =  cT[j] + posCamTarget[j];
+      cameraTarget[j] = cT[j] + posCamTarget[j];
     }
     const cameraPosition = m4.addVectors(cameraTarget, cPtemp);
-    time *= 0.006; // Converte il tempo in secondi (velocità dell'elica)
-    i++;
+    time *= 0.006; // Convert time to seconds (propeller speed)
+    frameCount++;
 
-    // Ridimensiona il canvas WebGL alla dimensione dello schermo
+    // Resize WebGL canvas to display size
     webglUtils.resizeCanvasToDisplaySize(gl.canvas);
     gl.viewport(0, 0, gl.canvas.width, gl.canvas.height);
     gl.enable(gl.DEPTH_TEST);
     gl.enable(gl.BLEND);
     gl.blendFunc(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA);
 
-    /***PERSONALIZZA */
-    //const cameraTarget = [camPos.x, camPos.y, camPos.z];
-    //const cameraPosition = m4.addVectors(cameraTarget, [camTarget.x, camTarget.y, camTarget.z])
-
-    // Angolo di campo visivo della telecamera e prospettiva
+    // Camera field of view and perspective
     const fieldOfViewRadians = degToRad(60);
     const aspect = gl.canvas.clientWidth / gl.canvas.clientHeight;
     const projection = m4.perspective(fieldOfViewRadians, aspect, zNear, zFar);
 
-    // Posizione della telecamera e vista della scena
+    // Camera position and view
     const up = [0, 1, 0];
     const camera = m4.lookAt(cameraPosition, cameraTarget, up);
     const view = m4.inverse(camera);
 
-    // Parametri uniformi condivisi per i shader
+    // Shared uniforms for shaders
     const sharedUniforms = {
-      //[60,60,30] -[60,450,450]
-      u_lightDirection: m4.normalize([light[0],light[1],light[2]]), // Direzione della luce
+      u_lightDirection: m4.normalize(light),
       u_view: view,
       u_projection: projection,
-      u_viewWorldPosition: cameraPosition, // Posizione della telecamera nella scena
+      u_viewWorldPosition: cameraPosition,
     };
 
-    // Utilizza il programma shader specificato
+    // Use the specified shader program
     gl.useProgram(meshProgramInfo.program);
     webglUtils.setUniforms(meshProgramInfo, sharedUniforms);
 
-
-    /**AREOPLANO */
-    let u_world = u_worldPlane(gl.canvas.width, gl.canvas.height, time); 
+    // Render PLANE
+    let u_world = u_worldPlane(gl.canvas.width, gl.canvas.height, time);
     u_world = m4.translate(u_world, posPlane[0], posPlane[1], posPlane[2]);
-    //u_world = m4.translate(u_world, ...objOffset);
-    renderObj(gl,meshProgramInfo, parts.plane, u_world);
-    /**ELICA */
-    //u_world_elica = m4.translate(u_world_elica, ...objOffset); // Prima applica la traslazione per centrare l'oggetto
-    renderObj(gl,meshProgramInfo, parts.elica, u_worldElica(u_world, time));
+    renderObj(gl, meshProgramInfo, parts.plane, u_world);
 
-    /**MONDO */
-    renderObj(gl,meshProgramInfo, parts.world, u_worldWorld(time));
+    // Render ELICA
+    renderObj(gl, meshProgramInfo, parts.elica, u_worldElica(u_world, time));
 
-    /**FOTO */
-    renderObj(gl,meshProgramInfo, parts.foto, u_worldFoto(u_world));
+    // Render WORLD
+    renderObj(gl, meshProgramInfo, parts.world, u_worldWorld(time));
 
-     /** CLOUD */
-    if(i%300==0){
-      clouds.push(setCloud(rand(3,6),time, {min:-20, max:40}));
-      if(clouds.length>20){
+    // Render PHOTO
+    renderObj(gl, meshProgramInfo, parts.foto, u_worldFoto(u_world));
+
+    // Render CLOUD periodically
+    if (frameCount % 300 === 0) {
+      clouds.push(setCloud(rand(3, 6), time, { min: -20, max: 40 }));
+      if (clouds.length > 20) {
         clouds.shift();
       }
     }
     clouds.forEach(c => {
-      renderCloud(gl,meshProgramInfo, parts.cube, time, c);
-    });    
-    
-    // Richiede il rendering della scena alla prossima animazione frame
+      renderCloud(gl, meshProgramInfo, parts.cube, time, c);
+    });
+
+    // Request the next frame
     requestAnimationFrame(render);
   }
 
-  // Avvia il ciclo di rendering della scena
+  // Start the rendering loop
   requestAnimationFrame(render);
 }

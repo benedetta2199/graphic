@@ -66,8 +66,8 @@ function setListener() {
     { id: 'planeTargY', target: posPlane, index: 1 },
     { id: 'planeTargZ', target: posPlane, index: 2 },
     { id: 'lightTarX', target: light, index: 0 },
-    { id: 'lightTarX', target: light, index: 1 },
-    { id: 'lightTarX', target: light, index: 2 },
+    { id: 'lightTarY', target: light, index: 1 },
+    { id: 'lightTarZ', target: light, index: 2 },
 
   ];
 
