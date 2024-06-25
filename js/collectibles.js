@@ -2,7 +2,7 @@
 
 import { checkCollisionCoin, checkCollisionObstacle } from './mousePosition.js';
 import { renderObj } from './renderObj.js';
-import { degToRad, rand, speed } from './utils.js';
+import { degToRad, rand, speed, texturesEnabled } from './utils.js';
 
 /*OBSTACLE*/
 const sizeO = 5;
@@ -50,7 +50,8 @@ function u_worldObstacle(time, data) {
 export function renderObstacle(gl, meshProgramInfo, obstacle, time, data) {
   for (const { bufferInfo, material } of obstacle) {
     webglUtils.setBuffersAndAttributes(gl, meshProgramInfo, bufferInfo);
-    const updatedMaterial = { ...material, diffuse: data.color.map(c => c / 255) };
+    const color = texturesEnabled ? data.color : [1, 1, 1, 1];
+    const updatedMaterial = { ...material, diffuse: color};
     webglUtils.setUniforms(meshProgramInfo, { u_world: u_worldObstacle(time, data), u_color: data.color }, updatedMaterial);
     webglUtils.drawBufferInfo(gl, bufferInfo);
   }

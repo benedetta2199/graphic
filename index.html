@@ -18,24 +18,16 @@
   </div>
 
   <button id="menu-button" class="menu-button" onclick="toggleMenu()">☰</button>
-  <div id="menu" class="menu">
+  <div id="menu" class="menu" onkeydown="event.preventDefault()">
     <button id="menu-close" class="menu-close" onclick="toggleMenu()">🗙</button>
-    <div class="menu-items">
-      SETTA IL LIVELLO DI GIOCO
-      <div>
-        <button id="level1">LIV. 1</button>
-        <button id="level2">LIV. 2</button>
-        <button id="level3">LIV. 3</button>
-      </div>
-    </div>
     <div class="menu-items">
       <button id="alpha">DISATTIVA L'OPACITÀ </button>
     </div>
     <div class="menu-items">
-      ATTIVA DISATTIVA TEXTURE
+      <button id="texture">DISATTIVA TEXTURE </button>
     </div>
     <div class="menu-items">
-      ATTIIVA DISATTIVA L'OPACITà??
+      ATTIIVA DISATTIVA LE NORMAL MAP??
     </div>
     <div class="menu-items">
       <button id="audioControl">ATTIVA L'AUDIO</button>
@@ -78,11 +70,12 @@
   <!-- partial -->
   <script  type="module" src="./js/script.js"></script>
   <script type="module">
-    import { setLevel, setAlpha, alpha, timing, speed} from "./js/utils.js";
+    import {setAlpha, alphaEnable, texturesEnabled, timing, speed} from "./js/utils.js";
 
     var audio = document.getElementById("backgroundAudio");
     var audioControlButton = document.getElementById("audioControl");
     const btAlpha = document.getElementById('alpha');
+    const btTexture = document.getElementById('texture');
     
     function toggleMenu() {
       var menu = document.getElementById('menu');
@@ -118,12 +111,15 @@
     document.getElementById('cloudSpeed').addEventListener('input', (event) => {
         speed.cloud = event.target.value;
     });
+    
+    btTexture.addEventListener('click', () => {
+      console.log("disattivato");
+      btTexture.textContent= texturesEnabled ? "ATTIVA LA TEXTURE":"DISATTIVA LA TEXTURE";
+      setEnable();
+    });
 
-    document.getElementById('level1').addEventListener('click', ()=>setLevel(1));
-    document.getElementById('level2').addEventListener('click', ()=>setLevel(2));
-    document.getElementById('level3').addEventListener('click', ()=>setLevel(3));
     btAlpha.addEventListener('click', (e)=>{
-      btAlpha.textContent= alpha ? "ATTIVA L'OPACITÀ":"DISATTIVA L'OPACITÀ";
+      btAlpha.textContent= alphaEnable ? "ATTIVA L'OPACITÀ":"DISATTIVA L'OPACITÀ";
       setAlpha();
     });
 

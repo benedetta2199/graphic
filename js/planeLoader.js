@@ -1,7 +1,7 @@
 "use strict";
 import { parseOBJ, parseMTL, create1PixelTexture, createTexture, generateTangents } from './objLoad.js';
 
-export async function loadPlane(gl, objHref, color = null) {
+export async function loadPlane(gl, objHref) {
   // Ottiene il contenuto del file obj tramite fetch
   const response = await fetch(objHref);
   const text = await response.text();
@@ -92,64 +92,6 @@ export async function loadPlane(gl, objHref, color = null) {
   });
   return { parts, obj };
 }
-
-export function changeColor(gl, materials, color=null) {
-  /*const textures = {
-    defaultWhite: create1PixelTexture(gl, [255, 255, 255, 255]),
-  };
-
-  // Copia le proprietà del materiale esistente
-  const defaultMaterial = {
-    diffuse: [1, 1, 1],
-    diffuseMap: textures.defaultWhite,
-    ambient: [0, 0, 0],
-    specular: [1, 1, 1],
-    shininess: 20,
-    opacity: 1,
-  };
-
-
-  const materialProps = {
-    ...defaultMaterial,
-    ...materials
-  };
-
-  materialProps.diffuse = color.map(c => c / 255); // Converti RGB in [0, 1]
-
-  return materialProps;*/
-}
-
- /* 
-  // Crea le parti del modello, associando materiali e dati geometrici
-  const parts = obj.geometries.map(({ material, data }) => {
-    if (data.color) {
-      if (data.position.length === data.color.length) {
-        data.color = { numComponents: 3, data: data.color };
-      }
-    } else {
-      data.color = { value: [1, 1, 1, 1] };
-    }
-
-    // Se viene fornito un colore, sovrascrivi il materiale diffuso
-    const materialProps = {
-      ...defaultMaterial,
-      ...materials[material],
-    };
-    if (color) {
-      materialProps.diffuse = color.map(c => c / 255); // Convert RGB to [0, 1]
-    }
-
-    // Crea le informazioni di buffer WebGL dai dati geometrici
-    const bufferInfo = webglUtils.createBufferInfoFromArrays(gl, data);
-    return {
-      material: materialProps,
-      bufferInfo,
-    };
-  });
-
-  // Restituisce le parti del modello e l'oggetto parsato
-  return { parts, obj };
-}*/
 
 
 // Funzione per ottenere le estensioni geometriche (bounding box) di un insieme di geometrie

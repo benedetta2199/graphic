@@ -17,7 +17,6 @@ async function main() {
   if (!gl) {
     return;
   }
-
   // Crea un programma WebGL utilizzando shader vertex e fragment
   const meshProgramInfo = webglUtils.createProgramInfo(gl, [vs, fs]);
   //**gl.useProgram(meshProgramInfo); 

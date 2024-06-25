@@ -273,10 +273,12 @@ export function degToRad(deg) {
 
 export let zNear=0;
 export let zFar=0;
-export let alpha=true;
+export let normalMapEnabled=true
+export let texturesEnabled=true
+export let alphaEnable=true
 
 export function setAlpha(){
-  alpha = !alpha;
+  alphaEnable = !alphaEnable;
 }
 
 export let timing={obstacle:1000, coin:1100, cloud:600}

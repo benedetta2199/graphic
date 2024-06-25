@@ -1,21 +1,48 @@
 "use strict";
 
 import { canvasToWorld, posRelX} from './mousePosition.js';
-import { degToRad } from './utils.js';
+import { degToRad, normalMapEnabled, texturesEnabled } from './utils.js';
 
-export function renderObj(gl,meshProgramInfo, part, u_world, color =null) {
+
+export function renderObj(gl, meshProgramInfo, part, u_world) {
   for (const { bufferInfo, material } of part) {
     webglUtils.setBuffersAndAttributes(gl, meshProgramInfo, bufferInfo);
-    /*if(color){
-      webglUtils.setUniforms(meshProgramInfo, { u_world: u_world, u_color: material.diffuse }, material);
-  
-    }else{
-      webglUtils.setUniforms(meshProgramInfo, { u_world: u_world }, material);
+
+    /*const uniforms = {
+      u_world: u_world,
+      u_useTexture: texturesEnabled,
+      u_useNormalMap: normalMapEnabled,
+      diffuse: material.diffuse,
+      ambient: material.ambient,
+      emissive: material.emissive,
+      specular: material.specular,
+      shininess: material.shininess,
+      opacity: material.opacity,
+      u_lightDirection: material.u_lightDirection,
+      u_ambientLight: material.u_ambientLight,
+    };
+
+    if (texturesEnabled) {
+      uniforms.diffuseMap = material.diffuseMap;
+    }
+
+    if (texturesEnabled) {
+      uniforms.normalMap = material.normalMap;
     }*/
-      webglUtils.setUniforms(meshProgramInfo, { u_world: u_world }, material);
+    
+    //const txMaterial = texturesEnabled ? material : { ...material, diffuse: [1,1,1,1] };
+    webglUtils.setUniforms(meshProgramInfo, { u_world: u_world }, material);
     webglUtils.drawBufferInfo(gl, bufferInfo);
   }
 }
+
+/*export function renderObj(gl,meshProgramInfo, part, u_world) {
+  for (const { bufferInfo, material } of part) {
+    webglUtils.setBuffersAndAttributes(gl, meshProgramInfo, bufferInfo);
+      webglUtils.setUniforms(meshProgramInfo, { u_world: u_world }, material);
+    webglUtils.drawBufferInfo(gl, bufferInfo);
+  }
+}*/
 
 export function u_worldPlane(width, height, time){
   // Movimento dell'aereo in base alla posizione del mouse

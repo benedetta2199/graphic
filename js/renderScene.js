@@ -4,7 +4,7 @@ import { renderCloud, setCloud } from './cloud.js';
 import { checkCollisionObstacle, setListener } from './mousePosition.js';
 import { renderObj, u_worldElica, u_worldFoto, u_worldPlane, u_worldWorld } from './renderObj.js';
 import { renderCoin, renderObstacle, setCoin, setObstacle } from './collectibles.js';
-import { degToRad, isPaused, rand, speed, timing, alpha, zFar, zNear } from './utils.js';
+import { degToRad, isPaused, rand, speed, timing, alphaEnable, zFar, zNear } from './utils.js';
 
   const clouds = [setCloud(rand(4,9),0)];
   const obstacles = [setObstacle(0)];
@@ -41,9 +41,7 @@ export function renderScene(gl, meshProgramInfo, parts, cameraPosition, cameraTa
     
     gl.enable(gl.DEPTH_TEST);
 
-    //ALPHA
-    //console.log(alpha)
-    if(alpha){
+    if(alphaEnable){
       gl.enable(gl.BLEND);
       gl.blendFunc(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA);
     }else{
