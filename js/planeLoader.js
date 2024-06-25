@@ -44,14 +44,7 @@ export async function loadPlane(gl, objHref) {
   }
 
   // Default material properties
-  const defaultMaterial = {
-    diffuse: [1, 1, 1],
-    diffuseMap: textures.defaultWhite,
-    ambient: [0, 0, 0],
-    specular: [1, 1, 1],
-    shininess: 20,
-    opacity: 1,
-  };
+  const defaultMaterial = getDefaultMaterial(gl);
 
   // Process geometries and create buffers
   const parts = obj.geometries.map(({ material, data }) => {
@@ -125,4 +118,15 @@ export function getGeometriesExtents(geometries) {
     min: Array(3).fill(Number.POSITIVE_INFINITY),
     max: Array(3).fill(Number.NEGATIVE_INFINITY),
   });
+}
+
+export function getDefaultMaterial(gl){
+  return{
+    diffuse: [1, 1, 1],
+    diffuseMap: create1PixelTexture(gl, [255, 255, 255, 255]),
+    ambient: [0, 0, 0],
+    specular: [1, 1, 1],
+    shininess: 20,
+    opacity: 1,
+  };
 }

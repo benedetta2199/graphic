@@ -26,6 +26,9 @@
     <div class="menu-items">
       <button id="alpha">DISATTIVA L'OPACITÀ </button>
     </div>
+    <div class="menu-items">
+      <button id="normalMap">ATTIVA LE NORMAL MAP </button>
+    </div>
 
     <div class="menu-items col">
       <h3>Tempo di creazione</h3>
@@ -54,7 +57,7 @@
       <label for="lightY">Asse Y: </label>
       <input type="range" id="lightY" min="0" max="120" value="60">
       <label for="lightZ">Asse Z: </label>
-      <input type="range" id="lightZ" min="-30" max="60" value="30">
+      <input type="range" id="lightZ" min="-30" max="30" value="0">
     </div>
     
   </div>
@@ -74,12 +77,13 @@
   <!-- partial -->
   <script  type="module" src="./js/script.js"></script>
   <script type="module">
-    import {setAlpha, alphaEnable, timing, speed, light, setLight} from "./js/utils.js";
+    import {setAlpha, alphaEnable, timing, speed, light, setLight, enableNormalMap, setNormalMap} from "./js/utils.js";
 
     var audio = document.getElementById("backgroundAudio");
     var audioControlButton = document.getElementById("audioControl");
     const btAlpha = document.getElementById('alpha');
-    const btTexture = document.getElementById('texture');
+    //const btTexture = document.getElementById('texture');
+    const btNormalMap = document.getElementById('normalMap');
     
     function toggleMenu() {
       var menu = document.getElementById('menu');
@@ -129,6 +133,11 @@
     btAlpha.addEventListener('click', (e)=>{
       btAlpha.textContent= alphaEnable ? "ATTIVA L'OPACITÀ":"DISATTIVA L'OPACITÀ";
       setAlpha();
+    });
+
+    btNormalMap.addEventListener('click', (e)=>{
+      btNormalMap.textContent= enableNormalMap ? "ATTIVA LE NORMAL MAP":"DISATTIVA LE NORMAL MAP";
+      setNormalMap();
     });
 
     audioControlButton.addEventListener("click", function () {

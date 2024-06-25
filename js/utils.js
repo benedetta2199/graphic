@@ -52,24 +52,28 @@ uniform float opacity; // Opacity of the material
 uniform vec3 u_lightDirection; // Direction of the light
 uniform vec3 u_ambientLight; // Ambient light color
 uniform sampler2D normalMap; // Normal map texture
+uniform float useNormalMap; // Flag to determine if normal map should be used
 
 void main () {
   vec3 normal = normalize(v_normal); // Normalize interpolated normal
-  vec3 tangent = normalize(v_tangent); // Normalize interpolated tangent
-  vec3 bitangent = normalize(cross(normal, tangent)); // Compute bitangent as the cross product of normal and tangent
-  
-  mat3 tbn = mat3(tangent, bitangent, normal); // Create TBN matrix for transforming normals
-  normal = texture2D(normalMap, v_texcoord).rgb * 2.0 - 1.0; // Sample the normal map and convert from [0,1] range to [-1,1] range
-  normal = normalize(tbn * normal); // Transform and normalize the sampled normal
+
+  if (useNormalMap == 1.0) {
+    vec3 tangent = normalize(v_tangent); // Normalize interpolated tangent
+    vec3 bitangent = normalize(cross(normal, tangent)); // Compute bitangent as the cross product of normal and tangent
+    
+    mat3 tbn = mat3(tangent, bitangent, normal); // Create TBN matrix for transforming normals
+    normal = texture2D(normalMap, v_texcoord).rgb * 2.0 - 1.0; // Sample the normal map and convert from [0,1] range to [-1,1] range
+    normal = normalize(tbn * normal); // Transform and normalize the sampled normal
+  }
 
   vec3 surfaceToViewDirection = normalize(v_surfaceToView); // Compute the view direction
   vec3 halfVector = normalize(u_lightDirection + surfaceToViewDirection); // Compute the half vector for specular lighting
 
   float fakeLight = dot(u_lightDirection, normal) * 0.6 + 0.6; // Compute the diffuse lighting component
-  float specularLight = clamp(dot(normal, halfVector), 0.0001, 1.0); // Compute the specular lighting component
+  float specularLight = clamp(dot(normal, halfVector), 0.001, 1.0); // Compute the specular lighting component
 
-  vec4 specularMapColor = texture2D(specularMap, v_texcoord); // Sample the specular map
-  vec3 effectiveSpecular = specular * specularMapColor.rgb; // Compute the effective specular color
+    vec4 specularMapColor = texture2D(specularMap, v_texcoord); // Sample the specular map
+    vec3 effectiveSpecular = specular * specularMapColor.rgb; // Compute the effective specular color
 
   vec4 diffuseMapColor = texture2D(diffuseMap, v_texcoord); // Sample the diffuse map
   vec3 effectiveDiffuse = diffuse * diffuseMapColor.rgb * v_color.rgb; // Compute the effective diffuse color
@@ -117,6 +121,16 @@ export function setAlpha(){
 }
 
 
+
+/*                                NORMALMAP                                 */
+export let enableNormalMap = false;
+/**
+ * Toggles the normalMap enable flag.
+ */
+export function setNormalMap(){
+  enableNormalMap = !enableNormalMap;
+}
+;
 
 /*                                LIGHT                                 */
 export let light = [0, 60, 30];
