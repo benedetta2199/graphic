@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en" >
+<head>
+  <meta charset="UTF-8">
+  <title>CodePen - WebGL - load obj - w/mtl, textures</title>
+  <link rel="stylesheet" href="style.css">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0"/>
+</head>
+<body>
+  <h1 class="text-right">Relazione Progetto Computer Graphics</h1>
+  <h2 class="text-right">Benedetta Bottari - 0001144057</h2>
+  <div class="documentation">
+    <h1>Descrizione del porgetto</h1>
+    <div>
+      <p>L'obiettivo di questo progetto implementato in WebGl è quello di sviluppare un semplice videogioco 3D.</p>
+      <p>
+        Nello specifico l'idea di base creare un progetto che rendere l'utente un pilota d'areoplano per solcare i cieli 
+        evitando ostacoli e raccogliendo monete accumulando così punti.
+      </p>
+      <br/>
+      <p>
+        L'interfaccia è stata studiata per poter essere fruita sia da pc che da dispositivi mobili, e risulta costituita
+        da 2 sezioni principali: il menù di personalizzazione e il canva.
+      </p>
+      <p class="text-b uppercase">Il canva</p>
+      <p>
+        Il canva renderizza una scena contente il mondo che ruota su sè stesso, e delle nuvole sullo sfondo, 
+        oltre che ai protagonisti del gioco ovvero un aeroplano che può muoversi in verticale e degli oggetti con cui può collidere
+        (ostacoli e monete.)
+      </p>
+      <p class="text-b uppercase">Il menu</p>
+      <p>
+        Mentre il menu consente di personalizzare la velocità degli oggetti renderizzati (nuvole, monete e nuvole), il tempo d'attesa
+        per la creazione (nuvole, monete e nuvole), la direzione della luce. Inoltre permette di attivare e disattivare l'opacità le normal map 
+        e la musica.
+      </p>
+    </div>
+    <h1>Come si gioca</h1>
+    <div class="d-flex">
+      <div class="d-flex">
+        <img src="./src/img/plane.png" alt="plane"/>
+        <div class="text-left">
+          <p class="text-b uppercase">Muovi l'Areoplano in verticale</p>
+          <p class="text-b">Modalità d'interazione PC:</p>
+          <p class="p-left">Mouse: Muovi il mouse in verticale</p>
+          <p class="p-left">Tastiera: Premi le frecce ▲ e ▼</p>
+          <p class="text-b">Modalità d'interazione Smartphone:</p>
+          <p class="p-left">Premi i tasti su schermo ▲ e ▼</p>
+        </div>
+      </div>
+      <div class="d-flex">
+        <img src="./src/img/coin.png" class="scale-05" alt="plane"/>
+        <div class="text-left">
+          <p class="text-b uppercase">Raccogli tutte le monete</p>
+          <p class="p-left">Ogni moneta vale 1 punto</p>
+          <p class="p-left">Al raggiungimento di 999 punti il gioco termina </p>
+        </div>
+      </div>
+      <div class="d-flex">
+        <img src="./src/img/icosfera.png" class="scale-05" alt="plane"/>
+        <div class="text-left">
+          <p class="text-b uppercase">Evita tutti i palloni</p>
+          <p class="p-left">Quando si tocca un pallone il gioco termina </p>
+        </div>
+      </div>
+    </div>
+    <h1>Divisione dei file</h1>
+  </div>
+  
+
+</body>
+</html>

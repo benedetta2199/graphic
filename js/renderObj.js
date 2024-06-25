@@ -11,27 +11,6 @@ import { degToRad, enableNormalMap } from './utils.js';
  * @param {Array} part - Object part to render.
  * @param {Object} u_world - World transformation matrix.
  */
-/*
-export function renderObj(gl, meshProgramInfo, part, u_world) {
-  for (const { bufferInfo, material } of part) {
-    webglUtils.setBuffersAndAttributes(gl, meshProgramInfo, bufferInfo);
-
-    // Imposta le uniformi in base a useNormalMap
-    const uniforms = { 
-      u_world,
-      u_useNormalMap: useNormalMap 
-    };
-
-    if (useNormalMap && material.normalMap) {
-      uniforms.u_normalMap = material.normalMap;
-    } else {
-      uniforms.u_normalMap = getDefaultMaterial(gl).diffuseMap // Imposta una normalMap nulla
-    }
-
-    webglUtils.setUniforms(meshProgramInfo, uniforms, material);
-    webglUtils.drawBufferInfo(gl, bufferInfo);
-  }
-}*/
 export function renderObj(gl, meshProgramInfo, part, u_world) {
   for (const { bufferInfo, material } of part) {
     webglUtils.setBuffersAndAttributes(gl, meshProgramInfo, bufferInfo);
@@ -40,7 +19,6 @@ export function renderObj(gl, meshProgramInfo, part, u_world) {
     const uniforms = {
       u_world,
       useNormalMap: enableNormalMap?1.0:0.0,
-      useTexure: enableNormalMap?1.0:0.0,
       ...material,
     };
 
@@ -48,25 +26,6 @@ export function renderObj(gl, meshProgramInfo, part, u_world) {
     webglUtils.drawBufferInfo(gl, bufferInfo);
   }
 }
-
-/*
-export function renderObj(gl, meshProgramInfo, part, u_world) {
-  for (const { bufferInfo, material } of part) {
-    webglUtils.setBuffersAndAttributes(gl, meshProgramInfo, bufferInfo);
-    material.material = true;
-    if (useNormalMap) {
-      webglUtils.setUniforms(meshProgramInfo, { u_world }, material);
-    } else {
-      // Crea una copia del material senza la normal map
-      const materialWithoutNormalMap = { ...material };
-      useNormalMap
-      delete materialWithoutNormalMap.u_normalMap; // Assumendo che la normal map sia in 'u_normalMap'
-      console.log(materialWithoutNormalMap);
-      webglUtils.setUniforms(meshProgramInfo, { u_world }, materialWithoutNormalMap);
-    }
-    webglUtils.drawBufferInfo(gl, bufferInfo);
-  }
-}*/
 
 /**
  * Calculate the world transformation matrix for the plane.
