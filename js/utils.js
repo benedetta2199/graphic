@@ -277,6 +277,13 @@ export let normalMapEnabled=true
 export let texturesEnabled=true
 export let alphaEnable=true
 
+export let light=[0,60,30];
+
+export function setLight(i, value){
+  light[i] = value;
+}
+
+
 export function setAlpha(){
   alphaEnable = !alphaEnable;
 }

@@ -4,7 +4,7 @@ import { renderCloud, setCloud } from './cloud.js';
 import { checkCollisionObstacle, setListener } from './mousePosition.js';
 import { renderObj, u_worldElica, u_worldFoto, u_worldPlane, u_worldWorld } from './renderObj.js';
 import { renderCoin, renderObstacle, setCoin, setObstacle } from './collectibles.js';
-import { degToRad, isPaused, rand, speed, timing, alphaEnable, zFar, zNear } from './utils.js';
+import { degToRad, isPaused, rand, speed, timing, alphaEnable, zFar, zNear, light } from './utils.js';
 
   const clouds = [setCloud(rand(4,9),0)];
   const obstacles = [setObstacle(0)];
@@ -62,7 +62,7 @@ export function renderScene(gl, meshProgramInfo, parts, cameraPosition, cameraTa
     // Parametri uniformi condivisi per i shader
     const sharedUniforms = {
       //[60,60,30] -[60,450,450]
-      u_lightDirection: m4.normalize([60,60,30]), // Direzione della luce
+      u_lightDirection: m4.normalize([light[0],light[1],light[2]]), // Direzione della luce
       u_view: view,
       u_projection: projection,
       u_viewWorldPosition: cameraPosition, // Posizione della telecamera nella scena

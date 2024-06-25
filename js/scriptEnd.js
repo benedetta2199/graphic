@@ -6,9 +6,12 @@ import { loadPlane, getGeometriesExtents } from './planeLoader.js';
 import { setupCameraAndLight} from './cameraAndLightSetupEnd.js';
 import { renderScene } from './renderSceneEnd.js';
 import { vs, fs, setPlaneClipping } from './utils.js';
+import {posCamTarget, posCamPos, posPlane, setLight} from './renderSceneEnd.js'
 
 export async function main() {
   
+  setListener();
+
   const canvas = document.querySelector("#canvas");
   const gl = canvas.getContext("webgl");
   if (!gl) {
@@ -72,5 +75,59 @@ export async function main() {
   // Renderizza la scena con gli oggetti caricati e la configurazione della telecamera
   //renderScene(gl, meshProgramInfo, planeParts, elicaParts, cameraPosition, cameraTarget, objOffset, zNear, zFar);
   renderScene(gl, meshProgramInfo, parts, cameraPosition, cameraTarget, combinedExtents);
+
+}
+
+
+function setListener(){
+  document.getElementById('camPosX').addEventListener('input', (event) => {
+    console.log("CC")
+    posCamPos[0] = parseInt(event.target.value);
+  });
+  
+  document.getElementById('camPosY').addEventListener('input', (event) => {
+    console.log("CC")
+    posCamPos[1] = parseInt(event.target.value);
+  });
+  
+  document.getElementById('camPosZ').addEventListener('input', (event) => {
+    console.log("CC")
+    posCamPos[2] = parseInt(event.target.value);
+  });
+  
+  document.getElementById('camTargX').addEventListener('input', (event) => {
+    posCamTarget[0] = parseInt(event.target.value);
+  });
+  
+  document.getElementById('camTargY').addEventListener('input', (event) => {
+    posCamTarget[1] = parseInt(event.target.value);
+  });
+  
+  document.getElementById('camTargZ').addEventListener('input', (event) => {
+    posCamTarget[2] = parseInt(event.target.value);
+  });
+  
+  document.getElementById('planeTargX').addEventListener('input', (event) => {
+    posPlane[0] = parseInt(event.target.value);
+  });
+  
+  document.getElementById('planeTargY').addEventListener('input', (event) => {
+    posPlane[1] = parseInt(event.target.value);
+  });
+  
+  document.getElementById('planeTargZ').addEventListener('input', (event) => {
+    posPlane[2] = parseInt(event.target.value);
+  });
+  
+  
+  document.getElementById('lX').addEventListener('input', (event) => {
+    setLight(0,event.target.value);
+  });
+  document.getElementById('lY').addEventListener('input', (event) => {
+    setLight(1,event.target.value);
+  });
+  document.getElementById('lZ').addEventListener('input', (event) => {
+    setLight(2,event.target.value);
+  });
 
 }

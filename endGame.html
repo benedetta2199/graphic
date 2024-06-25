@@ -36,6 +36,18 @@
       <label for="camTargZ">Z: </label>
       <input type="range" id="camTargZ" min="-50" max="50" value="0">
     </div>
+    <br/>
+
+    <div>
+      <h3>Direzione della luce</h3>
+      <label for="lX">X: </label>
+      <input type="range" id="lX" min="0" max="120" value="60">
+      <label for="lY">Y: </label>
+      <input type="range" id="lY" min="0" max="120" value="60">
+      <label for="lZ">Z: </label>
+      <input type="range" id="lZ" min="-30" max="60" value="30">
+    </div>
+    <br/>
 
     <div>
       <h3>Posizione dell'aereo</h3>
@@ -62,7 +74,7 @@
   <script src="https://webglfundamentals.org/webgl/resources/m4.js"></script>
 
   <script type="module">
-    import {posCamTarget, posCamPos, posPlane} from './js/renderSceneEnd.js'
+    import {posCamTarget, posCamPos, posPlane, setLight, l} from './js/renderSceneEnd.js'
 
     document.getElementById('camPosX').addEventListener('input', (event) => {
       console.log("CC")
@@ -101,6 +113,20 @@
   
     document.getElementById('planeTargZ').addEventListener('input', (event) => {
       posPlane[2] = parseInt(event.target.value);
+    });
+
+    
+    document.getElementById('lX').addEventListener('input', (event) => {
+      console.log("X");
+      setLight(0,event.target.value);
+    });
+    document.getElementById('lY').addEventListener('input', (event) => {
+      console.log("Y");
+      setLight(1,event.target.value);
+    });
+    document.getElementById('lZ').addEventListener('input', (event) => {
+      console.log("Z");
+      setLight(2,event.target.value);
     });
   
   </script>

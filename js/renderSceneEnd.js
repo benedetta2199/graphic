@@ -12,6 +12,13 @@ import { zFar, zNear } from "./utils.js";
 export let posCamTarget = [0,0,0];
 export let posCamPos = [0,0,0];
 export let posPlane = [0,0,0];
+export let light = [60,60,30];
+
+export function setLight(i, value){
+  console.log("Xx")
+  light[i] = value;
+}
+
 
 
 
@@ -63,7 +70,7 @@ export function renderScene(gl, meshProgramInfo, parts, cP, cT, objOffset) {
     // Parametri uniformi condivisi per i shader
     const sharedUniforms = {
       //[60,60,30] -[60,450,450]
-      u_lightDirection: m4.normalize([60,60,30]), // Direzione della luce
+      u_lightDirection: m4.normalize([light[0],light[1],light[2]]), // Direzione della luce
       u_view: view,
       u_projection: projection,
       u_viewWorldPosition: cameraPosition, // Posizione della telecamera nella scena

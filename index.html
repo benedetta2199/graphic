@@ -21,16 +21,10 @@
   <div id="menu" class="menu" onkeydown="event.preventDefault()">
     <button id="menu-close" class="menu-close" onclick="toggleMenu()">🗙</button>
     <div class="menu-items">
-      <button id="alpha">DISATTIVA L'OPACITÀ </button>
-    </div>
-    <div class="menu-items">
-      <button id="texture">DISATTIVA TEXTURE </button>
-    </div>
-    <div class="menu-items">
-      ATTIIVA DISATTIVA LE NORMAL MAP??
-    </div>
-    <div class="menu-items">
       <button id="audioControl">ATTIVA L'AUDIO</button>
+    </div>
+    <div class="menu-items">
+      <button id="alpha">DISATTIVA L'OPACITÀ </button>
     </div>
 
     <div class="menu-items col">
@@ -41,9 +35,9 @@
       <input type="range" id="coinTiming" min="90" max="2000" value="1100">
       <label for="cloudTiming">Nuvole: </label>
       <input type="range" id="cloudTiming" min="90" max="2000" value="600">
-  </div>
+    </div>
 
-  <div class="menu-items col">
+    <div class="menu-items col">
       <h3>Velocità</h3>
       <label for="obstacleSpeed">Ostacoli: </label>
       <input type="range" id="obstacleSpeed" min="1" max="5" step="0.1" value="1">
@@ -51,7 +45,17 @@
       <input type="range" id="coinSpeed" min="1" max="5" step="0.1" value="2">
       <label for="cloudSpeed">Nuvole: </label>
       <input type="range" id="cloudSpeed" min="1" max="5" step="0.1" value="1">
-  </div>
+    </div>
+
+    <div class="menu-items col">
+      <h3>Direzione della luce</h3>
+      <label for="lightX">Asse X: </label>
+      <input type="range" id="lightX" min="-60" max="60" value="0">
+      <label for="lightY">Asse Y: </label>
+      <input type="range" id="lightY" min="0" max="120" value="60">
+      <label for="lightZ">Asse Z: </label>
+      <input type="range" id="lightZ" min="-30" max="60" value="30">
+    </div>
     
   </div>
 
@@ -70,7 +74,7 @@
   <!-- partial -->
   <script  type="module" src="./js/script.js"></script>
   <script type="module">
-    import {setAlpha, alphaEnable, texturesEnabled, timing, speed} from "./js/utils.js";
+    import {setAlpha, alphaEnable, texturesEnabled, timing, speed, light, setLight} from "./js/utils.js";
 
     var audio = document.getElementById("backgroundAudio");
     var audioControlButton = document.getElementById("audioControl");
@@ -111,11 +115,15 @@
     document.getElementById('cloudSpeed').addEventListener('input', (event) => {
         speed.cloud = event.target.value;
     });
-    
-    btTexture.addEventListener('click', () => {
-      console.log("disattivato");
-      btTexture.textContent= texturesEnabled ? "ATTIVA LA TEXTURE":"DISATTIVA LA TEXTURE";
-      setEnable();
+
+    document.getElementById('lightX').addEventListener('input', (event) => {
+      setLight(0,event.target.value);
+    });
+    document.getElementById('lightY').addEventListener('input', (event) => {
+      setLight(1,event.target.value);
+    });
+    document.getElementById('lightZ').addEventListener('input', (event) => {
+      setLight(2,event.target.value);
     });
 
     btAlpha.addEventListener('click', (e)=>{
