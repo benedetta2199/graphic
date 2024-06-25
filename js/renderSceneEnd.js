@@ -14,12 +14,6 @@ export let posCamPos = [0,0,0];
 export let posPlane = [0,0,0];
 export let light = [60,60,30];
 
-export function setLight(i, value){
-  console.log("Xx")
-  light[i] = value;
-}
-
-
 
 
 /**

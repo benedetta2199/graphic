@@ -1,15 +1,15 @@
-//http://127.0.0.1:5500/
-// WebGL - load obj - w/mtl textures
-// from https://webglfundamentals.org/webgl/webgl-load-obj-w-mtl-textures.html
 "use strict";
+
 import { loadPlane, getGeometriesExtents } from './planeLoader.js';
-import { setupCameraAndLight} from './cameraAndLightSetupEnd.js';
+import { setupCameraAndLight } from './cameraAndLightSetupEnd.js';
 import { renderScene } from './renderSceneEnd.js';
 import { vs, fs, setPlaneClipping } from './utils.js';
-import {posCamTarget, posCamPos, posPlane, setLight} from './renderSceneEnd.js'
+import { posCamTarget, posCamPos, posPlane, light } from './renderSceneEnd.js';
 
+/**
+ * Main function to initialize and render the scene.
+ */
 export async function main() {
-  
   setListener();
 
   const canvas = document.querySelector("#canvas");
@@ -18,116 +18,62 @@ export async function main() {
     return;
   }
 
-  // Crea un programma WebGL utilizzando shader vertex e fragment
+  // Create a WebGL program using vertex and fragment shaders
   const meshProgramInfo = webglUtils.createProgramInfo(gl, [vs, fs]);
-  
-  //Carica il primo oggetto (aereo) in modo asincrono
-  const planeObjHref = './src/plane.obj';
-  const { parts: planeParts, obj: planeObj } = await loadPlane(gl, planeObjHref);
-  // Calcola le dimensioni geometriche (bounding box) dell'oggetto aereo
-  const planeExtents = getGeometriesExtents(planeObj.geometries);
 
-  // Carica il secondo oggetto (elica) in modo asincrono
-  const elicaObjHref = './src/elica.obj';
-  const { parts: elicaParts, obj: elicaObj } = await loadPlane(gl, elicaObjHref);
-  // Calcola le dimensioni geometriche (bounding box) dell'oggetto elica
-  const elicaExtents = getGeometriesExtents(elicaObj.geometries);
+  // Load objects asynchronously
+  const objects = ['plane', 'elica', 'world', 'foto', 'cube'];
+  const objectPaths = objects.map(obj => `./src/${obj}.obj`);
+  const loadedObjects = await Promise.all(objectPaths.map(path => loadPlane(gl, path)));
+  const parts = Object.fromEntries(loadedObjects.map((obj, idx) => [objects[idx], obj.parts]));
+  const extents = loadedObjects.map(obj => getGeometriesExtents(obj.obj.geometries));
 
-  // Carica il terzo oggetto (world) in modo asincrono
-  const worldObjHref = './src/world.obj';
-  const { parts: worldParts, obj: worldObj } = await loadPlane(gl, worldObjHref);
-
-   // Carica il terzo oggetto (world) in modo asincrono
-   const fotoObjHref = './src/foto.obj';
-   const { parts: fotoParts, obj: fotoObj } = await loadPlane(gl, fotoObjHref);
-
-  // Carica il terzo oggetto (world) in modo asincrono
-  const cubeObjHref = './src/cube.obj';
-  const { parts: cubeParts, obj: cubeObj } = await loadPlane(gl, cubeObjHref);
-
-  const parts = {
-    plane: planeParts,
-    elica: elicaParts,
-    world: worldParts,
-    foto: fotoParts,
-    cube: cubeParts,
-  };
-
-  // Combina le estensioni per impostare la telecamera
+  // Combine extents for camera setup
   const combinedExtents = {
     min: [
-      Math.min(planeExtents.min[0], elicaExtents.min[0]),
-      Math.min(planeExtents.min[1], elicaExtents.min[1]),
-      Math.min(planeExtents.min[2], elicaExtents.min[2]),
+      Math.min(extents[0].min[0], extents[1].min[0]),
+      Math.min(extents[0].min[1], extents[1].min[1]),
+      Math.min(extents[0].min[2], extents[1].min[2]),
     ],
     max: [
-      Math.max(planeExtents.max[0], elicaExtents.max[0]),
-      Math.max(planeExtents.max[1], elicaExtents.max[1]),
-      Math.max(planeExtents.max[2], elicaExtents.max[2]),
+      Math.max(extents[0].max[0], extents[1].max[0]),
+      Math.max(extents[0].max[1], extents[1].max[1]),
+      Math.max(extents[0].max[2], extents[1].max[2]),
     ],
   };
 
-  // Ottiene posizione della telecamera, target, offset oggetto, e piani di clipping basati sulle estensioni combinate
+  // Get camera position, target, object offset, and clipping planes based on combined extents
   const { cameraPosition, cameraTarget, objOffset, zNear, zFar } = setupCameraAndLight(gl, combinedExtents);
 
-  setPlaneClipping(zNear,zFar);
-  
-  // Renderizza la scena con gli oggetti caricati e la configurazione della telecamera
-  //renderScene(gl, meshProgramInfo, planeParts, elicaParts, cameraPosition, cameraTarget, objOffset, zNear, zFar);
-  renderScene(gl, meshProgramInfo, parts, cameraPosition, cameraTarget, combinedExtents);
+  setPlaneClipping(zNear, zFar);
 
+  // Render the scene with the loaded objects and camera setup
+  renderScene(gl, meshProgramInfo, parts, cameraPosition, cameraTarget, combinedExtents);
 }
 
+/**
+ * Sets up event listeners for camera and light controls.
+ */
+function setListener() {
+  const inputElements = [
+    { id: 'camPosX', target: posCamPos, index: 0 },
+    { id: 'camPosY', target: posCamPos, index: 1 },
+    { id: 'camPosZ', target: posCamPos, index: 2 },
+    { id: 'camTargX', target: posCamTarget, index: 0 },
+    { id: 'camTargY', target: posCamTarget, index: 1 },
+    { id: 'camTargZ', target: posCamTarget, index: 2 },
+    { id: 'planeTargX', target: posPlane, index: 0 },
+    { id: 'planeTargY', target: posPlane, index: 1 },
+    { id: 'planeTargZ', target: posPlane, index: 2 },
+    { id: 'lightTarX', target: light, index: 0 },
+    { id: 'lightTarX', target: light, index: 1 },
+    { id: 'lightTarX', target: light, index: 2 },
 
-function setListener(){
-  document.getElementById('camPosX').addEventListener('input', (event) => {
-    console.log("CC")
-    posCamPos[0] = parseInt(event.target.value);
-  });
-  
-  document.getElementById('camPosY').addEventListener('input', (event) => {
-    console.log("CC")
-    posCamPos[1] = parseInt(event.target.value);
-  });
-  
-  document.getElementById('camPosZ').addEventListener('input', (event) => {
-    console.log("CC")
-    posCamPos[2] = parseInt(event.target.value);
-  });
-  
-  document.getElementById('camTargX').addEventListener('input', (event) => {
-    posCamTarget[0] = parseInt(event.target.value);
-  });
-  
-  document.getElementById('camTargY').addEventListener('input', (event) => {
-    posCamTarget[1] = parseInt(event.target.value);
-  });
-  
-  document.getElementById('camTargZ').addEventListener('input', (event) => {
-    posCamTarget[2] = parseInt(event.target.value);
-  });
-  
-  document.getElementById('planeTargX').addEventListener('input', (event) => {
-    posPlane[0] = parseInt(event.target.value);
-  });
-  
-  document.getElementById('planeTargY').addEventListener('input', (event) => {
-    posPlane[1] = parseInt(event.target.value);
-  });
-  
-  document.getElementById('planeTargZ').addEventListener('input', (event) => {
-    posPlane[2] = parseInt(event.target.value);
-  });
-  
-  
-  document.getElementById('lX').addEventListener('input', (event) => {
-    setLight(0,event.target.value);
-  });
-  document.getElementById('lY').addEventListener('input', (event) => {
-    setLight(1,event.target.value);
-  });
-  document.getElementById('lZ').addEventListener('input', (event) => {
-    setLight(2,event.target.value);
-  });
+  ];
 
+  inputElements.forEach(({ id, target, index }) => {
+    document.getElementById(id).addEventListener('input', (event) => {
+      target[index] = parseInt(event.target.value);
+    });
+  });
 }
