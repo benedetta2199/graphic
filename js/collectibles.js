@@ -50,8 +50,7 @@ function u_worldObstacle(time, data) {
 export function renderObstacle(gl, meshProgramInfo, obstacle, time, data) {
   for (const { bufferInfo, material } of obstacle) {
     webglUtils.setBuffersAndAttributes(gl, meshProgramInfo, bufferInfo);
-    const color = texturesEnabled ? data.color : [1, 1, 1, 1];
-    const updatedMaterial = { ...material, diffuse: color};
+    const updatedMaterial = { ...material, diffuse:  data.color.map(c => c / 255)};
     webglUtils.setUniforms(meshProgramInfo, { u_world: u_worldObstacle(time, data), u_color: data.color }, updatedMaterial);
     webglUtils.drawBufferInfo(gl, bufferInfo);
   }

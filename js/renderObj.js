@@ -7,28 +7,6 @@ import { degToRad, normalMapEnabled, texturesEnabled } from './utils.js';
 export function renderObj(gl, meshProgramInfo, part, u_world) {
   for (const { bufferInfo, material } of part) {
     webglUtils.setBuffersAndAttributes(gl, meshProgramInfo, bufferInfo);
-
-    /*const uniforms = {
-      u_world: u_world,
-      u_useTexture: texturesEnabled,
-      u_useNormalMap: normalMapEnabled,
-      diffuse: material.diffuse,
-      ambient: material.ambient,
-      emissive: material.emissive,
-      specular: material.specular,
-      shininess: material.shininess,
-      opacity: material.opacity,
-      u_lightDirection: material.u_lightDirection,
-      u_ambientLight: material.u_ambientLight,
-    };
-
-    if (texturesEnabled) {
-      uniforms.diffuseMap = material.diffuseMap;
-    }
-
-    if (texturesEnabled) {
-      uniforms.normalMap = material.normalMap;
-    }*/
     
     //const txMaterial = texturesEnabled ? material : { ...material, diffuse: [1,1,1,1] };
     webglUtils.setUniforms(meshProgramInfo, { u_world: u_world }, material);

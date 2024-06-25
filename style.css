@@ -106,12 +106,16 @@ canvas {
   text-align: center;
 }
 
-.menu-items div{
+.menu-items{
   display: flex;
   justify-content: space-around;
   width: 100%;
 }
 
+.col{
+  flex-direction: column;
+  margin: 1vw auto;
+}
 
 .menu button{
   border: rgb(244,244,244, 0.4);
