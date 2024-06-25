@@ -1,16 +1,18 @@
-//http://127.0.0.1:5500/
-// WebGL - load obj - w/mtl textures
-// from https://webglfundamentals.org/webgl/webgl-load-obj-w-mtl-textures.html
 "use strict";
+
 import { loadPlane, getGeometriesExtents } from './planeLoader.js';
-import { setupCameraAndLight} from './cameraAndLightSetup.js';
+import { setupCameraAndLight } from './cameraAndLightSetup.js';
 import { renderScene } from './renderScene.js';
 import { vs, fs, rand, setPlaneClipping } from './utils.js';
 import { loadEndGameContent } from './endGame.js';
 
+/**
+ * Main function to initialize and render the scene.
+ */
 async function main() {
-
+  // Store the start time of the game
   localStorage.setItem('startTime', new Date());
+  // Preload end game content
   loadEndGameContent();
   
   const canvas = document.querySelector("#canvas");
@@ -18,76 +20,55 @@ async function main() {
   if (!gl) {
     return;
   }
-  // Crea un programma WebGL utilizzando shader vertex e fragment
+
+  // Create a WebGL program using vertex and fragment shaders
   const meshProgramInfo = webglUtils.createProgramInfo(gl, [vs, fs]);
-  //**gl.useProgram(meshProgramInfo); 
-  
-  //Carica il primo oggetto (aereo) in modo asincrono
-  const planeObjHref = './src/plane.obj';
-  const { parts: planeParts, obj: planeObj } = await loadPlane(gl, planeObjHref);
-  // Calcola le dimensioni geometriche (bounding box) dell'oggetto aereo
-  const planeExtents = getGeometriesExtents(planeObj.geometries);
 
-  // Carica il secondo oggetto (elica) in modo asincrono
-  const elicaObjHref = './src/elica.obj';
-  const { parts: elicaParts, obj: elicaObj } = await loadPlane(gl, elicaObjHref);
-  // Calcola le dimensioni geometriche (bounding box) dell'oggetto elica
-  const elicaExtents = getGeometriesExtents(elicaObj.geometries);
-
-  // Carica il terzo oggetto (world) in modo asincrono
-  const worldObjHref = './src/world.obj';
-  const { parts: worldParts, obj: worldObj } = await loadPlane(gl, worldObjHref);
-
-   // Carica il terzo oggetto (world) in modo asincrono
-   const fotoObjHref = './src/foto.obj';
-   const { parts: fotoParts, obj: fotoObj } = await loadPlane(gl, fotoObjHref);
-
-  // Carica il terzo oggetto (world) in modo asincrono
-  const cubeObjHref = './src/cube.obj';
-  const { parts: cubeParts, obj: cubeObj } = await loadPlane(gl, cubeObjHref);
-
-  // Carica il terzo oggetto (world) in modo asincrono
-  const sphereObjHref = './src/icosfera.obj';
-  //const c = color[parseInt(rand(0,color.length))];
-  const { parts: sphereParts, obj: sphereObj } = await loadPlane(gl, sphereObjHref, [parseInt(rand(50,255)),parseInt(rand(50,255)),parseInt(rand(50,255))]);
-
-  // Carica il terzo oggetto (world) in modo asincrono
-  const coinObjHref = './src/coin.obj';
-  const { parts: coinParts, obj: coinObj } = await loadPlane(gl, coinObjHref);
-
-  const parts = {
-    plane: planeParts,
-    elica: elicaParts,
-    world: worldParts,
-    foto: fotoParts,
-    cube: cubeParts,
-    obstacle : sphereParts,
-    coin: coinParts,
+  // Object paths for asynchronous loading
+  const objectPaths = {
+    plane: './src/plane.obj',
+    elica: './src/elica.obj',
+    world: './src/world.obj',
+    foto: './src/foto.obj',
+    cube: './src/cube.obj',
+    obstacle: './src/icosfera.obj',
+    coin: './src/coin.obj',
   };
 
-  // Combina le estensioni per impostare la telecamera
+  // Asynchronously load all objects and calculate their extents
+  const loadObject = async (href, color = null) => {
+    return await loadPlane(gl, href, color ? [parseInt(rand(50, 255)), parseInt(rand(50, 255)), parseInt(rand(50, 255))] : null);
+  };
+
+  const loadedObjects = await Promise.all(Object.entries(objectPaths).map(([key, path]) =>
+    loadObject(path, key === 'obstacle')
+  ));
+
+  const parts = Object.fromEntries(loadedObjects.map((obj, idx) => [Object.keys(objectPaths)[idx], obj.parts]));
+  const extents = loadedObjects.slice(0, 2).map(obj => getGeometriesExtents(obj.obj.geometries)); // Only calculate extents for plane and elica
+
+  // Combine extents for camera setup
   const combinedExtents = {
     min: [
-      Math.min(planeExtents.min[0], elicaExtents.min[0]),
-      Math.min(planeExtents.min[1], elicaExtents.min[1]),
-      Math.min(planeExtents.min[2], elicaExtents.min[2]),
+      Math.min(extents[0].min[0], extents[1].min[0]),
+      Math.min(extents[0].min[1], extents[1].min[1]),
+      Math.min(extents[0].min[2], extents[1].min[2]),
     ],
     max: [
-      Math.max(planeExtents.max[0], elicaExtents.max[0]),
-      Math.max(planeExtents.max[1], elicaExtents.max[1]),
-      Math.max(planeExtents.max[2], elicaExtents.max[2]),
+      Math.max(extents[0].max[0], extents[1].max[0]),
+      Math.max(extents[0].max[1], extents[1].max[1]),
+      Math.max(extents[0].max[2], extents[1].max[2]),
     ],
   };
 
-  // Ottiene posizione della telecamera, target, offset oggetto, e piani di clipping basati sulle estensioni combinate
+  // Get camera position, target, object offset, and clipping planes based on combined extents
   const { cameraPosition, cameraTarget, objOffset, zNear, zFar } = setupCameraAndLight(gl, combinedExtents);
 
-  setPlaneClipping(zNear,zFar);
-  
-  // Renderizza la scena con gli oggetti caricati e la configurazione della telecamera
-  //renderScene(gl, meshProgramInfo, planeParts, elicaParts, cameraPosition, cameraTarget, objOffset, zNear, zFar);
-  renderScene(gl, meshProgramInfo, parts, cameraPosition, cameraTarget, objOffset);
+  setPlaneClipping(zNear, zFar);
 
+  // Render the scene with the loaded objects and camera setup
+  renderScene(gl, meshProgramInfo, parts, cameraPosition, cameraTarget, objOffset);
 }
 
-main();
+// Execute the main function to start the application
+main()
