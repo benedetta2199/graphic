@@ -10,17 +10,17 @@ Ke 0.000000 0.000000 0.000000
 Ni 1.000000
 d 1.000000
 illum 2
-map_Bump texture/plastic.jpg
+map_Bump texture/bolt.jpg
 
 newmtl bianco.001
 Ns 0.000000
-Ka 1.000000 1.000000 1.000000
+Ka 5.000000 5.000000 5.000000
 Kd 0.824613 0.824613 0.824613
 Ks 0.500000 0.500000 0.500000
 Ke 0.000000 0.000000 0.000000
-Ni 1.000000
+Ni 5.000000
 d 1.000000
-illum 2
+illum 3
 map_Bump texture/plastic.jpg
 
 newmtl brown.001
