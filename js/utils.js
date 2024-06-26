@@ -12,12 +12,14 @@ uniform mat4 u_projection;   // Projection matrix
 uniform mat4 u_view;         // View matrix
 uniform mat4 u_world;        // World transformation matrix
 uniform vec3 u_viewWorldPosition; // Camera position in world space
+uniform mat4 u_textureMatrix;
 
 varying vec3 v_normal;       // Normal to be passed to fragment shader
 varying vec3 v_tangent;      // Tangent to be passed to fragment shader
 varying vec3 v_surfaceToView; // Vector from surface to view to be passed to fragment shader
 varying vec2 v_texcoord;     // Texture coordinates to be passed to fragment shader
 varying vec4 v_color;        // Color to be passed to fragment shader
+varying vec4 v_projectedTexcoord;
 
 void main() {
   vec4 worldPosition = u_world * a_position; // Transform vertex position to world space
@@ -28,6 +30,7 @@ void main() {
   v_normal = normalize(normalMat * a_normal); // Transform and normalize the normal
   v_tangent = normalize(normalMat * a_tangent); // Transform and normalize the tangent
   v_texcoord = a_texcoord; // Pass texture coordinates to fragment shader
+  v_projectedTexcoord = u_textureMatrix * worldPosition;
   v_color = a_color; // Pass color to fragment shader
 }
 `;
@@ -40,8 +43,9 @@ varying vec3 v_tangent; // Interpolated tangent from vertex shader
 varying vec3 v_surfaceToView; // Interpolated vector from surface to view from vertex shader
 varying vec2 v_texcoord; // Interpolated texture coordinates from vertex shader
 varying vec4 v_color; // Interpolated color from vertex shader
+varying vec4 v_projectedTexcoord;
 
-uniform vec3 diffuse; // Diffuse color
+uniform vec3 diffuse; // Diffuse color -- u_texture
 uniform sampler2D diffuseMap; // Diffuse texture map
 uniform vec3 ambient; // Ambient color
 uniform vec3 emissive; // Emissive color
@@ -51,6 +55,7 @@ uniform float shininess; // Shininess coefficient for specular highlight
 uniform float opacity; // Opacity of the material
 uniform vec3 u_lightDirection; // Direction of the light
 uniform vec3 u_ambientLight; // Ambient light color
+uniform sampler2D u_projectedTexture;
 uniform sampler2D normalMap; // Normal map texture
 uniform float useNormalMap; // Flag to determine if normal map should be used
 
@@ -79,13 +84,28 @@ void main () {
   vec3 effectiveDiffuse = diffuse * diffuseMapColor.rgb * v_color.rgb; // Compute the effective diffuse color
   float effectiveOpacity = opacity * diffuseMapColor.a * v_color.a; // Compute the effective opacity
 
-  gl_FragColor = vec4(
+   vec3 projectedTexcoord = v_projectedTexcoord.xyz / v_projectedTexcoord.w;
+   bool inRange = 
+        projectedTexcoord.x >= 0.0 &&
+        projectedTexcoord.x <= 1.0 &&
+        projectedTexcoord.y >= 0.0 &&
+        projectedTexcoord.y <= 1.0;
+  
+    vec4 projectedTexColor = texture2D(u_projectedTexture, projectedTexcoord.xy);
+    //vec4 texColor = texture2D(diffuse, v_texcoord) * u_colorMult;
+  
+  float projectedAmount = inRange ? 1.0 : 0.0;
+
+    vec4 gCol = vec4(
       emissive + // Add emissive color
       ambient * u_ambientLight + // Add ambient color
       effectiveDiffuse * fakeLight + // Add diffuse lighting
       effectiveSpecular * pow(specularLight, shininess), // Add specular lighting
       effectiveOpacity // Set the final opacity
   );
+
+
+  gl_FragColor = mix(gCol, projectedTexColor, projectedAmount);
 }
 `;
 
@@ -98,7 +118,7 @@ export let zFar = 0;
  * @param {number} zN - Near clipping plane.
  * @param {number} zF - Far clipping plane.
  */
-export function setPlaneClipping(zN, zF){
+export function setPlaneClipping(zN, zF) {
   zNear = zN;
   zFar = zF;
 }
@@ -116,7 +136,7 @@ export let alphaEnable = true;
 /**
  * Toggles the alpha enable flag.
  */
-export function setAlpha(){
+export function setAlpha() {
   alphaEnable = !alphaEnable;
 }
 
@@ -127,7 +147,7 @@ export let enableNormalMap = false;
 /**
  * Toggles the normalMap enable flag.
  */
-export function setNormalMap(){
+export function setNormalMap() {
   enableNormalMap = !enableNormalMap;
 }
 ;
@@ -139,7 +159,7 @@ export let light = [0, 60, 30];
  * @param {number} i - Index.
  * @param {number} value - Light value.
  */
-export function setLight(i, value){
+export function setLight(i, value) {
   light[i] = value;
 }
 
@@ -152,7 +172,7 @@ const elemPoint = document.getElementById('point');
 /**
  * Increments the point counter and updates the display.
  */
-export function incrementPoint(){  
+export function incrementPoint() {
   point++;
   elemPoint.textContent = getPoint();
   if (point > 999) {
@@ -164,7 +184,7 @@ export function incrementPoint(){
  * Gets the point counter as a zero-padded string.
  * @returns {string} - Point counter as a zero-padded string.
  */
-export function getPoint(){
+export function getPoint() {
   const str = '000' + point;
   return str.substring(str.length - 3);
 }
@@ -174,7 +194,7 @@ export function getPoint(){
 /*                                PAUSE                                 */
 export let isPaused = false;
 export function setPause() {
-  isPaused=true;
+  isPaused = true;
 }
 
 
@@ -185,7 +205,7 @@ export function setPause() {
  * @returns {number} - Random number.
  */
 export function rand(min, max) {
-    return Math.random() * (max - min) + min;
+  return Math.random() * (max - min) + min;
 }
 
 
@@ -195,6 +215,6 @@ export function rand(min, max) {
  * @returns {number} - Value in radians.
  */
 export function degToRad(deg) {
-    return deg * Math.PI / 180;
+  return deg * Math.PI / 180;
 }
 
