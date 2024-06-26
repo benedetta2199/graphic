@@ -21,7 +21,7 @@ let frameCount = 0;
  * @param {Array} cameraTarget - Camera target.
  * @param {Array} objOffset - Object offset.
  */
-export function renderScene(gl, meshProgramInfo, parts, cameraPosition, cameraTarget, objOffset) {
+export function renderScene(gl, meshProgramInfo, parts, cameraPosition, cameraTarget) {
   setListener(gl);
 
   /**
@@ -72,7 +72,7 @@ export function renderScene(gl, meshProgramInfo, parts, cameraPosition, cameraTa
     webglUtils.setUniforms(meshProgramInfo, sharedUniforms);
 
     // Render PLANE
-    let u_world = u_worldPlane(gl.canvas.width, gl.canvas.height, zNear, zFar, time);
+    let u_world = u_worldPlane(gl.canvas.height, time);
     renderObj(gl, meshProgramInfo, parts.plane, u_world);
 
     // Render ELICA

@@ -34,7 +34,7 @@ export function renderObj(gl, meshProgramInfo, part, u_world) {
  * @param {number} time - Current time.
  * @returns {Object} - World transformation matrix for the plane.
  */
-export function u_worldPlane(width, height, time) {
+export function u_worldPlane(height, time) {
   // Get the mouse Y position in the world coordinate system
   const worldMouseY = -canvasToWorld(height);
   
