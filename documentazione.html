@@ -12,30 +12,44 @@
   <div class="documentation">
     <h1>Descrizione del porgetto</h1>
     <div>
-      <p>L'obiettivo di questo progetto implementato in WebGl è quello di sviluppare un semplice videogioco 3D.</p>
+      <p class="text-b uppercase">Presentazione</p>
       <p>
-        Nello specifico l'idea di base creare un progetto che rendere l'utente un pilota d'areoplano per solcare i cieli 
-        evitando ostacoli e raccogliendo monete accumulando così punti.
+        L'obiettivo del progetto è sviluppare un videogioco 3D implementato in WebGL, che permette all'utente di assumere il ruolo 
+        di un pilota d'aeroplano. L'idea centrale è quella di creare un'esperienza di gioco semplice ma allo stesso tempo immersiva e 
+        dinamica dove il giocatore può esplorare i cieli.
       </p>
       <br/>
+      <p class="text-b uppercase">Interfaccia</p>
       <p>
-        L'interfaccia è stata studiata per poter essere fruita sia da pc che da dispositivi mobili, e risulta costituita
-        da 2 sezioni principali: il menù di personalizzazione e il canva.
+        Il gioco è progettato per essere utilizzabile sia su PC che su dispositivi mobili, con un'interfaccia suddivisa in due sezioni
+        principali: il menù di personalizzazione e il canvas.
+        Questa struttura permette agli utenti di avere un controllo completo sull'esperienza di gioco, rendendola accessibile e 
+        personalizzabile.
       </p>
-      <p class="text-b uppercase">Il canva</p>
+      <p class="text-b">Il Canva</p>
       <p>
-        Il canva renderizza una scena contente il mondo che ruota su sè stesso, e delle nuvole sullo sfondo, 
-        oltre che ai protagonisti del gioco ovvero un aeroplano che può muoversi in verticale e degli oggetti con cui può collidere
-        (ostacoli e monete.)
+        Il canvas renderizza una scena tridimensionale complessa che include un mondo rotante e nuvole di sfondo, creando un ambiente 
+        di volo pseudo-realistico e coinvolgente. 
+        L'aeroplano controllabile tramite input da mouse, tastiera o touchscreen si muove nello spazio lungo l'asse y, interagendo 
+        con vari oggetti di gioco come ostacoli e monete. 
+        Il mondo rotante e le nuvole aggiungono una dinamica visiva che rende l'esperienza di volo più realistica e avvincente.
       </p>
-      <p class="text-b uppercase">Il menu</p>
+      <p class="text-b">Il Menu</p>
       <p>
-        Mentre il menu consente di personalizzare la velocità degli oggetti renderizzati (nuvole, monete e nuvole), il tempo d'attesa
-        per la creazione (nuvole, monete e nuvole), la direzione della luce. Inoltre permette di attivare e disattivare l'opacità le normal map 
-        e la musica.
+        Il menù consente una personalizzazione dettagliata dell'esperienza di gioco. 
+        Gli utenti possono modificare la velocità degli oggetti renderizzati, come nuvole e monete, e impostare il tempo di attesa per
+        la loro generazione. Inoltre, è possibile regolare la direzione della luce per creare diversi effetti di illuminazione, 
+        migliorando l'atmosfera visiva del gioco. 
+        Il menù permette anche di attivare o disattivare l'opacità, le normal map degli oggetti e la musica di sottofondo, 
+        offrendo un'esperienza personalizzata e adattabile alle preferenze di ciascun giocatore.
       </p>
     </div>
     <h1>Come si gioca</h1>
+    <p>
+      L'utente deve volare schivando ostacoli che variano in forma e dimensione, e raccogliendo monete posizionate lungo il percorso.
+      Ogni moneta raccolta contribuisce al punteggio totale del giocatore, aggiungendo un elemento di sfida e incentivando il 
+      perfezionamento delle proprie abilità di volo.
+    </p>
     <div class="d-flex">
       <div class="d-flex">
         <img src="./src/img/plane.png" alt="plane"/>
@@ -52,8 +66,9 @@
         <img src="./src/img/coin.png" class="scale-05" alt="plane"/>
         <div class="text-left">
           <p class="text-b uppercase">Raccogli tutte le monete</p>
-          <p class="p-left">Ogni moneta vale 1 punto</p>
+          <p class="p-left">Ogni moneta aumenta di 1 il punteggio</p>
           <p class="p-left">Al raggiungimento di 999 punti il gioco termina </p>
+        
         </div>
       </div>
       <div class="d-flex">
@@ -64,6 +79,9 @@
         </div>
       </div>
     </div>
+    /*AIUTOOO*//
+      Le scelte progettuali includono l'uso di shader personalizzati per gestire l'illuminazione avanzata e le normal maps, che possono essere abilitate o disabilitate dinamicamente per ottimizzare le prestazioni. Tra le funzionalità WebGL utilizzate, spiccano la gestione delle texture, la creazione di buffer per le geometrie dei modelli e le trasformazioni nello spazio 3D. Una particolarità del progetto è l'oscillazione sinusoidale applicata al movimento dell'aeroplano, che aggiunge realismo e dinamismo al volo. Inoltre, il menù di personalizzazione consente agli utenti di modificare la velocità degli oggetti, il tempo di generazione, la direzione della luce e di attivare o disattivare l'opacità, le normal maps e la musica, rendendo l'esperienza di gioco altamente configurabile e coinvolgente.
+
     <h1>Divisione dei file</h1>
   </div>
   
