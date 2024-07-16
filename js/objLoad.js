@@ -276,6 +276,71 @@ export function createColoredTexture(gl, width, height, color) {
   return texture;
 }
 
+export function createDepthTexture(gl, depthTextureSize) {
+  const depthTexture = gl.createTexture();
+  gl.bindTexture(gl.TEXTURE_2D, depthTexture);
+  gl.texImage2D(
+    gl.TEXTURE_2D,      // bersaglio
+    0,                  // livello mip
+    gl.DEPTH_COMPONENT, // formato interno
+    depthTextureSize,   // larghezza
+    depthTextureSize,   // altezza
+    0,                  // confine
+    gl.DEPTH_COMPONENT, // formato
+    gl.UNSIGNED_INT,    // tipo
+    null);              // dati
+  gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.NEAREST);
+  gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.NEAREST);
+  gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
+  gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
+  return depthTexture;
+}
+
+export function createDepthFramebuffer(gl, depthTexture) {
+  const depthFramebuffer = gl.createFramebuffer();
+  gl.bindFramebuffer(gl.FRAMEBUFFER, depthFramebuffer);
+  gl.framebufferTexture2D(
+      gl.FRAMEBUFFER,       // bersaglio
+      gl.DEPTH_ATTACHMENT,  // punto di attacco
+      gl.TEXTURE_2D,        // destinazione della trama
+      depthTexture,         // struttura
+      0);                   // livello mip
+  return depthFramebuffer;
+}
+
+
+export function createUnusedTexture (gl, depthTextureSize) {
+  // crea una texture di colore della stessa dimensione della texture di profondità
+  const unusedTexture = gl.createTexture();
+  gl.bindTexture(gl.TEXTURE_2D, unusedTexture);
+  gl.texImage2D(
+      gl.TEXTURE_2D,
+      0,
+      gl.RGBA,
+      depthTextureSize,
+      depthTextureSize,
+      0,
+      gl.RGBA,
+      gl.UNSIGNED_BYTE,
+      null,
+  );
+  gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.NEAREST);
+  gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.NEAREST);
+  gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
+  gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
+  
+  // lo collega al framebuffer
+  gl.framebufferTexture2D(
+      gl.FRAMEBUFFER,        // bersaglio
+      gl.COLOR_ATTACHMENT0,  // punto di attacco
+      gl.TEXTURE_2D,         // destinazione della trama
+      unusedTexture,         // struttura
+      0);                    // livello mip
+  return unusedTexture;
+}
+
+
+
 function parseMapArgs(unparsedArgs) {
   // TODO: handle options
   return unparsedArgs;

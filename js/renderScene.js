@@ -4,7 +4,8 @@ import { renderCloud, setCloud } from './cloud.js';
 import { setListener } from './mousePosition.js';
 import { renderObj, u_worldElica,  u_worldPlane, u_worldWorld } from './renderObj.js';
 import { renderCoin, renderObstacle, setCoin, setObstacle } from './collectibles.js';
-import { degToRad, isPaused, rand, speed, timing, alphaEnable, zFar, zNear, light } from './utils.js';
+import { degToRad, isPaused, rand, speed, timing, alphaEnable, zFar, zNear, light, setTime } from './utils.js';
+import { drawScene } from './drawScene.js';
 
 // Initialize arrays for clouds, obstacles, and coins
 const clouds = [setCloud(rand(4, 9), 0)];
@@ -21,7 +22,7 @@ let frameCount = 0;
  * @param {Array} cameraTarget - Camera target.
  * @param {Array} objOffset - Object offset.
  */
-export function renderScene(gl, meshProgramInfo, parts, cameraPosition, cameraTarget) {
+export function renderScene(gl, meshProgramInfo, colorProgramInfo, parts, cameraPosition, cameraTarget) {
   setListener(gl);
 
   /**
@@ -34,6 +35,7 @@ export function renderScene(gl, meshProgramInfo, parts, cameraPosition, cameraTa
     }
 
     time *= 0.006; // Convert time to seconds
+    setTime(time);
     frameCount++;
 
     // Resize WebGL canvas to display size
@@ -67,29 +69,36 @@ export function renderScene(gl, meshProgramInfo, parts, cameraPosition, cameraTa
       u_viewWorldPosition: cameraPosition,
     };
 
+    drawScene(gl, meshProgramInfo, sharedUniforms, parts);
+
+    /*
+
     // Use the specified shader program
     gl.useProgram(meshProgramInfo.program);
     webglUtils.setUniforms(meshProgramInfo, sharedUniforms);
 
     // Render PLANE
-    let u_world = u_worldPlane(gl.canvas.height, time);
+    let u_world = u_worldPlane(gl.canvas.height);
+    console.log(parts.plane)
+    
+    console.log(u_world)
     renderObj(gl, meshProgramInfo, parts.plane, u_world);
 
     // Render ELICA
-    renderObj(gl, meshProgramInfo, parts.elica, u_worldElica(u_world, time));
+    renderObj(gl, meshProgramInfo, parts.elica, u_worldElica(u_world));
 
     // Render WORLD
-    renderObj(gl, meshProgramInfo, parts.world, u_worldWorld(time));
+    renderObj(gl, meshProgramInfo, parts.world, u_worldWorld());
 
     // Render OBSTACLES periodically
     if (frameCount % timing.obstacle === 0) {
-      obstacles.push(setObstacle(time));
+      obstacles.push(setObstacle());
       if (obstacles.length > 5000 / (timing.obstacle * speed.obstacle)) {
         obstacles.shift();
       }
     }
     obstacles.forEach(data => {
-      renderObstacle(gl, meshProgramInfo, parts.obstacle, time, data);
+      renderObstacle(gl, meshProgramInfo, parts.obstacle, data);
     });
 
     // Render COINS periodically
@@ -99,26 +108,26 @@ export function renderScene(gl, meshProgramInfo, parts, cameraPosition, cameraTa
       const yRotation = rand(45, 90);
       const y = rand(40, 120);
       for (let i = 0; i < numCoins; i++) {
-        coins.push(setCoin(time, i, y, amplitude, yRotation));
+        coins.push(setCoin(i, y, amplitude, yRotation));
       }
       if (coins.length > 30000 / (timing.coin * speed.coin)) {
         coins.shift();
       }
     }
 
-    coins = coins.filter(data => !renderCoin(gl, meshProgramInfo, parts.coin, time, data));
+    coins = coins.filter(data => !renderCoin(gl, meshProgramInfo, parts.coin, data));
 
     // Render CLOUD periodically
     if (frameCount % timing.cloud === 0) {
-      clouds.push(setCloud(rand(3, 9), time));
+      clouds.push(setCloud(rand(3, 9)));
       if (clouds.length > 5000 / (timing.cloud * speed.cloud)) {
         clouds.shift();
       }
     }
     clouds.forEach(data => {
-      renderCloud(gl, meshProgramInfo, parts.cube, time, data);
+      renderCloud(gl, meshProgramInfo, parts.cube, data);
     });
-
+*/
     // Request the next frame
     requestAnimationFrame(render);
   }

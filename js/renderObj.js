@@ -1,8 +1,7 @@
 "use strict";
 
 import { canvasToWorld, posRelX } from './mousePosition.js';
-import { getDefaultMaterial } from './planeLoader.js';
-import { degToRad, enableNormalMap } from './utils.js';
+import { degToRad, enableNormalMap, time } from './utils.js';
 
 /**
  * Render an object part with the specified world transformation matrix.
@@ -12,19 +11,15 @@ import { degToRad, enableNormalMap } from './utils.js';
  * @param {Object} u_world - World transformation matrix.
  */
 export function renderObj(gl, meshProgramInfo, part, u_world) {
-  for (const { bufferInfo, material } of part) {
-    webglUtils.setBuffersAndAttributes(gl, meshProgramInfo, bufferInfo);
-
+  
+  const activeNormalMap = enableNormalMap?1.0:0.0;
+  part.forEach(({ bufferInfo, material }) => {
     // Aggiungi il flag `useNormalMap` ai uniform
-    const uniforms = {
-      u_world,
-      useNormalMap: enableNormalMap?1.0:0.0,
-      ...material,
-    };
-
+    const uniforms = { u_world, useNormalMap: activeNormalMap, ...material,};
+    webglUtils.setBuffersAndAttributes(gl, meshProgramInfo, bufferInfo);
     webglUtils.setUniforms(meshProgramInfo, uniforms);
     webglUtils.drawBufferInfo(gl, bufferInfo);
-  }
+  });
 }
 
 /**
@@ -34,7 +29,7 @@ export function renderObj(gl, meshProgramInfo, part, u_world) {
  * @param {number} time - Current time.
  * @returns {Object} - World transformation matrix for the plane.
  */
-export function u_worldPlane(height, time) {
+export function u_worldPlane(height) {
   // Get the mouse Y position in the world coordinate system
   const worldMouseY = -canvasToWorld(height);
   
@@ -56,7 +51,7 @@ export function u_worldPlane(height, time) {
  * @param {number} time - Current time.
  * @returns {Object} - World transformation matrix for the propeller.
  */
-export function u_worldElica(u_world_plane, time) {
+export function u_worldElica(u_world_plane) {
   return m4.xRotate(u_world_plane, -time);
 }
 
@@ -66,7 +61,7 @@ export function u_worldElica(u_world_plane, time) {
  * @param {number} time - Current time.
  * @returns {Object} - World transformation matrix for the world object.
  */
-export function u_worldWorld(time) {
+export function u_worldWorld() {
   const prop = 5;
   let u_world_world = m4.translation(0, -(prop * 2.5), -(prop * 10));
   u_world_world = m4.xRotate(u_world_world, degToRad(75));
@@ -97,7 +92,7 @@ export function u_worldFoto() {
  * @param {number} rotation - Rotation angle of the cloud.
  * @returns {Object} - World transformation matrix for the cloud.
  */
-export function u_worldCloud(time, y, z, scale, rotation) {
+export function u_worldCloud(y, z, scale, rotation) {
   const acc = time * (3.5 - scale);
   let u_world = m4.translation(100 - acc, y, z);
   u_world = m4.xRotate(u_world, degToRad(rotation));

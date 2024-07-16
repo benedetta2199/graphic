@@ -1,5 +1,7 @@
 "use strict";
 
+import { degToRad } from "./utils.js";
+
 /**
  * Configura la posizione della telecamera e le luci per la scena.
  * @param {WebGLRenderingContext} gl - Contesto WebGL.
@@ -12,11 +14,7 @@ export function setupCameraAndLight(gl, extents) {
 
   // Calcola l'offset dell'oggetto per centrarlo nella scena
   const objOffset = m4.scaleVector(
-    m4.addVectors(
-      extents.min,
-      m4.scaleVector(range, 0.5)),
-    -1
-  );
+    m4.addVectors( extents.min, m4.scaleVector(range, 0.5)), 1);
 
   // Posizione del punto di mira della telecamera
   //const cameraTarget = [-5, 20, 0];
@@ -26,8 +24,8 @@ export function setupCameraAndLight(gl, extents) {
   // Posizione della telecamera
   const cameraPosition = m4.addVectors(cameraTarget, [0, 0, radius]);
   // Piani di clipping per la telecamera
-  const zNear = radius / 20;
-  const zFar = radius * 6;
+  const zNear = radius / 20; 
+  const zFar = radius * 6; 
 
   // Restituisce un oggetto con le informazioni sulla telecamera e le luci
   return { cameraPosition, cameraTarget, objOffset, zNear, zFar };

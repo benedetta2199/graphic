@@ -4,7 +4,7 @@ import { endGame } from "./endGame.js";
 export const vs = `
 attribute vec4 a_position;   // Vertex position in model space
 attribute vec3 a_normal;     // Vertex normal in model space
-attribute vec3 a_tangent;    // Vertex tangent in model space
+attribute vec3 a_tangent;    // Vertex tangent in model space -> NORMAL MAP??
 attribute vec2 a_texcoord;   // Texture coordinates
 attribute vec4 a_color;      // Vertex color
 
@@ -24,7 +24,9 @@ varying vec4 v_projectedTexcoord;
 void main() {
   vec4 worldPosition = u_world * a_position; // Transform vertex position to world space
   gl_Position = u_projection * u_view * worldPosition; // Transform vertex position to clip space
-  v_surfaceToView = u_viewWorldPosition - worldPosition.xyz; // Calculate vector from surface to view
+  v_texcoord = a_texcoord; 
+      //v_surfaceToView = u_viewWorldPosition - worldPosition.xyz; // Calculate vector from surface to view
+  v_projectedTexcoord = u_textureMatrix * worldPosition;
 
   mat3 normalMat = mat3(u_world); // Extract 3x3 matrix for normal transformation
   v_normal = normalize(normalMat * a_normal); // Transform and normalize the normal
@@ -41,12 +43,12 @@ precision highp float; // Set precision for float variables
 varying vec3 v_normal; // Interpolated normal from vertex shader
 varying vec3 v_tangent; // Interpolated tangent from vertex shader
 varying vec3 v_surfaceToView; // Interpolated vector from surface to view from vertex shader
-varying vec2 v_texcoord; // Interpolated texture coordinates from vertex shader
-varying vec4 v_color; // Interpolated color from vertex shader
+varying vec2 v_texcoord;                // Interpolated texture coordinates from vertex shader
+varying vec4 v_color;                   // Interpolated color from vertex shader
 varying vec4 v_projectedTexcoord;
 
-uniform vec3 diffuse; // Diffuse color -- u_texture
-uniform sampler2D diffuseMap; // Diffuse texture map
+uniform vec3 diffuse;                   // Diffuse color -- u_texture di webgl
+uniform sampler2D diffuseMap;           // Diffuse texture map
 uniform vec3 ambient; // Ambient color
 uniform vec3 emissive; // Emissive color
 uniform vec3 specular; // Specular color
@@ -84,7 +86,7 @@ void main () {
   vec3 effectiveDiffuse = diffuse * diffuseMapColor.rgb * v_color.rgb; // Compute the effective diffuse color
   float effectiveOpacity = opacity * diffuseMapColor.a * v_color.a; // Compute the effective opacity
 
-   vec3 projectedTexcoord = v_projectedTexcoord.xyz / v_projectedTexcoord.w;
+  vec3 projectedTexcoord = v_projectedTexcoord.xyz / v_projectedTexcoord.w;
    bool inRange = 
         projectedTexcoord.x >= 0.0 &&
         projectedTexcoord.x <= 1.0 &&
@@ -92,7 +94,7 @@ void main () {
         projectedTexcoord.y <= 1.0;
   
     vec4 projectedTexColor = texture2D(u_projectedTexture, projectedTexcoord.xy);
-    //vec4 texColor = texture2D(diffuse, v_texcoord) * u_colorMult;
+      //vec4 texColor = texture2D(diffuse, v_texcoord) * u_colorMult;
   
   float projectedAmount = inRange ? 1.0 : 0.0;
 
@@ -108,6 +110,45 @@ void main () {
   gl_FragColor = mix(gCol, projectedTexColor, projectedAmount);
 }
 `;
+
+
+export const vsColor = `
+attribute vec4 a_position;
+
+uniform mat4 u_projection;
+uniform mat4 u_view;
+uniform mat4 u_world;
+
+void main() {
+  // Multiply the position by the matrices.
+  gl_Position = u_projection * u_view * u_world * a_position;
+}
+`;
+export const fsColor = `
+precision mediump float;
+
+uniform vec4 u_color;
+void main() {
+  gl_FragColor = u_color;
+}
+`;
+
+export let settings = {
+  cameraX: 0,
+  cameraY: 0,
+  cameraZ: 0,
+  posX: 2.5,
+  posY: 4.8,
+  posZ: 4.3,
+  targetX: 0,
+  targetY: 0,
+  targetZ: 0,
+  projWidth: 1,
+  projHeight: 1,
+  perspective: true,
+  fieldOfView: 120,
+  bias: -0.006,
+};
 
 
 /*                                CLIPPING                                 */
@@ -128,6 +169,29 @@ export function setPlaneClipping(zN, zF) {
 
 export let timing = { obstacle: 1000, coin: 1100, cloud: 600 };
 export let speed = { obstacle: 1, coin: 2, cloud: 1 };
+
+
+export let time = 0;
+export function setTime(t){
+  time = t;
+}
+
+
+export const clouds = [];
+export const obstacles = [];
+export let coins = [];
+export function updateCoin(c){
+  coins = c;
+}
+export function removeObstacle(){
+  obstacles.shift();
+}
+export function removeCloud(){
+  coins.shift();
+}
+export function removeCoin(){
+  clouds.shift();
+}
 
 
 

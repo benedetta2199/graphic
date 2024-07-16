@@ -1,14 +1,14 @@
 "use strict";
 
 import { renderObj } from './renderObj.js';
-import { rand, speed } from './utils.js';
+import { rand, speed, time } from './utils.js';
 
 const size = 4;
 /*  range X > 110
     range Y 40-145
     range Z < -50
 */
-export function setCloud(n,time){
+export function setCloud(n){
     const data = [];
     const yCloud = rand(40, 145);
     const zCloud = rand(50, 150);
@@ -28,7 +28,7 @@ export function setCloud(n,time){
     return data;
 }
 
-function u_worldCube(data, time) {
+function u_worldCube(data) {
     const elemT= data.elemT;
     const elemS= data.elemS;
     const elemR= data.elemR;
@@ -40,8 +40,8 @@ function u_worldCube(data, time) {
     return u_world;
 }
 
-export function renderCloud(gl, meshProgramInfo, cube, time, data) {
+export function renderCloud(gl, meshProgramInfo, cube, data) {
     for(var i = 0; i < data.length; i++) {
-        renderObj(gl, meshProgramInfo, cube, u_worldCube(data[i], time));
+        renderObj(gl, meshProgramInfo, cube, u_worldCube(data[i]));
     }    
 }

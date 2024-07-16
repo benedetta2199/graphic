@@ -3,7 +3,7 @@
 import { loadPlane, getGeometriesExtents } from './planeLoader.js';
 import { setupCameraAndLight } from './cameraAndLightSetup.js';
 import { renderScene } from './renderScene.js';
-import { vs, fs, rand, setPlaneClipping } from './utils.js';
+import { vs, fs, vsColor, fsColor, rand, setPlaneClipping } from './utils.js';
 import { loadEndGameContent } from './endGame.js';
 
 /**
@@ -23,6 +23,7 @@ async function main() {
 
   // Create a WebGL program using vertex and fragment shaders
   const meshProgramInfo = webglUtils.createProgramInfo(gl, [vs, fs]);
+  const colorProgramInfo = webglUtils.createProgramInfo(gl, [vsColor, fsColor]);
 
   // Object paths for asynchronous loading
   const objectPaths = {
@@ -67,7 +68,7 @@ async function main() {
   setPlaneClipping(zNear, zFar);
 
   // Render the scene with the loaded objects and camera setup
-  renderScene(gl, meshProgramInfo, parts, cameraPosition, cameraTarget, objOffset);
+  renderScene(gl, meshProgramInfo,  colorProgramInfo, parts, cameraPosition, cameraTarget, objOffset);
 }
 
 // Execute the main function to start the application

@@ -2,7 +2,7 @@
 
 import { checkCollisionCoin, checkCollisionObstacle } from './mousePosition.js';
 import { renderObj } from './renderObj.js';
-import { degToRad, rand, speed } from './utils.js';
+import { degToRad, rand, speed, time } from './utils.js';
 
 /*OBSTACLE*/
 const sizeO = 5;
@@ -11,7 +11,7 @@ const sizeO = 5;
     range Z < -50
     velocità oscillzione 50 100
 */
-export function setObstacle(time){
+export function setObstacle(){
     const s = rand(1, sizeO);
     const vel = rand(0.5,1.5);
     const data={
@@ -26,15 +26,15 @@ export function setObstacle(time){
     return data;
 }
 
-function u_worldObstacle(time, data) {
+function u_worldObstacle(data) {
   const frequency = 0.5;  // Frequenza dell'oscillazione
 
-  const rotationY = Math.PI/2 * Math.sin(time/100 * frequency); // Rotazione oscillatoria (mezza circonferenza)
+    const rotationY = Math.PI/2 * Math.sin(time/100 * frequency); // Rotazione oscillatoria (mezza circonferenza)
     const elemT= data.elemT;
     const elemS= data.elemS;
     const elemR= data.elemR;
     const elemO= data.elemO;
-    const pos = {x: elemT.x-(time*speed.obstacle*data.speed), y:elemT.y+Math.sin(time*elemO)};
+    const pos = {x: elemT.x-(time*speed.obstacle*data.speed), y: elemT.y+Math.sin(time*elemO)};
     var u_world = m4.translation(pos.x,pos.y, elemT.z+Math.sin(time*elemO)); // Posiziona l'oggetto 
     //var u_world = m4.translation(-35,50,-35); // Posiziona l'oggetto 
     u_world = m4.xRotate(u_world, 0-elemR.x );
@@ -47,17 +47,17 @@ function u_worldObstacle(time, data) {
     return u_world;
 }
 
-export function renderObstacle(gl, meshProgramInfo, obstacle, time, data) {
+export function renderObstacle(gl, meshProgramInfo, obstacle, data) {
   for (const { bufferInfo, material } of obstacle) {
     webglUtils.setBuffersAndAttributes(gl, meshProgramInfo, bufferInfo);
     const updatedMaterial = { ...material, diffuse:  data.color.map(c => c / 255)};
-    webglUtils.setUniforms(meshProgramInfo, { u_world: u_worldObstacle(time, data), u_color: data.color }, updatedMaterial);
+    webglUtils.setUniforms(meshProgramInfo, { u_world: u_worldObstacle(data), u_color: data.color }, updatedMaterial);
     webglUtils.drawBufferInfo(gl, bufferInfo);
   }
 }
 
 /*COIN*/
-export function setCoin(time, i, yDistr, ampiezza, yRot){
+export function setCoin(i, yDistr, ampiezza, yRot){
   return{
       elemS: 6, 
       elemT: {x:120+i*rand(8,12)+(time*speed.coin), y:yDistr+Math.sin(i)*ampiezza, z:-23},
@@ -66,7 +66,7 @@ export function setCoin(time, i, yDistr, ampiezza, yRot){
   };
 }
 
-function u_worldCoin(d, time) {
+function u_worldCoin(d) {
   const elemS= d.elemS;
   const pos = {x:d.elemT.x-(time*speed.coin), y: d.elemT.y+Math.sin(time*d.elemO)};
   var u_world = m4.translation(pos.x, pos.y, d.elemT.z);
@@ -77,7 +77,7 @@ function u_worldCoin(d, time) {
   return {u_world, collision};
 }
 
-export function renderCoin(gl, meshProgramInfo, coin, time, data) {
+export function renderCoin(gl, meshProgramInfo, coin, data) {
   const {u_world, collision} = u_worldCoin(data, time);
   renderObj(gl, meshProgramInfo, coin, u_world);
 
