@@ -27,6 +27,11 @@ export function drawScene(gl, programInfo, sharedUnifoms, parts) {
     // Render WORLD
     renderObj(gl, programInfo, parts.world, u_worldWorld());
 
+     // Render P
+    /*let u_worldP = m4.translation(0, 60, -50);
+    u_worldP = m4.scale(u_worldP, 80, 80, 80);
+     renderObj(gl, programInfo, parts.p, u_worldP);*/
+
     // Render OBSTACLES periodically
     if (frameElement % timing.obstacle === 0) {
       obstacles.push(setObstacle());

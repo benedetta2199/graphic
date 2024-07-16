@@ -279,6 +279,7 @@ export function createColoredTexture(gl, width, height, color) {
 export function createDepthTexture(gl, depthTextureSize) {
   const depthTexture = gl.createTexture();
   gl.bindTexture(gl.TEXTURE_2D, depthTexture);
+  
   gl.texImage2D(
     gl.TEXTURE_2D,      // bersaglio
     0,                  // livello mip

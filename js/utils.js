@@ -61,6 +61,8 @@ uniform sampler2D u_projectedTexture;
 uniform sampler2D normalMap; // Normal map texture
 uniform float useNormalMap; // Flag to determine if normal map should be used
 
+uniform float u_bias;
+
 void main () {
   vec3 normal = normalize(v_normal); // Normalize interpolated normal
 
@@ -77,24 +79,29 @@ void main () {
   vec3 halfVector = normalize(u_lightDirection + surfaceToViewDirection); // Compute the half vector for specular lighting
 
   float fakeLight = dot(u_lightDirection, normal) * 0.6 + 0.6; // Compute the diffuse lighting component
-  float specularLight = clamp(dot(normal, halfVector), 0.001, 1.0); // Compute the specular lighting component
+  float specularLight = clamp(dot(normal, halfVector), 0.0001, 1.0); // Compute the specular lighting component
 
-    vec4 specularMapColor = texture2D(specularMap, v_texcoord); // Sample the specular map
-    vec3 effectiveSpecular = specular * specularMapColor.rgb; // Compute the effective specular color
+  vec4 specularMapColor = texture2D(specularMap, v_texcoord); // Sample the specular map
+  vec3 effectiveSpecular = specular * specularMapColor.rgb; // Compute the effective specular color
 
-  vec4 diffuseMapColor = texture2D(diffuseMap, v_texcoord); // Sample the diffuse map
+  vec4 diffuseMapColor = texture2D(diffuseMap, v_texcoord); // Sample the diffuse map 
   vec3 effectiveDiffuse = diffuse * diffuseMapColor.rgb * v_color.rgb; // Compute the effective diffuse color
   float effectiveOpacity = opacity * diffuseMapColor.a * v_color.a; // Compute the effective opacity
 
   vec3 projectedTexcoord = v_projectedTexcoord.xyz / v_projectedTexcoord.w;
+  
+  float currentDepth = projectedTexcoord.z + u_bias;
+
    bool inRange = 
         projectedTexcoord.x >= 0.0 &&
         projectedTexcoord.x <= 1.0 &&
         projectedTexcoord.y >= 0.0 &&
         projectedTexcoord.y <= 1.0;
   
-    vec4 projectedTexColor = texture2D(u_projectedTexture, projectedTexcoord.xy);
+        //vec4 projectedTexColor = texture2D(u_projectedTexture, projectedTexcoord.xy);
       //vec4 texColor = texture2D(diffuse, v_texcoord) * u_colorMult;
+    float projectedDepth = texture2D(u_projectedTexture, projectedTexcoord.xy).r;
+    float shadowLight = (inRange && projectedDepth <= currentDepth) ? 0.3 : 1.0;  
   
   float projectedAmount = inRange ? 1.0 : 0.0;
 
@@ -106,8 +113,8 @@ void main () {
       effectiveOpacity // Set the final opacity
   );
 
-
-  gl_FragColor = mix(gCol, projectedTexColor, projectedAmount);
+  gl_FragColor = vec4(gCol.rgb * shadowLight, gCol.a);
+  //gl_FragColor = mix(gCol, projectedTexColor, projectedAmount);
 }
 `;
 
@@ -172,7 +179,7 @@ export let speed = { obstacle: 1, coin: 2, cloud: 1 };
 
 
 export let time = 0;
-export function setTime(t){
+export function setTime(t) {
   time = t;
 }
 
@@ -180,16 +187,16 @@ export function setTime(t){
 export const clouds = [];
 export const obstacles = [];
 export let coins = [];
-export function updateCoin(c){
+export function updateCoin(c) {
   coins = c;
 }
-export function removeObstacle(){
+export function removeObstacle() {
   obstacles.shift();
 }
-export function removeCloud(){
+export function removeCloud() {
   coins.shift();
 }
-export function removeCoin(){
+export function removeCoin() {
   clouds.shift();
 }
 
@@ -217,14 +224,24 @@ export function setNormalMap() {
 ;
 
 /*                                LIGHT                                 */
-export let light = [0, 60, 30];
+export let lightPosition = [0, 0, 0];
+export let lightTarget = [0, 0, 0];
+export let cameraPosition = [0, 0, 0];
+export let cameraTarget = [0, 0, 0];
 /**
  * Sets the light value at the given index.
  * @param {number} i - Index.
  * @param {number} value - Light value.
  */
 export function setLight(i, value) {
-  light[i] = value;
+  lightPosition[i] = value;
+}
+
+export function beginLightCamera(l, lt, c, ct) {
+  lightPosition = l;
+  lightTarget = lt;
+  cameraPosition = c;
+  cameraTarget = ct;
 }
 
 

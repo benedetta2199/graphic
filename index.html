@@ -55,11 +55,11 @@
     <div class="menu-items col">
       <h3>Direzione della luce</h3>
       <label for="lightX">Asse X: </label>
-      <input type="range" id="lightX" min="-0" max="300" value="0">
+      <input type="range" id="lightX" min="-60" max="20" value="-32">
       <label for="lightY">Asse Y: </label>
-      <input type="range" id="lightY" min="-40" max="90" value="0">
+      <input type="range" id="lightY" min="90" max="120" value="120">
       <label for="lightZ">Asse Z: </label>
-      <input type="range" id="lightZ" min="0" max="300" value="0">
+      <input type="range" id="lightZ" min="-60" max="20" value="20">
       <!--<label for="lightX">Asse X: </label>
       <input type="range" id="lightX" min="-60" max="60" value="0">
       <label for="lightY">Asse Y: </label>
@@ -84,8 +84,10 @@
   <script src="https://webglfundamentals.org/webgl/resources/m4.js"></script>
   <!-- partial -->
   <script  type="module" src="./js/script.js"></script>
+  
+  <script src="https://webglfundamentals.org/webgl/resources/webgl-lessons-ui.js"></script>
   <script type="module">
-    import {setAlpha, alphaEnable, timing, speed, light, setLight, settings, enableNormalMap, setNormalMap} from "./js/utils.js";
+    import {setAlpha, alphaEnable, timing, speed, setLight, settings, enableNormalMap, setNormalMap} from "./js/utils.js";
 
     var audio = document.getElementById("backgroundAudio");
     var audioControlButton = document.getElementById("audioControl");
@@ -129,16 +131,17 @@
     });
 
     document.getElementById('lightX').addEventListener('input', (event) => {
-      settings.cameraX = event.target.value;
-      console.log(event.target.value);
+      setLight(0, event.target.value);
+      console.log("X: "+event.target.value);
     });
     document.getElementById('lightY').addEventListener('input', (event) => {
-      settings.cameraY = event.target.value;
-      console.log(event.target.value);
+      setLight(1, event.target.value);
+      console.log("Y: "+event.target.value);
     });
     document.getElementById('lightZ').addEventListener('input', (event) => {
-      settings.cameraZ = event.target.value;
-      console.log(event.target.value);
+      //settings.cameraZ = event.target.value;
+      setLight(2, event.target.value);
+      console.log("Z: "+event.target.value);
     });
 
     btAlpha.addEventListener('click', (e)=>{

@@ -44,7 +44,7 @@ export function checkCollisionObstacle(pos) {
 
   if(pos.y<y+9 && pos.y>y-9){
     if(pos.x< -posRelX+11.9 && pos.x> -posRelX){
-      endGame();
+      //endGame();
     }
   }
   

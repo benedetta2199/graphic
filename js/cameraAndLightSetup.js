@@ -1,6 +1,6 @@
 "use strict";
 
-import { degToRad } from "./utils.js";
+import { beginLightCamera, degToRad, setPlaneClipping } from "./utils.js";
 
 /**
  * Configura la posizione della telecamera e le luci per la scena.
@@ -11,6 +11,12 @@ import { degToRad } from "./utils.js";
 export function setupCameraAndLight(gl, extents) {
   // Calcola la distanza tra i massimi e minimi degli estremi dell'oggetto
   const range = m4.subtractVectors(extents.max, extents.min);
+  // Calcola la distanza della telecamera dall'oggetto basata sulla dimensione dell'oggetto
+  const radius = m4.length(range) * 1.5;
+  // Piani di clipping per la telecamera
+  const zNear = radius / 20; 
+  const zFar = radius * 6; 
+  setPlaneClipping(zNear, zFar);
 
   // Calcola l'offset dell'oggetto per centrarlo nella scena
   const objOffset = m4.scaleVector(
@@ -19,14 +25,19 @@ export function setupCameraAndLight(gl, extents) {
   // Posizione del punto di mira della telecamera
   //const cameraTarget = [-5, 20, 0];
   const cameraTarget = [0, 85, 0];
-  // Calcola la distanza della telecamera dall'oggetto basata sulla dimensione dell'oggetto
-  const radius = m4.length(range) * 1.5;
+  
   // Posizione della telecamera
   const cameraPosition = m4.addVectors(cameraTarget, [0, 0, radius]);
-  // Piani di clipping per la telecamera
-  const zNear = radius / 20; 
-  const zFar = radius * 6; 
+  
+
+  // Punto di mira della luce
+  const lightTarget = [0, 20, -50];
+  // Posizione della luce
+  const lightPosition = [-32,120,20];
+
+  
+  beginLightCamera(lightPosition, lightTarget, cameraPosition, cameraTarget);
 
   // Restituisce un oggetto con le informazioni sulla telecamera e le luci
-  return { cameraPosition, cameraTarget, objOffset, zNear, zFar };
+  return {objOffset};
 }

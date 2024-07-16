@@ -20,6 +20,10 @@ async function main() {
   if (!gl) {
     return;
   }
+  const ext = gl.getExtension('WEBGL_depth_texture');
+  if (!ext) {
+    return alert('need WEBGL_depth_texture');
+  }
 
   // Create a WebGL program using vertex and fragment shaders
   const meshProgramInfo = webglUtils.createProgramInfo(gl, [vs, fs]);
@@ -34,6 +38,7 @@ async function main() {
     cube: './src/cube.obj',
     obstacle: './src/icosfera.obj',
     coin: './src/coin.obj',
+    p: './src/p.obj',
   };
 
   // Asynchronously load all objects and calculate their extents
@@ -63,12 +68,12 @@ async function main() {
   };
 
   // Get camera position, target, object offset, and clipping planes based on combined extents
-  const { cameraPosition, cameraTarget, objOffset, zNear, zFar } = setupCameraAndLight(gl, combinedExtents);
+  setupCameraAndLight(gl, combinedExtents);
 
-  setPlaneClipping(zNear, zFar);
 
+  console.log(parts);
   // Render the scene with the loaded objects and camera setup
-  renderScene(gl, meshProgramInfo,  colorProgramInfo, parts, cameraPosition, cameraTarget, objOffset);
+  renderScene(gl, meshProgramInfo, colorProgramInfo, parts);
 }
 
 // Execute the main function to start the application
