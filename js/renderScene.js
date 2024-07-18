@@ -138,7 +138,7 @@ export function renderScene(gl, meshProgramInfo, colorProgramInfo, parts) {
       //NUOVI
       u_textureMatrix: m4.identity(), //questo toglie tutte le texture
       u_projectedTexture: depthTexture,
-      u_bias: -0.007,
+      u_bias: -0.0099,
     };
     drawScene(gl, colorProgramInfo, sharedShadowUniforms, parts);
 
@@ -174,7 +174,7 @@ export function renderScene(gl, meshProgramInfo, colorProgramInfo, parts) {
       //NUOVI
       u_textureMatrix: textureMatrix, //questo toglie tutte le texture
       u_projectedTexture: depthTexture,
-      u_bias: -0.007,
+      u_bias: -0.0099,
     };
 
     drawScene(gl, meshProgramInfo, sharedUniforms, parts);
@@ -202,7 +202,7 @@ export function renderScene(gl, meshProgramInfo, colorProgramInfo, parts) {
       });
 
       // calls gl.drawArrays or gl.drawElements
-      webglUtils.drawBufferInfo(gl, cubeLinesBufferInfo, gl.LINES);
+     // webglUtils.drawBufferInfo(gl, cubeLinesBufferInfo, gl.LINES);
     }
 
 

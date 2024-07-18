@@ -11,7 +11,7 @@ const size = 4;
 export function setCloud(n){
     const data = [];
     const yCloud = rand(40, 145);
-    const zCloud = rand(50, 150);
+    const zCloud = rand(80, 150);
     
     for (let i = 0; i < n; i++) {
         const s = rand(1, size);

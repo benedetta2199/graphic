@@ -79,7 +79,7 @@ void main () {
   vec3 halfVector = normalize(u_lightDirection + surfaceToViewDirection); // Compute the half vector for specular lighting
 
   float fakeLight = dot(u_lightDirection, normal) * 0.6 + 0.6; // Compute the diffuse lighting component
-  float specularLight = clamp(dot(normal, halfVector), 0.0001, 1.0); // Compute the specular lighting component
+  float specularLight = clamp(dot(normal, halfVector), 0.00001, 1.0); // Compute the specular lighting component
 
   vec4 specularMapColor = texture2D(specularMap, v_texcoord); // Sample the specular map
   vec3 effectiveSpecular = specular * specularMapColor.rgb; // Compute the effective specular color
@@ -101,7 +101,7 @@ void main () {
         //vec4 projectedTexColor = texture2D(u_projectedTexture, projectedTexcoord.xy);
       //vec4 texColor = texture2D(diffuse, v_texcoord) * u_colorMult;
     float projectedDepth = texture2D(u_projectedTexture, projectedTexcoord.xy).r;
-    float shadowLight = (inRange && projectedDepth <= currentDepth) ? 0.3 : 1.0;  
+    float shadowLight = (inRange && projectedDepth <= currentDepth) ? 0.6 : 0.8;  
   
   float projectedAmount = inRange ? 1.0 : 0.0;
 

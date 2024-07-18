@@ -63,10 +63,12 @@ export function u_worldElica(u_world_plane) {
  */
 export function u_worldWorld() {
   const prop = 5;
-  let u_world_world = m4.translation(0, -(prop * 2.5), -(prop * 10));
-  u_world_world = m4.xRotate(u_world_world, degToRad(75));
-  u_world_world = m4.yRotate(u_world_world, time / 20);
-  u_world_world = m4.scale(u_world_world, prop * 4, prop * 3, prop * 4);
+  let u_world_world = m4.translation(0, -(prop * 10), -(prop * 25));
+  
+  u_world_world = m4.xRotate(u_world_world, degToRad(time)/5);
+  u_world_world = m4.yRotate(u_world_world, -degToRad(time)/6);
+  u_world_world = m4.zRotate(u_world_world, time / 20);
+  u_world_world = m4.scale(u_world_world, prop * 15, prop * 15, prop*15);
   return u_world_world;
 }
 

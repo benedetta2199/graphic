@@ -33,7 +33,8 @@ export function setupCameraAndLight(gl, extents) {
   // Punto di mira della luce
   const lightTarget = [0, 20, -50];
   // Posizione della luce
-  const lightPosition = [-32,120,20];
+  const lightPosition = [0,100,61]
+  //[10,70,31];
 
   
   beginLightCamera(lightPosition, lightTarget, cameraPosition, cameraTarget);
