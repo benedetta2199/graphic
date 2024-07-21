@@ -12,6 +12,7 @@ uniform mat4 u_projection;   // Projection matrix
 uniform mat4 u_view;         // View matrix
 uniform mat4 u_world;        // World transformation matrix
 uniform vec3 u_viewWorldPosition; // Camera position in world space
+uniform vec3 u_lightWorldPosition; // Light position in space
 uniform mat4 u_textureMatrix;
 
 varying vec3 v_normal;       // Normal to be passed to fragment shader
@@ -20,12 +21,14 @@ varying vec3 v_surfaceToView; // Vector from surface to view to be passed to fra
 varying vec2 v_texcoord;     // Texture coordinates to be passed to fragment shader
 varying vec4 v_color;        // Color to be passed to fragment shader
 varying vec4 v_projectedTexcoord;
+varying vec3 v_surfaceToLight; //*
 
 void main() {
   vec4 worldPosition = u_world * a_position; // Transform vertex position to world space
   gl_Position = u_projection * u_view * worldPosition; // Transform vertex position to clip space
   v_texcoord = a_texcoord; 
-      //v_surfaceToView = u_viewWorldPosition - worldPosition.xyz; // Calculate vector from surface to view
+  v_surfaceToView = u_viewWorldPosition - worldPosition.xyz; // Calculate vector from surface to view - worldPosition.xyz - surfaceWorldPosition in webgl
+  v_surfaceToLight = u_lightWorldPosition - worldPosition.xyz; //*
   v_projectedTexcoord = u_textureMatrix * worldPosition;
 
   mat3 normalMat = mat3(u_world); // Extract 3x3 matrix for normal transformation
@@ -43,6 +46,7 @@ precision highp float; // Set precision for float variables
 varying vec3 v_normal; // Interpolated normal from vertex shader
 varying vec3 v_tangent; // Interpolated tangent from vertex shader
 varying vec3 v_surfaceToView; // Interpolated vector from surface to view from vertex shader
+varying vec3 v_surfaceToLight; //*
 varying vec2 v_texcoord;                // Interpolated texture coordinates from vertex shader
 varying vec4 v_color;                   // Interpolated color from vertex shader
 varying vec4 v_projectedTexcoord;
@@ -75,11 +79,16 @@ void main () {
     normal = normalize(tbn * normal); // Transform and normalize the sampled normal
   }
 
+  vec3 surfaceToLightDirection = u_lightDirection-normalize(v_surfaceToLight);
   vec3 surfaceToViewDirection = normalize(v_surfaceToView); // Compute the view direction
-  vec3 halfVector = normalize(u_lightDirection + surfaceToViewDirection); // Compute the half vector for specular lighting
+  //*vec3 halfVector = normalize(u_lightDirection + surfaceToViewDirection); // Compute the half vector for specular lighting
+  vec3 halfVector = normalize(surfaceToLightDirection + surfaceToViewDirection);
 
-  float fakeLight = dot(u_lightDirection, normal) * 0.5 + 0.7; // Compute the diffuse lighting component
+  float fakeLight = dot(surfaceToLightDirection, normal)* 0.5 + 0.7; // Compute the diffuse lighting component
   float specularLight = clamp(dot(normal, halfVector), 0.0001, 1.0); // Compute the specular lighting component
+
+  //float fakeLight = dot(u_lightDirection, normal) * 0.5 + 0.7; 
+  //float specularLight = clamp(dot(normal, halfVector), 0.0001, 1.0); 
 
   vec4 specularMapColor = texture2D(specularMap, v_texcoord); // Sample the specular map
   vec3 effectiveSpecular = specular * specularMapColor.rgb; // Compute the effective specular color
