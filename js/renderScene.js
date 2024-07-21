@@ -100,8 +100,8 @@ export function renderScene(gl, meshProgramInfo, colorProgramInfo, parts) {
     const lightProjectionMatrix = m4.orthographic(
       -100,   // Sinistra
       100,   // Giusto
-      -100,  // metter il fondo a
-      100,  // superiore
+      -150,  // metter il fondo a
+      50,  // superiore
        0.5,                      // vicino
        200);                      // lontano
     /* m4.perspective(

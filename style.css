@@ -104,6 +104,7 @@ canvas {
   margin: 0;
   width: 100%;
   text-align: center;
+  flex-direction: column;
 }
 
 .menu-items{
@@ -117,14 +118,21 @@ canvas {
   margin: 1vw auto;
 }
 
-.menu button{
+.menu button {
   border: rgb(244,244,244, 0.4);
-  background-color: #397cb6;
   color: #ccdfef;
   text-transform: uppercase;
   padding: 5px 10px;
   border-radius: 5px;
   margin: 5px auto;
+}
+
+.active {
+  background-color: #397cb6;
+}
+
+.inactive {
+  background-color: #7e8081;
 }
 
 .container {

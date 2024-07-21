@@ -1,170 +1,143 @@
 <!DOCTYPE html>
-<html lang="en" >
-<head>
-  <meta charset="UTF-8">
-  <title>CodePen - WebGL - load obj - w/mtl, textures</title>
-  <link rel="stylesheet" href="style.css">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0"/>
-  <!--<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-  <meta name="HandheldFriendly" content="true" />-->
-</head>
-<body>
-  <div class="point" id="point">
-    000
-  </div>
-  <canvas id="canvas"></canvas>
-
-  <div class="button">
-    <button id="button-up">▲</button>
-    <button id="button-down">▼</button>
-  </div>
-
-  <button id="menu-button" class="menu-button" onclick="toggleMenu()">☰</button>
-  <div id="menu" class="menu" onkeydown="event.preventDefault()">
-    <button id="menu-close" class="menu-close" onclick="toggleMenu()">🗙</button>
-    <div class="menu-items">
-      <button id="audioControl">ATTIVA L'AUDIO</button>
-    </div>
-    <div class="menu-items">
-      <button id="alpha">DISATTIVA L'OPACITÀ </button>
-    </div>
-    <div class="menu-items">
-      <button id="normalMap">ATTIVA LE NORMAL MAP </button>
-    </div>
-
-    <div class="menu-items col">
-      <h3>Tempo di creazione</h3>
-      <label for="obstacleTiming">Ostacoli: </label>
-      <input type="range" id="obstacleTiming" min="90" max="2000" value="1000">
-      <label for="coinTiming">Monete: </label>
-      <input type="range" id="coinTiming" min="90" max="2000" value="1100">
-      <label for="cloudTiming">Nuvole: </label>
-      <input type="range" id="cloudTiming" min="90" max="2000" value="600">
-    </div>
-
-    <div class="menu-items col">
-      <h3>Velocità</h3>
-      <label for="obstacleSpeed">Ostacoli: </label>
-      <input type="range" id="obstacleSpeed" min="1" max="5" step="0.1" value="1">
-      <label for="coinSpeed">Monete: </label>
-      <input type="range" id="coinSpeed" min="1" max="5" step="0.1" value="2">
-      <label for="cloudSpeed">Nuvole: </label>
-      <input type="range" id="cloudSpeed" min="1" max="5" step="0.1" value="1">
-    </div>
-
-    <div class="menu-items col">
-      <h3>Direzione della luce</h3>
-      <label for="lightX">Asse X: </label>
-      <input type="range" id="lightX" min="0" max="100" value="20">
-      <label for="lightY">Asse Y: </label>
-      <input type="range" id="lightY" min="20" max="100" value="90">
-      <label for="lightZ">Asse Z: </label>
-      <input type="range" id="lightZ" min="0" max="100" value="20">
-      <!--<label for="lightX">Asse X: </label>
-      <input type="range" id="lightX" min="-60" max="60" value="0">
-      <label for="lightY">Asse Y: </label>
-      <input type="range" id="lightY" min="0" max="120" value="60">
-      <label for="lightZ">Asse Z: </label>
-      <input type="range" id="lightZ" min="-30" max="30" value="0">-->
-    </div>
-    
-  </div>
-
-  <audio id="backgroundAudio" src="./src/music.mp3" loop></audio>
-
+<html lang="it" >
+  <head>
+    <meta charset="UTF-8">
+    <title>Progetto Computer Graphics 2024</title>
+    <link rel="stylesheet" href="style.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0"/>
+    <!--<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <meta name="HandheldFriendly" content="true" />-->
+  </head>
+  <body>
+    <div class="point" id="point">000</div>
+    <canvas id="canvas"></canvas>
   
-  <!--
-  for most samples webgl-utils only provides shader compiling/linking and
-  canvas resizing because why clutter the examples with code that's the same in every sample.
-  See https://webglfundamentals.org/webgl/lessons/webgl-boilerplate.html
-  and https://webglfundamentals.org/webgl/lessons/webgl-resizing-the-canvas.html
-  for webgl-utils, m3, m4, and webgl-lessons-ui.
-  -->
-  <script src="https://webglfundamentals.org/webgl/resources/webgl-utils.js"></script>
-  <script src="https://webglfundamentals.org/webgl/resources/m4.js"></script>
-  <!-- partial -->
-  <script  type="module" src="./js/script.js"></script>
+    <div class="button">
+      <button id="button-up" class="inactive">▲</button>
+      <button id="button-down" class="inactive">▼</button>
+    </div>
   
-  <script src="https://webglfundamentals.org/webgl/resources/webgl-lessons-ui.js"></script>
-  <script type="module">
-    import {setAlpha, alphaEnable, timing, speed, setLight, settings, enableNormalMap, setNormalMap} from "./js/utils.js";
+    <button id="menu-button" class="menu-button" onclick="toggleMenu()">☰</button>
+    <div id="menu" class="menu" onkeydown="event.preventDefault()">
+      <button id="menu-close" class="menu-close" onclick="toggleMenu()">🗙</button>
+  
+      <div class="menu-items">
+        <button id="play" class="inactive mx-3">Attiva mood gioco</button>
+        <small>Oppure cliccando la barra spaziatrice</small>
+      </div>
+      <div class="menu-items">
+        <button id="audioControl" class="inactive">ATTIVA L'AUDIO</button>
+      </div>
+      <div class="menu-items">
+        <button id="alpha" class="active">DISATTIVA L'OPACITÀ</button>
+      </div>
+      <div class="menu-items">
+        <button id="normalMap" class="inactive">ATTIVA LE NORMAL MAP</button>
+      </div>
+  
+      <div class="menu-items col">
+        <h3>Tempo di creazione</h3>
+        <label for="obstacleTiming">Ostacoli: </label>
+        <input type="range" id="obstacleTiming" min="90" max="2000" value="1000">
+        <label for="coinTiming">Monete: </label>
+        <input type="range" id="coinTiming" min="90" max="2000" value="1100">
+        <label for="cloudTiming">Nuvole: </label>
+        <input type="range" id="cloudTiming" min="90" max="2000" value="600">
+      </div>
+  
+      <div class="menu-items col">
+        <h3>Velocità</h3>
+        <label for="obstacleSpeed">Ostacoli: </label>
+        <input type="range" id="obstacleSpeed" min="1" max="5" step="0.1" value="1">
+        <label for="coinSpeed">Monete: </label>
+        <input type="range" id="coinSpeed" min="1" max="5" step="0.1" value="2">
+        <label for="cloudSpeed">Nuvole: </label>
+        <input type="range" id="cloudSpeed" min="1" max="5" step="0.1" value="1">
+      </div>
+  
+      <div class="menu-items col">
+        <h3>Direzione della luce</h3>
+        <label for="lightX">Asse X: </label>
+        <input type="range" id="lightX" min="-100" max="100" value="0">
+        <label for="lightY">Asse Y: </label>
+        <input type="range" id="lightY" min="0" max="200" value="100">
+        <label for="lightZ">Asse Z: </label>
+        <input type="range" id="lightZ" min="-39" max="161" value="61">
+      </div>
+    </div>
+  
+    <audio id="backgroundAudio" src="./src/music.mp3" loop></audio>
 
-    var audio = document.getElementById("backgroundAudio");
-    var audioControlButton = document.getElementById("audioControl");
-    const btAlpha = document.getElementById('alpha');
-    //const btTexture = document.getElementById('texture');
-    const btNormalMap = document.getElementById('normalMap');
-    
-    function toggleMenu() {
-      var menu = document.getElementById('menu');
-      if (menu.style.visibility === 'hidden') {
-          menu.style.visibility = 'visible';
-          //blocca il render??
-      } else {
-          menu.style.visibility = 'hidden';
+    <script src="https://webglfundamentals.org/webgl/resources/webgl-utils.js"></script>
+    <script src="https://webglfundamentals.org/webgl/resources/m4.js"></script>
+    <script type="module" src="./js/script.js"></script>
+  
+    <script type="module">
+      import { setAlpha, setSound, setIsGame, setActiveSound, alphaEnable, timing, speed, setLight, enableNormalMap, setNormalMap} from "./js/utils.js";
+
+      setSound(document.getElementById("coinSound"), document.getElementById("gameOverSound"));
+  
+      let isPlay = false;
+      const buttons = {
+        play: document.getElementById('play'),
+        alpha: document.getElementById('alpha'),
+        normalMap: document.getElementById('normalMap'),
+        audioControl: document.getElementById("audioControl"),
+        audio: document.getElementById("backgroundAudio")
+      };
+
+      function toggleMenu() {
+        const menu = document.getElementById('menu');
+        menu.style.visibility = menu.style.visibility === 'hidden' ? 'visible' : 'hidden';
       }
-    }
-
-    document.getElementById('obstacleTiming').addEventListener('input', (event) => {
-      timing.obstacle = event.target.value;
-    });
-
-    document.getElementById('coinTiming').addEventListener('input', (event) => {
-        timing.coin = event.target.value;
-    });
-
-    document.getElementById('cloudTiming').addEventListener('input', (event) => {
-        timing.cloud = event.target.value;
-    });
-
-    // Listener per gli slider di velocità
-    document.getElementById('obstacleSpeed').addEventListener('input', (event) => {
-        speed.obstacle = event.target.value;
-    });
-
-    document.getElementById('coinSpeed').addEventListener('input', (event) => {
-        speed.coin = event.target.value;
-    });
-
-    document.getElementById('cloudSpeed').addEventListener('input', (event) => {
-        speed.cloud = event.target.value;
-    });
-
-    document.getElementById('lightX').addEventListener('input', (event) => {
-      setLight(0, event.target.value);
-      console.log("X: "+event.target.value);
-    });
-    document.getElementById('lightY').addEventListener('input', (event) => {
-      setLight(1, event.target.value);
-      console.log("Y: "+event.target.value);
-    });
-    document.getElementById('lightZ').addEventListener('input', (event) => {
-      //settings.cameraZ = event.target.value;
-      setLight(2, event.target.value);
-      console.log("Z: "+event.target.value);
-    });
-
-    btAlpha.addEventListener('click', (e)=>{
-      btAlpha.textContent= alphaEnable ? "ATTIVA L'OPACITÀ":"DISATTIVA L'OPACITÀ";
-      setAlpha();
-    });
-
-    btNormalMap.addEventListener('click', (e)=>{
-      btNormalMap.textContent= enableNormalMap ? "ATTIVA LE NORMAL MAP":"DISATTIVA LE NORMAL MAP";
-      setNormalMap();
-    });
-
-    audioControlButton.addEventListener("click", function () {
-    if (audio.paused) {
-        audio.play();
-        audioControlButton.textContent = "DISATTIVA L'AUDIO";
-    } else {
-        audio.pause();
-        audioControlButton.textContent = "ATTIVA L'AUDIO";
-    }
-    });
-        
+  
+      function toggleButton(button, isActive) {
+        button.classList.toggle('active', !isActive);
+        button.classList.toggle('inactive', isActive);
+      }
+  
+      buttons.play.addEventListener('click', () => {
+        isPlay=!isPlay
+        setIsGame(isPlay);
+        toggleButton(buttons.play, !isPlay);
+        buttons.play.textContent = isPlay ? "Disattiva mood gioco" : "Attiva mood gioco";
+      });
+  
+      buttons.alpha.addEventListener('click', () => {
+        setAlpha();
+        toggleButton(buttons.alpha, !alphaEnable);
+        buttons.alpha.textContent = alphaEnable ? "DISATTIVA L'OPACITÀ" : "ATTIVA L'OPACITÀ";
+      });
+  
+      buttons.normalMap.addEventListener('click', () => {
+        setNormalMap();
+        toggleButton(buttons.normalMap, !enableNormalMap);
+        buttons.normalMap.textContent = enableNormalMap ? "DISATTIVA LE NORMAL MAP" : "ATTIVA LE NORMAL MAP";
+      });
+  
+      buttons.audioControl.addEventListener("click", () => {
+        if (buttons.audio.paused) {
+          buttons.audio.play();
+          buttons.audioControl.textContent = "DISATTIVA L'AUDIO";
+        } else {
+          buttons.audio.pause();
+          buttons.audioControl.textContent = "ATTIVA L'AUDIO";
+        }
+        setActiveSound(!buttons.audio.paused);
+        toggleButton(buttons.audioControl, !buttons.audio.paused);
+      });
+  
+      document.getElementById('obstacleTiming').addEventListener('input', (event) => timing.obstacle = event.target.value);
+      document.getElementById('coinTiming').addEventListener('input', (event) => timing.coin = event.target.value);
+      document.getElementById('cloudTiming').addEventListener('input', (event) => timing.cloud = event.target.value);
+  
+      document.getElementById('obstacleSpeed').addEventListener('input', (event) => speed.obstacle = event.target.value);
+      document.getElementById('coinSpeed').addEventListener('input', (event) => speed.coin = event.target.value);
+      document.getElementById('cloudSpeed').addEventListener('input', (event) => speed.cloud = event.target.value);
+  
+      document.getElementById('lightX').addEventListener('input', (event) => setLight(0, event.target.value));
+      document.getElementById('lightY').addEventListener('input', (event) => setLight(1, event.target.value));
+      document.getElementById('lightZ').addEventListener('input', (event) => setLight(2, event.target.value));
     </script>
-
-</body>
+  </body>
 </html>

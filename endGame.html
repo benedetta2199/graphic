@@ -62,6 +62,9 @@
   </div>
   <canvas id="canvas" class="h100"></canvas>
 
+  
+  <audio id="gameOverSound" src="./src/game-over.mp3"></audio>
+
 
   <!--
   for most samples webgl-utils only provides shader compiling/linking and
@@ -74,6 +77,10 @@
   <script src="https://webglfundamentals.org/webgl/resources/m4.js"></script>
 
   <script type="module">
+    /*const sound = document.getElementById("gameOverSound");
+    sound.play();
+    console.log(sound)
+
     import {posCamTarget, posCamPos, posPlane, setLight, l} from './js/renderSceneEnd.js'
 
     document.getElementById('camPosX').addEventListener('input', (event) => {
@@ -127,7 +134,7 @@
     document.getElementById('lZ').addEventListener('input', (event) => {
       console.log("Z");
       setLight(2,event.target.value);
-    });
+    });*/
   
   </script>
 

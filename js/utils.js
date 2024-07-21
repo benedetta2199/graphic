@@ -277,6 +277,44 @@ export let isPaused = false;
 export function setPause() {
   isPaused = true;
 }
+/*                         DINAMICA DI GIOCO                            */
+export let isGame = false;
+export function setIsGame(val) {
+  isGame = val;
+}
+
+/*                                SOUND                                 */
+export let sound = {value:false, coin: null, gameOver: null}
+export function setSound(coin, gameOver){
+  sound.coin = coin;
+  sound.gameOver = gameOver;
+}
+// Crea il contesto audio
+export let audioContext = null;
+export let soundBuffer = {coin: null, gameover: null};
+document.body.addEventListener('click', ()=>{
+  audioContext = new (window.AudioContext || window.webkitAudioContext)();
+  // Carica e decodifica il file audio di gameover
+  fetch('./src/gameover.mp3')
+    .then(response => response.arrayBuffer())
+    .then(arrayBuffer => audioContext.decodeAudioData(arrayBuffer))
+    .then(audioBuffer => {
+      soundBuffer.gameover = audioBuffer;
+    })
+    .catch(e => console.error('Error with decoding audio data', e));
+  fetch('./src/coin.mp3')
+    .then(response => response.arrayBuffer())
+    .then(arrayBuffer => audioContext.decodeAudioData(arrayBuffer))
+    .then(audioBuffer => {
+      soundBuffer.coin = audioBuffer;
+    })
+    .catch(e => console.error('Error with decoding audio data', e));
+}, { once: true });
+
+export function setActiveSound(val){
+  console.log(val)
+  sound.value=val;
+}
 
 
 /**

@@ -1,7 +1,7 @@
 // mouseHandler.js
 "use strict";
 
-import { incrementPoint, zFar, zNear } from "./utils.js";
+import { incrementPoint, isGame, sound, zFar, zNear,audioContext, soundBuffer } from "./utils.js";
 import { endGame } from "./endGame.js";
 
 export let mouseY = 200; // Variabile per memorizzare la posizione Y del mouse
@@ -40,11 +40,19 @@ export function setListener(gl){
 }
 
 export function checkCollisionObstacle(pos) {
-  const y=-canvasToWorld(height);
+  if(isGame){
+    const y=-canvasToWorld(height);
 
-  if(pos.y<y+9 && pos.y>y-9){
-    if(pos.x< -posRelX+11.9 && pos.x> -posRelX){
-      //endGame();
+    if(pos.y<y+9 && pos.y>y-9){
+      if(pos.x< -posRelX+11.9 && pos.x> -posRelX){
+        if(sound.value){
+          const source = audioContext.createBufferSource();
+          source.buffer = soundBuffer.gameover;
+          source.connect(audioContext.destination);
+          source.start(0);
+        }
+        endGame();
+      }
     }
   }
   
@@ -76,14 +84,23 @@ export function checkCollisionObstacle(pos) {
 
 export function checkCollisionCoin(pos) {
   let flag= false;
-  const y=-canvasToWorld(height);
+  if(isGame){
+    const y=-canvasToWorld(height);
 
-  if(pos.y<y+9 && pos.y>y-9){
-    if(pos.x< -posRelX+11 && pos.x> -posRelX){
-      flag=true;
-      incrementPoint();
+    if(pos.y<y+9 && pos.y>y-9){
+      if(pos.x< -posRelX+11 && pos.x> -posRelX){
+        if(sound.value){
+          const source = audioContext.createBufferSource();
+          source.buffer = soundBuffer.coin;
+          source.connect(audioContext.destination);
+          source.start(0);
+        }
+        flag=true;
+        incrementPoint();
+      }
     }
   }
+  
   return flag;
   
   /*// Coordinate e raggio della sfera
