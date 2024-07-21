@@ -47,8 +47,8 @@ varying vec2 v_texcoord;                // Interpolated texture coordinates from
 varying vec4 v_color;                   // Interpolated color from vertex shader
 varying vec4 v_projectedTexcoord;
 
-uniform vec3 diffuse;                   // Diffuse color -- u_texture di webgl
-uniform sampler2D diffuseMap;           // Diffuse texture map
+uniform vec3 diffuse;                   // Colore dell'oggetto color -- u_color di webgl
+uniform sampler2D diffuseMap;           // Molto probabilmente la texture map -- u_texture di webgl
 uniform vec3 ambient; // Ambient color
 uniform vec3 emissive; // Emissive color
 uniform vec3 specular; // Specular color
@@ -78,8 +78,8 @@ void main () {
   vec3 surfaceToViewDirection = normalize(v_surfaceToView); // Compute the view direction
   vec3 halfVector = normalize(u_lightDirection + surfaceToViewDirection); // Compute the half vector for specular lighting
 
-  float fakeLight = dot(u_lightDirection, normal) * 0.6 + 0.6; // Compute the diffuse lighting component
-  float specularLight = clamp(dot(normal, halfVector), 0.00001, 1.0); // Compute the specular lighting component
+  float fakeLight = dot(u_lightDirection, normal) * 0.5 + 0.7; // Compute the diffuse lighting component
+  float specularLight = clamp(dot(normal, halfVector), 0.0001, 1.0); // Compute the specular lighting component
 
   vec4 specularMapColor = texture2D(specularMap, v_texcoord); // Sample the specular map
   vec3 effectiveSpecular = specular * specularMapColor.rgb; // Compute the effective specular color

@@ -19,7 +19,7 @@ export function setObstacle(){
       elemT: {x:rand(110,170)+time*speed.obstacle*vel, y:rand(40, 120), z:-rand(20, 30)}, 
       elemR: {x:rand(0,1), y:rand(0,1),z:rand(0,1)},
       elemO: rand(-0.5,0.5),
-      color: [rand(120,255),rand(120,255),rand(120,255)],
+      color: [rand(120,255)/ 255,rand(120,255)/ 255,rand(120,255)/ 255], //difuse prende colori normalizzati
       speed: vel
     };
 
@@ -50,8 +50,14 @@ function u_worldObstacle(data) {
 export function renderObstacle(gl, meshProgramInfo, obstacle, data) {
   for (const { bufferInfo, material } of obstacle) {
     webglUtils.setBuffersAndAttributes(gl, meshProgramInfo, bufferInfo);
-    const updatedMaterial = { ...material, diffuse:  data.color.map(c => c / 255)};
-    webglUtils.setUniforms(meshProgramInfo, { u_world: u_worldObstacle(data), u_color: data.color }, updatedMaterial);
+    const updatedMaterial = {
+      ...material,
+      diffuse: data.color, // Normalizza il colore tra 0 e 1
+      u_world: u_worldObstacle(data), // Supponendo che u_worldObstacle ritorni una matrice 4x4
+    };
+    
+    // Imposta le uniform nel programma WebGL
+    webglUtils.setUniforms(meshProgramInfo, updatedMaterial);
     webglUtils.drawBufferInfo(gl, bufferInfo);
   }
 }
