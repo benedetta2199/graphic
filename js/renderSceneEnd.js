@@ -24,7 +24,7 @@ export let light = [60, 60, 30];
  * @param {Array} cT - Camera target.
  * @param {Array} objOffset - Object offset.
  */
-export function renderScene(gl, meshProgramInfo, parts, cP, cT, objOffset) {
+export function renderScene(gl, meshProgramInfo, parts, cP, cT) {
   let cPtemp = [];
   let cameraTarget = [];
 

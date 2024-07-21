@@ -49,7 +49,7 @@ export async function main() {
   setPlaneClipping(zNear, zFar);
 
   // Render the scene with the loaded objects and camera setup
-  renderScene(gl, meshProgramInfo, parts, cameraPosition, cameraTarget, combinedExtents);
+  renderScene(gl, meshProgramInfo, parts, cameraPosition, cameraTarget);
 }
 
 /**

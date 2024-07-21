@@ -38,7 +38,6 @@ async function main() {
     cube: './src/cube.obj',
     obstacle: './src/icosfera.obj',
     coin: './src/coin.obj',
-    p: './src/p.obj',
   };
 
   // Asynchronously load all objects and calculate their extents
@@ -70,8 +69,6 @@ async function main() {
   // Get camera position, target, object offset, and clipping planes based on combined extents
   setupCameraAndLight(gl, combinedExtents);
 
-
-  console.log(parts);
   // Render the scene with the loaded objects and camera setup
   renderScene(gl, meshProgramInfo, colorProgramInfo, parts);
 }

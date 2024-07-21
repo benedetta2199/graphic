@@ -1,18 +1,11 @@
 "use strict";
 
-import { renderCloud, setCloud } from './cloud.js';
+import { setCloud } from './cloud.js';
 import { setListener } from './mousePosition.js';
-import { renderObj, u_worldElica,  u_worldPlane, u_worldWorld } from './renderObj.js';
-import { renderCoin, renderObstacle, setCoin, setObstacle } from './collectibles.js';
-import { degToRad, isPaused, rand, speed, timing, alphaEnable, zFar, zNear, setTime, clouds, obstacles, coins, lightPosition, lightTarget, cameraPosition, cameraTarget } from './utils.js';
+import { setCoin, setObstacle } from './collectibles.js';
+import { degToRad, isPaused, rand,alphaEnable, zFar, zNear, setTime, clouds, obstacles, coins, lightPosition, lightTarget, cameraPosition, cameraTarget } from './utils.js';
 import { drawScene } from './drawScene.js';
 import { createDepthFramebuffer, createDepthTexture } from './objLoad.js';
-
-// Initialize arrays for clouds, obstacles, and coins
-/*const clouds = [setCloud(rand(4, 9), 0)];
-const obstacles = [setObstacle(0)];
-let coins = [setCoin(0, 0, rand(3, 8), rand(45, 90))];*/
-let frameCount = 0;
 
 /**
  * Render the scene.
@@ -79,7 +72,6 @@ export function renderScene(gl, meshProgramInfo, colorProgramInfo, parts) {
 
     time *= 0.006; // Convert time to seconds
     setTime(time);
-    frameCount++;
 
     // Resize WebGL canvas to display size
     webglUtils.resizeCanvasToDisplaySize(gl.canvas);
@@ -96,14 +88,8 @@ export function renderScene(gl, meshProgramInfo, colorProgramInfo, parts) {
     }
 
     //console.log( gl.canvas.clientWidth /2 ,  gl.canvas.clientHeight/2)
-
-    const lightProjectionMatrix = m4.orthographic(
-      -100,   // Sinistra
-      100,   // Giusto
-      -150,  // metter il fondo a
-      50,  // superiore
-       0.5,                      // vicino
-       200);                      // lontano
+                                                // sx, dx,  giù,  su, vicino, lontano
+    const lightProjectionMatrix = m4.orthographic(-100, 100, -150, 50, 0.5,   200);
     /* m4.perspective(
       degToRad(120),
       gl.canvas.clientWidth /  gl.canvas.clientHeight,
