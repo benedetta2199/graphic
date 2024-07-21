@@ -1,7 +1,7 @@
 // mouseHandler.js
 "use strict";
 
-import { incrementPoint, isGame, sound, zFar, zNear,audioContext, soundBuffer } from "./utils.js";
+import { incrementPoint, isGame, zFar, zNear, audioContext, soundBuffer, isSound } from "./utils.js";
 import { endGame } from "./endGame.js";
 
 export let mouseY = 200; // Variabile per memorizzare la posizione Y del mouse
@@ -45,7 +45,7 @@ export function checkCollisionObstacle(pos) {
 
     if(pos.y<y+9 && pos.y>y-9){
       if(pos.x< -posRelX+11.9 && pos.x> -posRelX){
-        if(sound.value){
+        if(isSound){
           const source = audioContext.createBufferSource();
           source.buffer = soundBuffer.gameover;
           source.connect(audioContext.destination);
@@ -89,7 +89,7 @@ export function checkCollisionCoin(pos) {
 
     if(pos.y<y+9 && pos.y>y-9){
       if(pos.x< -posRelX+11 && pos.x> -posRelX){
-        if(sound.value){
+        if(isSound){
           const source = audioContext.createBufferSource();
           source.buffer = soundBuffer.coin;
           source.connect(audioContext.destination);

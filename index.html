@@ -73,9 +73,7 @@
     <script type="module" src="./js/script.js"></script>
   
     <script type="module">
-      import { setAlpha, setSound, setIsGame, setActiveSound, alphaEnable, timing, speed, setLight, enableNormalMap, setNormalMap} from "./js/utils.js";
-
-      setSound(document.getElementById("coinSound"), document.getElementById("gameOverSound"));
+      import { setAlpha, setIsGame, alphaEnable, timing, speed, setLight, enableNormalMap, setNormalMap, setIsSound} from "./js/utils.js";
   
       let isPlay = false;
       const buttons = {
@@ -123,7 +121,7 @@
           buttons.audio.pause();
           buttons.audioControl.textContent = "ATTIVA L'AUDIO";
         }
-        setActiveSound(!buttons.audio.paused);
+        setIsSound(!buttons.audio.paused);
         toggleButton(buttons.audioControl, !buttons.audio.paused);
       });
   

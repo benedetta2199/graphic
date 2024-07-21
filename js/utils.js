@@ -284,17 +284,20 @@ export function setIsGame(val) {
 }
 
 /*                                SOUND                                 */
-export let sound = {value:false, coin: null, gameOver: null}
-export function setSound(coin, gameOver){
-  sound.coin = coin;
-  sound.gameOver = gameOver;
-}
-// Crea il contesto audio
+//Gestione tramite l'API Web Audio
+export let isSound = false;
 export let audioContext = null;
 export let soundBuffer = {coin: null, gameover: null};
+
+export function setIsSound(val){
+  isSound = val;
+}
+
+// È possibile caricare il contesto audio solo dopo il primo click del mouse
 document.body.addEventListener('click', ()=>{
+  // Crea il contesto audio
   audioContext = new (window.AudioContext || window.webkitAudioContext)();
-  // Carica e decodifica il file audio di gameover
+  // Carica e decodifica i file audio di gameover
   fetch('./src/gameover.mp3')
     .then(response => response.arrayBuffer())
     .then(arrayBuffer => audioContext.decodeAudioData(arrayBuffer))
@@ -310,11 +313,6 @@ document.body.addEventListener('click', ()=>{
     })
     .catch(e => console.error('Error with decoding audio data', e));
 }, { once: true });
-
-export function setActiveSound(val){
-  console.log(val)
-  sound.value=val;
-}
 
 
 /**

@@ -3,7 +3,7 @@
 import { loadPlane, getGeometriesExtents } from './planeLoader.js';
 import { setupCameraAndLight } from './cameraAndLightSetupEnd.js';
 import { renderScene } from './renderSceneEnd.js';
-import { vs, fs, setPlaneClipping, sound } from './utils.js';
+import { vs, fs, setPlaneClipping } from './utils.js';
 import { posCamTarget, posCamPos, posPlane, light } from './renderSceneEnd.js';
 
 /**
@@ -11,9 +11,6 @@ import { posCamTarget, posCamPos, posPlane, light } from './renderSceneEnd.js';
  */
 export async function main() {
 
-  const sound=document.querySelector("#gameOverSound");
-  sound.play();  
-  console.log('okkk');
   setListener();
 
   const canvas = document.querySelector("#canvas");
