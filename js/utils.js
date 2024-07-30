@@ -64,6 +64,7 @@ uniform vec3 u_ambientLight; // Ambient light color
 uniform sampler2D u_projectedTexture;
 uniform sampler2D normalMap; // Normal map texture
 uniform float useNormalMap; // Flag to determine if normal map should be used
+uniform float useTextureMap; // Flag to determine if normal map should be used
 
 uniform float u_bias;
 
@@ -87,15 +88,12 @@ void main () {
   float fakeLight = dot(surfaceToLightDirection, normal)* 0.5 + 0.7; // Compute the diffuse lighting component
   float specularLight = clamp(dot(normal, halfVector), 0.0001, 1.0); // Compute the specular lighting component
 
-  //float fakeLight = dot(u_lightDirection, normal) * 0.5 + 0.7; 
-  //float specularLight = clamp(dot(normal, halfVector), 0.0001, 1.0); 
-
   vec4 specularMapColor = texture2D(specularMap, v_texcoord); // Sample the specular map
-  vec3 effectiveSpecular = specular * specularMapColor.rgb; // Compute the effective specular color
+  vec3 effectiveSpecular = mix(specular, specular * specularMapColor.rgb, useTextureMap); // Compute the effective specular color
 
-  vec4 diffuseMapColor = texture2D(diffuseMap, v_texcoord); // Sample the diffuse map 
-  vec3 effectiveDiffuse = diffuse * diffuseMapColor.rgb * v_color.rgb; // Compute the effective diffuse color
-  float effectiveOpacity = opacity * diffuseMapColor.a * v_color.a; // Compute the effective opacity
+  vec4 diffuseMapColor = texture2D(diffuseMap, v_texcoord); // Sample the diffuse map
+  vec3 effectiveDiffuse = mix(diffuse, diffuseMapColor.rgb, useTextureMap)* v_color.rgb;
+  float effectiveOpacity = mix(opacity * v_color.a, opacity * diffuseMapColor.a * v_color.a, useTextureMap);
 
   vec3 projectedTexcoord = v_projectedTexcoord.xyz / v_projectedTexcoord.w;
   
@@ -106,9 +104,6 @@ void main () {
         projectedTexcoord.x <= 1.0 &&
         projectedTexcoord.y >= 0.0 &&
         projectedTexcoord.y <= 1.0;
-  
-        //vec4 projectedTexColor = texture2D(u_projectedTexture, projectedTexcoord.xy);
-      //vec4 texColor = texture2D(diffuse, v_texcoord) * u_colorMult;
     float projectedDepth = texture2D(u_projectedTexture, projectedTexcoord.xy).r;
     float shadowLight = (inRange && projectedDepth <= currentDepth) ? 0.6 : 0.8;  
   
@@ -223,14 +218,24 @@ export function setAlpha() {
 
 
 /*                                NORMALMAP                                 */
-export let enableNormalMap = false;
+/*Normal map is 0.0 (false) or 1.0 (true)*/
+export let enableNormalMap = 0.0;
 /**
  * Toggles the normalMap enable flag.
  */
 export function setNormalMap() {
-  enableNormalMap = !enableNormalMap;
+  enableNormalMap = !enableNormalMap ? 1.0 : 0.0;
 }
-;
+
+/*                                TEXTUREMAP                                 */
+/*Texture map is 0.0 (false) or 1.0 (true)*/
+export let enableTextureMap = 0.0;
+/**
+ * Toggles the TextureMap enable flag.
+ */
+export function setTextureMap() {
+  enableTextureMap = !enableTextureMap ? 1.0 : 0.0;
+}
 
 /*                                LIGHT                                 */
 export let lightPosition = [0, 0, 0];

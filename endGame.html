@@ -9,7 +9,7 @@
 <body>
   <div class="container">
     <h1>Congratulazioni!</h1>
-    <p id="points"></p>
+    <p id="points">points</p>
     <p id="playTime"></p>
     <button id="playAgainButton" >GIOCA ANCORA</button>
 
@@ -71,11 +71,15 @@
   -->
   <script src="https://webglfundamentals.org/webgl/resources/webgl-utils.js"></script>
   <script src="https://webglfundamentals.org/webgl/resources/m4.js"></script>
+  <script type="module" src="./js/endGame.js"></script>
 
   <script type="module">
-    import {posCamTarget, posCamPos, posPlane, setLight, l} from './js/renderSceneEnd.js'
+    //import {posCamTarget, posCamPos, posPlane, setLight} from './js/renderSceneEnd.js'
+    import {getPlayTime} from './js/endgame.js'
 
-    document.getElementById('camPosX').addEventListener('input', (event) => {
+    console.log('ok');
+    console.log(getPlayTime());
+   /* document.getElementById('camPosX').addEventListener('input', (event) => {
       console.log("CC")
       posCamPos[0] = parseInt(event.target.value);
     });
@@ -126,7 +130,7 @@
     document.getElementById('lZ').addEventListener('input', (event) => {
       console.log("Z");
       setLight(2,event.target.value);
-    });
+    });*/
   
   </script>
 

@@ -42,6 +42,6 @@ function u_worldCube(data) {
 
 export function renderCloud(gl, meshProgramInfo, cube, data) {
     for(var i = 0; i < data.length; i++) {
-        renderObj(gl, meshProgramInfo, cube, u_worldCube(data[i]));
+        renderObj(gl, meshProgramInfo, cube, u_worldCube(data[i]), true);
     }    
 }

@@ -25,7 +25,7 @@ export function drawScene(gl, programInfo, sharedUnifoms, parts) {
 
     
     // Render WORLD
-    renderObj(gl, programInfo, parts.world, u_worldWorld());
+    renderObj(gl, programInfo, parts.world, u_worldWorld(), true);
 
      // Render P
     /*let u_worldP = m4.translation(0, 60, -50);

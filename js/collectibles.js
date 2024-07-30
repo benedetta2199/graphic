@@ -2,7 +2,7 @@
 
 import { checkCollisionCoin, checkCollisionObstacle } from './mousePosition.js';
 import { renderObj } from './renderObj.js';
-import { degToRad, rand, speed, time } from './utils.js';
+import { degToRad, enableNormalMap, enableTextureMap, rand, speed, time } from './utils.js';
 
 /*OBSTACLE*/
 const sizeO = 5;
@@ -19,7 +19,7 @@ export function setObstacle(){
       elemT: {x:rand(110,170)+time*speed.obstacle*vel, y:rand(40, 120), z:-rand(20, 30)}, 
       elemR: {x:rand(0,1), y:rand(0,1),z:rand(0,1)},
       elemO: rand(-0.5,0.5),
-      color: [rand(120,255)/ 255,rand(120,255)/ 255,rand(120,255)/ 255], //difuse prende colori normalizzati
+      color: [rand(80,230)/ 255,rand(80,230)/ 255,rand(80,230)/ 255], //difuse prende colori normalizzati
       speed: vel
     };
 
@@ -47,13 +47,15 @@ function u_worldObstacle(data) {
     return u_world;
 }
 
-export function renderObstacle(gl, meshProgramInfo, obstacle, data) {
+export function renderObstacle(gl, meshProgramInfo, obstacle, data, isTextured=false) {
   for (const { bufferInfo, material } of obstacle) {
     webglUtils.setBuffersAndAttributes(gl, meshProgramInfo, bufferInfo);
     const updatedMaterial = {
       ...material,
       diffuse: data.color, // Normalizza il colore tra 0 e 1
       u_world: u_worldObstacle(data), // Supponendo che u_worldObstacle ritorni una matrice 4x4
+      useNormalMap: enableNormalMap, 
+      useTextureMap: enableTextureMap && isTextured
     };
     
     // Imposta le uniform nel programma WebGL

@@ -34,6 +34,9 @@
       <div class="menu-items">
         <button id="normalMap" class="inactive">ATTIVA LE NORMAL MAP</button>
       </div>
+      <div class="menu-items">
+        <button id="textureMap" class="inactive">ATTIVA LE TEXTURE</button>
+      </div>
   
       <div class="menu-items col">
         <h3>Tempo di creazione</h3>
@@ -73,13 +76,14 @@
     <script type="module" src="./js/script.js"></script>
   
     <script type="module">
-      import { setAlpha, setIsGame, alphaEnable, timing, speed, setLight, enableNormalMap, setNormalMap, setIsSound} from "./js/utils.js";
+      import { setAlpha, setIsGame, alphaEnable, timing, speed, setLight, enableNormalMap, setNormalMap, enableTextureMap, setTextureMap, setIsSound} from "./js/utils.js";
   
       let isPlay = false;
       const buttons = {
         play: document.getElementById('play'),
         alpha: document.getElementById('alpha'),
         normalMap: document.getElementById('normalMap'),
+        textureMap: document.getElementById('textureMap'),
         audioControl: document.getElementById("audioControl"),
         audio: document.getElementById("backgroundAudio")
       };
@@ -119,6 +123,12 @@
         setNormalMap();
         toggleButton(buttons.normalMap, !enableNormalMap);
         buttons.normalMap.textContent = enableNormalMap ? "DISATTIVA LE NORMAL MAP" : "ATTIVA LE NORMAL MAP";
+      });
+
+      buttons.textureMap.addEventListener('click', () => {
+        setTextureMap();
+        toggleButton(buttons.textureMap, !enableTextureMap);
+        buttons.textureMap.textContent = enableTextureMap ? "DISATTIVA LE TEXTURE" : "ATTIVA LE TEXTURE";
       });
   
       buttons.audioControl.addEventListener("click", () => {

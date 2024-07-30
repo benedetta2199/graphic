@@ -1,7 +1,7 @@
 "use strict";
 
 import { canvasToWorld, posRelX } from './mousePosition.js';
-import { degToRad, enableNormalMap, time } from './utils.js';
+import { degToRad, enableNormalMap, enableTextureMap, time } from './utils.js';
 
 /**
  * Render an object part with the specified world transformation matrix.
@@ -9,13 +9,12 @@ import { degToRad, enableNormalMap, time } from './utils.js';
  * @param {Object} meshProgramInfo - Shader program information.
  * @param {Array} part - Object part to render.
  * @param {Object} u_world - World transformation matrix.
+ * @param {bool} texture - se sono da aggiungere le texture.
  */
-export function renderObj(gl, meshProgramInfo, part, u_world) {
-  
-  const activeNormalMap = enableNormalMap?1.0:0.0;
+export function renderObj(gl, meshProgramInfo, part, u_world, isTextured=false) {
   part.forEach(({ bufferInfo, material }) => {
     // Aggiungi il flag `useNormalMap` ai uniform
-    const uniforms = { u_world, useNormalMap: activeNormalMap, ...material,};
+    const uniforms = { u_world, useNormalMap: enableNormalMap, useTextureMap: enableTextureMap && isTextured, ...material,};
     webglUtils.setBuffersAndAttributes(gl, meshProgramInfo, bufferInfo);
     webglUtils.setUniforms(meshProgramInfo, uniforms);
     webglUtils.drawBufferInfo(gl, bufferInfo);

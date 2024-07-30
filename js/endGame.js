@@ -18,9 +18,9 @@ export function getPlayTime(){
  * Loads the end game content from the server.
  */
 export async function loadEndGameContent() {
-const response = await fetch('/endGame.html');
-const text = await response.text();
-localStorage.setItem('endGameContent', text);
+    const response = await fetch('/endGame.html');
+    const text = await response.text();
+    localStorage.setItem('endGameContent', text);
 }
   
 let isEnd = false;
@@ -51,18 +51,21 @@ if (endGameContent) {
  * Initializes the end game page.
  */
 function initializeEndGamePage() {
-const points = localStorage.getItem('point');
-const endTime = new Date(localStorage.getItem('endTime'));
-const startTime = new Date(localStorage.getItem('startTime'));
-const playTime = Math.floor((endTime - startTime) / 1000);
-const formattedPlayTime = `${Math.floor(playTime / 60)}m ${playTime % 60}s`;
+    console.log(localStorage.getItem('point'));
 
-document.getElementById('points').textContent = `Punti ottenuti: ${points}`;
-document.getElementById('playTime').textContent = `Tempo di gioco: ${formattedPlayTime}`;
+    const endTime = new Date(localStorage.getItem('endTime'));
+    const startTime = new Date(localStorage.getItem('startTime'));
+    const playTime = Math.floor((endTime - startTime) / 1000);
+    const formattedPlayTime = `${Math.floor(playTime / 60)}m ${playTime % 60}s`;
 
-document.getElementById('playAgainButton').addEventListener('click', () => {
-    window.location.href = '/index.html';
-});
+    const point = document.getElementById('points');
+    console.log(point)
+    point.textContent = `Punti ottenuti: ${localStorage.getItem('point')}`;
+    document.getElementById('playTime').textContent = `Tempo di gioco: ${formattedPlayTime}`;
+
+    document.getElementById('playAgainButton').addEventListener('click', () => {
+        window.location.href = '/index.html';
+    });
 
 main();
 }
