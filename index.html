@@ -94,11 +94,19 @@
         button.classList.toggle('inactive', isActive);
       }
   
-      buttons.play.addEventListener('click', () => {
+      function toggleGameMode() {
         isPlay=!isPlay
         setIsGame(isPlay);
         toggleButton(buttons.play, !isPlay);
         buttons.play.textContent = isPlay ? "Disattiva mood gioco" : "Attiva mood gioco";
+      }
+
+      buttons.play.addEventListener('click', toggleGameMode);
+    
+      document.addEventListener('keydown', (event) => {
+          if (event.code === 'Space') {
+              toggleGameMode();
+          }
       });
   
       buttons.alpha.addEventListener('click', () => {
