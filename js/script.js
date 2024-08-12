@@ -67,7 +67,7 @@ async function main() {
   };
 
   // Get camera position, target, object offset, and clipping planes based on combined extents
-  setupCameraAndLight(gl, combinedExtents);
+  setupCameraAndLight(combinedExtents);
 
   // Render the scene with the loaded objects and camera setup
   renderScene(gl, meshProgramInfo, colorProgramInfo, parts);

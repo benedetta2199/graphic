@@ -1,7 +1,7 @@
 "use strict";
 
 import { posRelX } from './mousePosition.js';
-import { degToRad } from './utils.js';
+import { degToRad, enableNormalMap, enableTextureMap, time } from './utils.js';
 
 /**
  * Render an object part with the specified world transformation matrix.
@@ -10,22 +10,22 @@ import { degToRad } from './utils.js';
  * @param {Array} part - Object part to render.
  * @param {Object} u_world - World transformation matrix.
  */
-export function renderObj(gl, meshProgramInfo, part, u_world) {
-  for (const { bufferInfo, material } of part) {
+export function renderObj(gl, meshProgramInfo, part, u_world, isTextured=false) {
+  part.forEach(({ bufferInfo, material }) => {
+    // Aggiungi il flag `useNormalMap` ai uniform
+    const uniforms = { u_world, useNormalMap: enableNormalMap, useTextureMap: enableTextureMap && isTextured, ...material,};
     webglUtils.setBuffersAndAttributes(gl, meshProgramInfo, bufferInfo);
-    webglUtils.setUniforms(meshProgramInfo, { u_world }, material);
+    webglUtils.setUniforms(meshProgramInfo, uniforms);
     webglUtils.drawBufferInfo(gl, bufferInfo);
-  }
+  });
 }
 
 /**
  * Calculate the world transformation matrix for the plane.
  * @param {number} width - Canvas width.
- * @param {number} height - Canvas height.
- * @param {number} time - Current time.
  * @returns {Object} - World transformation matrix for the plane.
  */
-export function u_worldPlane(width, height, time) {
+export function u_worldPlane(width) {
   let u_world = m4.translation(0, 120 + Math.sin(time * 0.2) * 2, posRelX + width * 0.03);
   u_world = m4.xRotate(u_world, degToRad(20));
   u_world = m4.yRotate(u_world, degToRad(25));
@@ -40,7 +40,7 @@ export function u_worldPlane(width, height, time) {
  * @param {number} time - Current time.
  * @returns {Object} - World transformation matrix for the propeller.
  */
-export function u_worldElica(u_world_plane, time) {
+export function u_worldElica(u_world_plane) {
   return m4.xRotate(u_world_plane, -time);
 }
 
@@ -60,12 +60,12 @@ export function u_worldFoto(u_world_plane) {
  * @param {number} time - Current time.
  * @returns {Object} - World transformation matrix for the world object.
  */
-export function u_worldWorld(time) {
-  const prop = 5;
-  let u_world_world = m4.translation(0, -(prop * 2.5), -(prop * 10));
+export function u_worldWorld() {
+  const prop = 20;
+  let u_world_world = m4.translation(prop, prop*2, -prop * 2);
   u_world_world = m4.xRotate(u_world_world, degToRad(45));
   u_world_world = m4.yRotate(u_world_world, time / 20);
-  u_world_world = m4.scale(u_world_world, prop * 4, prop * 3, prop * 4 + 0.1);
+  u_world_world = m4.scale(u_world_world, prop, prop, prop);
   return u_world_world;
 }
 
@@ -78,7 +78,7 @@ export function u_worldWorld(time) {
  * @param {number} rotation - Rotation angle of the cloud.
  * @returns {Object} - World transformation matrix for the cloud.
  */
-export function u_worldCloud(time, y, z, scale, rotation) {
+export function u_worldCloud(y, z, scale, rotation) {
   const acc = time * (3.5 - scale);
   let u_world = m4.translation(100 - acc, y, z);
   u_world = m4.xRotate(u_world, degToRad(rotation));

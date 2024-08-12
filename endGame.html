@@ -20,9 +20,9 @@
     <div>
       <h3>Camera Position</h3>
       <label for="camPosX">X: </label>
-      <input type="range" id="camPosX" min="-50" max="50" value="0">
+      <input type="range" id="camPosX" min="70" max="170" value="120">
       <label for="camPosY">Y: </label>
-      <input type="range" id="camPosY" min="-50" max="50" value="0">
+      <input type="range" id="camPosY" min="-150" max="-50" value="-100">
       <label for="camPosZ">Z: </label>
       <input type="range" id="camPosZ" min="-50" max="50" value="0">
     </div>
@@ -32,7 +32,7 @@
       <label for="camTargX">X: </label>
       <input type="range" id="camTargX" min="-50" max="50" value="0">
       <label for="camTargY">Y: </label>
-      <input type="range" id="camTargY" min="-50" max="50" value="0">
+      <input type="range" id="camTargY" min="35" max="135" value="85">
       <label for="camTargZ">Z: </label>
       <input type="range" id="camTargZ" min="-50" max="50" value="0">
     </div>
@@ -41,11 +41,11 @@
     <div>
       <h3>Direzione della luce</h3>
       <label for="lightTarX">X: </label>
-      <input type="range" id="lightTarX" min="0" max="120" value="60">
+      <input type="range" id="lightTarX" min="-200" max="200" value="60">
       <label for="lightTarY">Y: </label>
-      <input type="range" id="lightTarY" min="0" max="120" value="60">
+      <input type="range" id="lightTarY" min="-200" max="200" value="60">
       <label for="lightTarZ">Z: </label>
-      <input type="range" id="lightTarZ" min="-30" max="60" value="30">
+      <input type="range" id="lightTarZ"min="-200" max="200" value="30">
     </div>
     <br/>
 
@@ -57,6 +57,18 @@
       <input type="range" id="planeTargY" min="-50" max="20" value="0">
       <label for="planeTargZ">Z: </label>
       <input type="range" id="planeTargZ" min="-50" max="20" value="0">
+    </div>
+
+    <div style="display: flex;">
+      <div class="menu-items">
+        <button id="alpha" class="active">OPACITÀ</button>
+      </div>
+      <div class="menu-items">
+        <button id="normalMap" class="inactive">NORMAL MAP</button>
+      </div>
+      <div class="menu-items">
+        <button id="textureMap" class="inactive">TEXTURE</button>
+      </div>
     </div>
 
   </div>
@@ -79,58 +91,6 @@
 
     console.log('ok');
     console.log(getPlayTime());
-   /* document.getElementById('camPosX').addEventListener('input', (event) => {
-      console.log("CC")
-      posCamPos[0] = parseInt(event.target.value);
-    });
-
-    document.getElementById('camPosY').addEventListener('input', (event) => {
-      console.log("CC")
-      posCamPos[1] = parseInt(event.target.value);
-    });
-
-    document.getElementById('camPosZ').addEventListener('input', (event) => {
-      console.log("CC")
-      posCamPos[2] = parseInt(event.target.value);
-    });
-
-    document.getElementById('camTargX').addEventListener('input', (event) => {
-      posCamTarget[0] = parseInt(event.target.value);
-    });
-
-    document.getElementById('camTargY').addEventListener('input', (event) => {
-      posCamTarget[1] = parseInt(event.target.value);
-    });
-
-    document.getElementById('camTargZ').addEventListener('input', (event) => {
-      posCamTarget[2] = parseInt(event.target.value);
-    });
-
-    document.getElementById('planeTargX').addEventListener('input', (event) => {
-      posPlane[0] = parseInt(event.target.value);
-    });
-
-    document.getElementById('planeTargY').addEventListener('input', (event) => {
-      posPlane[1] = parseInt(event.target.value);
-    });
-  
-    document.getElementById('planeTargZ').addEventListener('input', (event) => {
-      posPlane[2] = parseInt(event.target.value);
-    });
-
-    
-    document.getElementById('lX').addEventListener('input', (event) => {
-      console.log("X");
-      setLight(0,event.target.value);
-    });
-    document.getElementById('lY').addEventListener('input', (event) => {
-      console.log("Y");
-      setLight(1,event.target.value);
-    });
-    document.getElementById('lZ').addEventListener('input', (event) => {
-      console.log("Z");
-      setLight(2,event.target.value);
-    });*/
   
   </script>
 

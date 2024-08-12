@@ -237,7 +237,7 @@ export function setTextureMap() {
   enableTextureMap = !enableTextureMap ? 1.0 : 0.0;
 }
 
-/*                                LIGHT                                 */
+/*                              LIGHT AND CAMERA                                */
 export let lightPosition = [0, 0, 0];
 export let lightTarget = [0, 0, 0];
 export let cameraPosition = [0, 0, 0];
@@ -249,6 +249,12 @@ export let cameraTarget = [0, 0, 0];
  */
 export function setLight(i, value) {
   lightPosition[i] = value;
+}
+export function setCameraPosition(i, value) {
+  cameraPosition[i] = value;
+}
+export function setCameraTarget(i, value) {
+  cameraTarget[i] = value;
 }
 
 export function beginLightCamera(l, lt, c, ct) {

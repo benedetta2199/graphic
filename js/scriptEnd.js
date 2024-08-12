@@ -3,8 +3,10 @@
 import { loadPlane, getGeometriesExtents } from './planeLoader.js';
 import { setupCameraAndLight } from './cameraAndLightSetupEnd.js';
 import { renderScene } from './renderSceneEnd.js';
-import { vs, fs, setPlaneClipping } from './utils.js';
-import { posCamTarget, posCamPos, posPlane, light } from './renderSceneEnd.js';
+import { vs, fs, setPlaneClipping, cameraPosition, cameraTarget, zNear, zFar, vsColor, fsColor, setCameraPosition, setCameraTarget } from './utils.js';
+import { posPlane } from './renderSceneEnd.js';
+import { setAlpha, alphaEnable, setLight, enableNormalMap, setNormalMap, enableTextureMap, setTextureMap} from "./utils.js";
+  
 
 /**
  * Main function to initialize and render the scene.
@@ -21,6 +23,7 @@ export async function main() {
 
   // Create a WebGL program using vertex and fragment shaders
   const meshProgramInfo = webglUtils.createProgramInfo(gl, [vs, fs]);
+  const colorProgramInfo = webglUtils.createProgramInfo(gl, [vsColor, fsColor]);
 
   // Load objects asynchronously
   const objects = ['plane', 'elica', 'world', 'foto', 'cube'];
@@ -44,37 +47,63 @@ export async function main() {
   };
 
   // Get camera position, target, object offset, and clipping planes based on combined extents
-  const { cameraPosition, cameraTarget, objOffset, zNear, zFar } = setupCameraAndLight(gl, combinedExtents);
+  setupCameraAndLight(combinedExtents);
 
   setPlaneClipping(zNear, zFar);
 
   // Render the scene with the loaded objects and camera setup
-  renderScene(gl, meshProgramInfo, parts, cameraPosition, cameraTarget);
+  renderScene(gl, meshProgramInfo, colorProgramInfo, parts, cameraPosition, cameraTarget);
 }
 
 /**
  * Sets up event listeners for camera and light controls.
  */
 function setListener() {
-  const inputElements = [
-    { id: 'camPosX', target: posCamPos, index: 0 },
-    { id: 'camPosY', target: posCamPos, index: 1 },
-    { id: 'camPosZ', target: posCamPos, index: 2 },
-    { id: 'camTargX', target: posCamTarget, index: 0 },
-    { id: 'camTargY', target: posCamTarget, index: 1 },
-    { id: 'camTargZ', target: posCamTarget, index: 2 },
-    { id: 'planeTargX', target: posPlane, index: 0 },
-    { id: 'planeTargY', target: posPlane, index: 1 },
-    { id: 'planeTargZ', target: posPlane, index: 2 },
-    { id: 'lightTarX', target: light, index: 0 },
-    { id: 'lightTarY', target: light, index: 1 },
-    { id: 'lightTarZ', target: light, index: 2 },
+  const buttons = {
+    alpha: document.getElementById('alpha'),
+    normalMap: document.getElementById('normalMap'),
+    textureMap: document.getElementById('textureMap'),
+  };
 
+  buttons.alpha.addEventListener('click', () => {
+    setAlpha();
+    toggleButton(buttons.alpha, !alphaEnable);
+    buttons.alpha.textContent = alphaEnable ? "DISATTIVA L'OPACITÀ" : "ATTIVA L'OPACITÀ";
+  });
+
+  buttons.normalMap.addEventListener('click', () => {
+    setNormalMap();
+    toggleButton(buttons.normalMap, !enableNormalMap);
+    buttons.normalMap.textContent = enableNormalMap ? "DISATTIVA LE NORMAL MAP" : "ATTIVA LE NORMAL MAP";
+  });
+
+  buttons.textureMap.addEventListener('click', () => {
+    setTextureMap();
+    toggleButton(buttons.textureMap, !enableTextureMap);
+    buttons.textureMap.textContent = enableTextureMap ? "DISATTIVA LE TEXTURE" : "ATTIVA LE TEXTURE";
+  });
+
+
+  const inputElements = [
+    { id: 'camPosX', setter: setCameraPosition, index: 0 },
+    { id: 'camPosY', setter: setCameraPosition, index: 1 },
+    { id: 'camPosZ', setter: setCameraPosition, index: 2 },
+    { id: 'camTargX', setter: setCameraTarget, index: 0 },
+    { id: 'camTargY', setter: setCameraTarget, index: 1 },
+    { id: 'camTargZ', setter: setCameraTarget, index: 2 },
+    { id: 'lightTarX', setter: setLight, index: 0 },
+    { id: 'lightTarY', setter: setLight, index: 1 },
+    { id: 'lightTarZ', setter: setLight, index: 2 },
+    { id: 'planeTargX', setter: (i, value) => posPlane[i] = value, index: 0 },
+    { id: 'planeTargY', setter: (i, value) => posPlane[i] = value, index: 1 },
+    { id: 'planeTargZ', setter: (i, value) => posPlane[i] = value, index: 2 },
   ];
 
-  inputElements.forEach(({ id, target, index }) => {
+  inputElements.forEach(({ id, setter, index }) => {
     document.getElementById(id).addEventListener('input', (event) => {
-      target[index] = parseInt(event.target.value);
+      const value = parseInt(event.target.value);
+      console.log(`Setting ${id} to ${value}`);
+      setter(index, value);
     });
   });
 }
