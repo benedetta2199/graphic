@@ -1,11 +1,11 @@
 "use strict";
 
 import { loadPlane, getGeometriesExtents } from './planeLoader.js';
-import { setupCameraAndLight } from './cameraAndLightSetupEnd.js';
 import { renderScene } from './renderSceneEnd.js';
 import { vs, fs, setPlaneClipping, cameraPosition, cameraTarget, zNear, zFar, vsColor, fsColor, setCameraPosition, setCameraTarget } from './utils.js';
 import { posPlane } from './renderSceneEnd.js';
 import { setAlpha, alphaEnable, setLight, enableNormalMap, setNormalMap, enableTextureMap, setTextureMap} from "./utils.js";
+import { setupCameraAndLightEnd } from './cameraAndLightSetup.js';
   
 
 /**
@@ -47,7 +47,7 @@ export async function main() {
   };
 
   // Get camera position, target, object offset, and clipping planes based on combined extents
-  setupCameraAndLight(combinedExtents);
+  setupCameraAndLightEnd(combinedExtents);
 
   setPlaneClipping(zNear, zFar);
 
@@ -68,19 +68,16 @@ function setListener() {
   buttons.alpha.addEventListener('click', () => {
     setAlpha();
     toggleButton(buttons.alpha, !alphaEnable);
-    buttons.alpha.textContent = alphaEnable ? "DISATTIVA L'OPACITÀ" : "ATTIVA L'OPACITÀ";
   });
 
   buttons.normalMap.addEventListener('click', () => {
     setNormalMap();
     toggleButton(buttons.normalMap, !enableNormalMap);
-    buttons.normalMap.textContent = enableNormalMap ? "DISATTIVA LE NORMAL MAP" : "ATTIVA LE NORMAL MAP";
   });
 
   buttons.textureMap.addEventListener('click', () => {
     setTextureMap();
     toggleButton(buttons.textureMap, !enableTextureMap);
-    buttons.textureMap.textContent = enableTextureMap ? "DISATTIVA LE TEXTURE" : "ATTIVA LE TEXTURE";
   });
 
 
@@ -106,4 +103,9 @@ function setListener() {
       setter(index, value);
     });
   });
+}
+
+function toggleButton(button, isActive) {
+  button.classList.toggle('active', !isActive);
+  button.classList.toggle('inactive', isActive);
 }
