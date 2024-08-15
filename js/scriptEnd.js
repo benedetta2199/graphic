@@ -1,11 +1,10 @@
 "use strict";
 
-import { loadPlane, getGeometriesExtents } from './planeLoader.js';
-import { renderScene } from './renderSceneEnd.js';
-import { vs, fs, setPlaneClipping, cameraPosition, cameraTarget, zNear, zFar, vsColor, fsColor, setCameraPosition, setCameraTarget } from './utils.js';
-import { posPlane } from './renderSceneEnd.js';
+import { loadPlane, getGeometriesExtents } from './createObj.js';
+import { vs, fs, setPlaneClipping, zNear, zFar, vsColor, fsColor, setCameraTargetOffset, setCameraTarget } from './utils.js';
 import { setAlpha, alphaEnable, setLight, enableNormalMap, setNormalMap, enableTextureMap, setTextureMap} from "./utils.js";
 import { setupCameraAndLightEnd } from './cameraAndLightSetup.js';
+import { renderSceneEnd, posPlane } from './renderScene.js';
   
 
 /**
@@ -52,7 +51,7 @@ export async function main() {
   setPlaneClipping(zNear, zFar);
 
   // Render the scene with the loaded objects and camera setup
-  renderScene(gl, meshProgramInfo, colorProgramInfo, parts, cameraPosition, cameraTarget);
+  renderSceneEnd(gl, meshProgramInfo, colorProgramInfo, parts);
 }
 
 /**
@@ -82,9 +81,9 @@ function setListener() {
 
 
   const inputElements = [
-    { id: 'camPosX', setter: setCameraPosition, index: 0 },
-    { id: 'camPosY', setter: setCameraPosition, index: 1 },
-    { id: 'camPosZ', setter: setCameraPosition, index: 2 },
+    { id: 'camPosX', setter: setCameraTargetOffset, index: 0 },
+    { id: 'camPosY', setter: setCameraTargetOffset, index: 1 },
+    { id: 'camPosZ', setter: setCameraTargetOffset, index: 2 },
     { id: 'camTargX', setter: setCameraTarget, index: 0 },
     { id: 'camTargY', setter: setCameraTarget, index: 1 },
     { id: 'camTargZ', setter: setCameraTarget, index: 2 },

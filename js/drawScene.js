@@ -1,49 +1,51 @@
-import { speed, timing, clouds, obstacles, coins, rand, removeCoin, removeCloud, removeObstacle, updateCoin  } from "./utils.js";
-import { renderObj, u_worldElica,  u_worldPlane, u_worldWorld } from './renderObj.js';
-import { renderCoin, renderObstacle, setCoin, setObstacle} from './collectibles.js';
-import { renderCloud, setCloud } from './cloud.js';
+import {speed, timing, clouds, obstacles, coins, rand, removeCoin, removeCloud, removeObstacle, updateCoin } from "./utils.js";
+import { renderCoin, renderObstacle, setCoin, setObstacle } from "./collectibles.js";
+import { renderCloud, setCloud } from "./cloud.js";
+import { renderObj, u_worldElica, u_worldPlane, u_worldFoto, u_worldPlaneEnd, u_worldWorldEnd, u_worldWorld } from "./renderObj.js";
+import { posPlane } from "./renderScene.js";
 
+let frameElement = 0;
 
-let frameElement =0
-
-export function drawScene(gl, programInfo, sharedUnifoms, parts) {
-  
+export function drawScene(gl, programInfo, sharedUnifoms, parts, isEndScene) {
   frameElement++;
-    
-    gl.useProgram(programInfo.program);
-    // set uniforms that are the same for both the sphere and plane
-    webglUtils.setUniforms(programInfo, sharedUnifoms);
 
+  gl.useProgram(programInfo.program);
+  // Set uniforms that are the same for both the sphere and plane
+  webglUtils.setUniforms(programInfo, sharedUnifoms);
 
-    // Render PLANE
-    let u_world = u_worldPlane(gl.canvas.height);
-    renderObj(gl, programInfo, parts.plane, u_world);
+  // Render PLANE
+  let u_world = isEndScene ? u_worldPlaneEnd(gl.canvas.height) : u_worldPlane(gl.canvas.width);
 
-    
-    // Render ELICA
-    renderObj(gl, programInfo, parts.elica, u_worldElica(u_world));
+  if (isEndScene) {
+    u_world = m4.translate(u_world, posPlane[0], posPlane[1], posPlane[2]);
+  }
+  renderObj(gl, programInfo, parts.plane, u_world);
 
-    
-    // Render WORLD
-    renderObj(gl, programInfo, parts.world, u_worldWorld(), true);
+  // Render ELICA
+  renderObj(gl, programInfo, parts.elica, u_worldElica(u_world));
 
-     // Render P
-    /*let u_worldP = m4.translation(0, 60, -50);
-    u_worldP = m4.scale(u_worldP, 80, 80, 80);
-     renderObj(gl, programInfo, parts.p, u_worldP);*/
+  // Render WORLD
+  let u_worldW = isEndScene ? u_worldWorldEnd() : u_worldWorld();
+  renderObj(gl, programInfo, parts.world, u_worldW, true);
 
-    // Render OBSTACLES periodically
-    if (frameElement % timing.obstacle === 0) {
+  // Conditionally Render PHOTO in the end scene
+  if (isEndScene) {
+    renderObj(gl, programInfo, parts.foto, u_worldFoto(u_world), true);
+  }
+
+  // Render OBSTACLES periodically (only in the non-end scene)
+  if (!isEndScene){ 
+    if(frameElement % timing.obstacle === 0) {
       obstacles.push(setObstacle());
       if (obstacles.length > 5000 / (timing.obstacle * speed.obstacle)) {
         removeObstacle();
       }
     }
-    obstacles.forEach(data => {
+    obstacles.forEach((data) => {
       renderObstacle(gl, programInfo, parts.obstacle, data);
     });
 
-    // Render COINS periodically
+    // Render COINS periodically (only in the non-end scene)
     if (frameElement % timing.coin === 0) {
       const numCoins = rand(1, 6);
       const amplitude = rand(3, 8);
@@ -57,21 +59,23 @@ export function drawScene(gl, programInfo, sharedUnifoms, parts) {
       }
     }
 
-    const newCoin = coins.filter(data => !renderCoin(gl, programInfo, parts.coin, data));
-    if(newCoin.length<coins.length){
+    const newCoin = coins.filter((data) => !renderCoin(gl, programInfo, parts.coin, data));
+    if (newCoin.length < coins.length) {
       updateCoin(newCoin);
     }
-
-    // Render CLOUD periodically
-    if (frameElement % timing.cloud === 0) {
-      clouds.push(setCloud(rand(3, 9)));
-      if (clouds.length > 5000 / (timing.cloud * speed.cloud)) {
-        removeCloud();
-      }
-    }
-    clouds.forEach(data => {
-      renderCloud(gl, programInfo, parts.cube, data);
-    });
-
   }
-  
+
+  // Render CLOUD periodically
+  const cloudTiming = isEndScene ? 300 : timing.cloud;
+  if (frameElement % cloudTiming === 0) {
+    //const cloudRange = isEndScene ? { min: -40, max: 80 } : undefined;
+    clouds.push(setCloud(rand(3, isEndScene ? 6 : 9), isEndScene), isEndScene);
+    const maxClouds = isEndScene ? 20 : 5000 / (timing.cloud * speed.cloud);
+    if (clouds.length > maxClouds) {
+      removeCloud();
+    }
+  }
+  clouds.forEach((data) => {
+    renderCloud(gl, programInfo, parts.cube, data);
+  });
+}

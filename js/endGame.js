@@ -37,6 +37,8 @@ function initializeEndGamePage() {
     main();
 
     const time = localStorage.getItem('time'); //number of millisecond
+    
+    console.log(time)
     var min = Math.floor(time / 60000);
     var sec = ((time % 60000) / 1000).toFixed(0);
     const formattedPlayTime = `${min}m ${sec}s`;

@@ -240,7 +240,7 @@ export function setTextureMap() {
 /*                              LIGHT AND CAMERA                                */
 export let lightPosition = [0, 0, 0];
 export let lightTarget = [0, 0, 0];
-export let cameraPosition = [0, 0, 0];
+export let cameraTargetOffset = [0, 0, 0];
 export let cameraTarget = [0, 0, 0];
 /**
  * Sets the light value at the given index.
@@ -250,8 +250,8 @@ export let cameraTarget = [0, 0, 0];
 export function setLight(i, value) {
   lightPosition[i] = value;
 }
-export function setCameraPosition(i, value) {
-  cameraPosition[i] = value;
+export function setCameraTargetOffset(i, value) {
+  cameraTargetOffset[i] = value;
 }
 export function setCameraTarget(i, value) {
   cameraTarget[i] = value;
@@ -260,7 +260,7 @@ export function setCameraTarget(i, value) {
 export function beginLightCamera(l, lt, c, ct) {
   lightPosition = l;
   lightTarget = lt;
-  cameraPosition = c;
+  cameraTargetOffset = c;
   cameraTarget = ct;
 }
 
@@ -296,6 +296,7 @@ export function getPoint() {
 export let isPaused = false;
 export function setPause() {
   isPaused = true;
+  setIsGame(false)
 }
 
 
@@ -311,6 +312,8 @@ export function setIsGame(val) {
     const currentTime = Date.now();
     accumulatedTime += Math.abs(currentTime - startTime);   
   }
+  console.log(accumulatedTime);
+  isGame = val;
 }
 
 /*                                SOUND                                 */

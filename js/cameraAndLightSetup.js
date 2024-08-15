@@ -18,10 +18,8 @@ function calculateCameraAndLightParams(extents, cameraTarget, cameraTargetOffset
   setPlaneClipping(zNear, zFar);
 
   //const objOffset = m4.scaleVector(m4.addVectors(extents.min, m4.scaleVector(range, 0.5)), 1);
-  
-  const cameraPosition = m4.addVectors(cameraTarget, cameraTargetOffset);  // Posizione della telecamera
 
-  return {lightPosition, lightTarget, cameraPosition, cameraTarget,};
+  return {lightPosition, lightTarget, cameraTargetOffset, cameraTarget,};
 }
 
 /**
@@ -36,7 +34,7 @@ export function setupCameraAndLight(extents) {
     [0, 20, -50], // lightTarget
     [0, 100, 61] // lightPosition
   );
-  beginLightCamera(params.lightPosition, params.lightTarget, params.cameraPosition, params.cameraTarget);
+  beginLightCamera(params.lightPosition, params.lightTarget, params.cameraTargetOffset, params.cameraTarget);
 }
 
 /**
@@ -46,10 +44,11 @@ export function setupCameraAndLight(extents) {
 export function setupCameraAndLightEnd(extents) {
   const params = calculateCameraAndLightParams(
     extents,
-    [0, 85, 0],
-    [120, -100, 0], // cameraTargetOffset
-    [20, 40, -40], // lightTarget
+    [-30, 95, -15],
+    [115, -50, -5],
+    //[100, -50, -35], // cameraTargetOffset
+    [0, 40, -40], // lightTarget
     [60, 120, 60] // lightPosition
   );
-  beginLightCamera(params.lightPosition, params.lightTarget, params.cameraPosition, params.cameraTarget);
+  beginLightCamera(params.lightPosition, params.lightTarget, params.cameraTargetOffset, params.cameraTarget);
 }

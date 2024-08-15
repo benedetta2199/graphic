@@ -2,7 +2,7 @@
 
 import { loadPlane, getGeometriesExtents } from './planeLoader.js';
 import { setupCameraAndLight } from './cameraAndLightSetup.js';
-import { renderScene } from './renderScene.js';
+import { renderSceneGame } from './renderScene.js';
 import { vs, fs, vsColor, fsColor, rand, setPlaneClipping } from './utils.js';
 import { loadEndGameContent } from './endGame.js';
 
@@ -10,8 +10,6 @@ import { loadEndGameContent } from './endGame.js';
  * Main function to initialize and render the scene.
  */
 async function main() {
-  // Store the start time of the game
-  localStorage.setItem('startTime', new Date());
   // Preload end game content
   loadEndGameContent();
   
@@ -70,7 +68,7 @@ async function main() {
   setupCameraAndLight(combinedExtents);
 
   // Render the scene with the loaded objects and camera setup
-  renderScene(gl, meshProgramInfo, colorProgramInfo, parts);
+  renderSceneGame(gl, meshProgramInfo, colorProgramInfo, parts);
 }
 
 // Execute the main function to start the application

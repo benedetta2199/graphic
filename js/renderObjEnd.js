@@ -26,7 +26,7 @@ export function renderObj(gl, meshProgramInfo, part, u_world, isTextured=false) 
  * @returns {Object} - World transformation matrix for the plane.
  */
 export function u_worldPlane(width) {
-  let u_world = m4.translation(0, 120 + Math.sin(time * 0.2) * 2, posRelX + width * 0.03);
+  let u_world = m4.translation(0, 120 + Math.sin(time * 0.2) * 2, 22 + width * 0.03);
   u_world = m4.xRotate(u_world, degToRad(20));
   u_world = m4.yRotate(u_world, degToRad(25));
   u_world = m4.scale(u_world, 1.5, 1.5, 1.5);

@@ -20,6 +20,9 @@ body {
   font-size: small;
   background-color: #ccdfef;
 }
+
+.body-documentation{overflow-y: auto;}
+
 body *{margin: 0;}
 
 h1,h2,h3,h4,h5{font-family: "Poly", cursive; }

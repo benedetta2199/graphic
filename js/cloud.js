@@ -8,10 +8,10 @@ const size = 4;
     range Y 40-145
     range Z < -50
 */
-export function setCloud(n){
+export function setCloud(n, isEndScene){
     const data = [];
-    const yCloud = rand(40, 145);
-    const zCloud = rand(80, 150);
+    const yCloud = yRandValue(isEndScene);
+    const zCloud = zRandValue(isEndScene);
     
     for (let i = 0; i < n; i++) {
         const s = rand(1, size);
@@ -28,6 +28,14 @@ export function setCloud(n){
     return data;
 }
 
+function yRandValue(isEndScene){
+    return isEndScene? rand(20, 145) : rand(40, 145);
+}
+function zRandValue(isEndScene){
+    return isEndScene? rand(-100,100) : rand(80, 150);
+}
+
+
 function u_worldCube(data) {
     const elemT= data.elemT;
     const elemS= data.elemS;
@@ -39,6 +47,7 @@ function u_worldCube(data) {
     u_world = m4.scale(u_world, elemS, elemS, elemS); // Scala l'oggetto
     return u_world;
 }
+
 
 export function renderCloud(gl, meshProgramInfo, cube, data) {
     for(var i = 0; i < data.length; i++) {

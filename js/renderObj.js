@@ -45,6 +45,21 @@ export function u_worldPlane(height) {
 }
 
 /**
+ * Calculate the world transformation matrix for the plane.
+ * @param {number} width - Canvas width.
+ * @returns {Object} - World transformation matrix for the plane.
+ */
+export function u_worldPlaneEnd(width) {
+  let u_world = m4.translation(0, 120 + Math.sin(time * 0.2) * 2, 22 + width * 0.03);
+  u_world = m4.xRotate(u_world, degToRad(10));
+  u_world = m4.yRotate(u_world, degToRad(30));
+  u_world = m4.zRotate(u_world, degToRad(-40));
+  u_world = m4.scale(u_world, 1.5, 1.5, 1.5);
+  return u_world;
+}
+
+
+/**
  * Calculate the world transformation matrix for the propeller.
  * @param {Object} u_world_plane - World transformation matrix of the plane.
  * @param {number} time - Current time.
@@ -53,6 +68,31 @@ export function u_worldPlane(height) {
 export function u_worldElica(u_world_plane) {
   return m4.xRotate(u_world_plane, -time);
 }
+
+/**
+ * Calculate the world transformation matrix for the photo.
+ * @param {Object} u_world_plane - World transformation matrix of the plane.
+ * @returns {Object} - World transformation matrix for the photo.
+ */
+export function u_worldFoto(u_world_plane) {
+  let u_world = u_world_plane;
+  u_world = m4.zRotate(u_world, degToRad(10));
+  return u_world;
+}
+
+
+/**
+ * Calculate the world transformation matrix for the photo.
+ * @returns {Object} - World transformation matrix for the photo.
+ */
+/*export function u_worldFoto() {
+  const prop = 0.5;
+  let u_world_foto = m4.translation(39, 111, 0);
+  u_world_foto = m4.yRotate(u_world_foto, degToRad(-2));
+  u_world_foto = m4.xRotate(u_world_foto, degToRad(2));
+  u_world_foto = m4.scale(u_world_foto, prop, prop, prop);
+  return u_world_foto;
+}*/
 
 
 /**
@@ -69,16 +109,17 @@ export function u_worldWorld() {
 }
 
 /**
- * Calculate the world transformation matrix for the photo.
- * @returns {Object} - World transformation matrix for the photo.
+ * Calculate the world transformation matrix for the world object.
+ * @param {number} time - Current time.
+ * @returns {Object} - World transformation matrix for the world object.
  */
-export function u_worldFoto() {
-  const prop = 0.5;
-  let u_world_foto = m4.translation(39, 111, 0);
-  u_world_foto = m4.yRotate(u_world_foto, degToRad(-2));
-  u_world_foto = m4.xRotate(u_world_foto, degToRad(2));
-  u_world_foto = m4.scale(u_world_foto, prop, prop, prop);
-  return u_world_foto;
+export function u_worldWorldEnd() {
+  const prop = 20;
+  let u_world_world = m4.translation(prop, prop*2, -prop * 2);
+  u_world_world = m4.xRotate(u_world_world, degToRad(45));
+  u_world_world = m4.yRotate(u_world_world, time / 20);
+  u_world_world = m4.scale(u_world_world, prop, prop, prop);
+  return u_world_world;
 }
 
 /**

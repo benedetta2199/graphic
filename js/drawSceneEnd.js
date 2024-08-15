@@ -1,5 +1,5 @@
 import { clouds, rand, removeCloud} from "./utils.js";
-import { renderCloud, setCloud } from './cloud.js';
+import { renderCloud, setCloud } from './cloudEnd.js';
 import { posPlane } from "./renderSceneEnd.js";
 import { renderObj, u_worldElica,  u_worldPlane, u_worldWorld, u_worldFoto } from "./renderObjEnd.js";
 
@@ -15,7 +15,7 @@ export function drawScene(gl, programInfo, sharedUnifoms, parts) {
     webglUtils.setUniforms(programInfo, sharedUnifoms);
 
     // Render PLANE
-    let u_world = u_worldPlane(gl.canvas.width, gl.canvas.height);
+    let u_world = u_worldPlane(gl.canvas.width);
     u_world = m4.translate(u_world, posPlane[0], posPlane[1], posPlane[2]);
     renderObj(gl, programInfo, parts.plane, u_world);
 
@@ -30,7 +30,7 @@ export function drawScene(gl, programInfo, sharedUnifoms, parts) {
 
     // Render CLOUD periodically
     if (frameElement % 300 === 0) {
-      clouds.push(setCloud(rand(3, 6), { min: -20, max: 40 }));
+      clouds.push(setCloud(rand(3, 6), { min: -40, max: 80 }));
       if (clouds.length > 20) {
         removeCloud();
       }
