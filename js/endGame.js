@@ -1,18 +1,6 @@
 import { main } from "./scriptEnd.js";
-import { setPause, getPoint } from "./utils.js";
+import { setPause, getPoint, accumulatedTime } from "./utils.js";
 
-/**
- * Gets the play time as a formatted string.
- * @returns {string} - Play time as a formatted string.
- */
-export function getPlayTime(){
-    const endTime = new Date(localStorage.getItem('endTime'));
-    const startTime = new Date(localStorage.getItem('startTime'));
-    const playTimeMs = Math.abs(endTime - startTime);
-    const playTimeSeconds = Math.floor((playTimeMs / 1000) % 60);
-    const playTimeMinutes = Math.floor((playTimeMs / (1000 * 60)) % 60);
-    return playTimeMinutes + "m " + playTimeSeconds + "s";
-  }
   
 /**
  * Loads the end game content from the server.
@@ -31,7 +19,7 @@ let isEnd = false;
 export function endGame() {
     setPause();
     localStorage.setItem('point', getPoint());
-    localStorage.setItem('endTime', new Date());
+    localStorage.setItem('time', accumulatedTime);
 
     const endGameContent = localStorage.getItem('endGameContent');
     document.body.innerHTML = endGameContent;
@@ -47,17 +35,13 @@ export function endGame() {
  */
 function initializeEndGamePage() {
     main();
-    console.log(localStorage.getItem('point'));
 
-    const endTime = new Date(localStorage.getItem('endTime'));
-    const startTime = new Date(localStorage.getItem('startTime'));
-    const playTime = Math.floor((endTime - startTime) / 1000);
-    const formattedPlayTime = `${Math.floor(playTime / 60)}m ${playTime % 60}s`;
+    const time = localStorage.getItem('time'); //number of millisecond
+    var min = Math.floor(time / 60000);
+    var sec = ((time % 60000) / 1000).toFixed(0);
+    const formattedPlayTime = `${min}m ${sec}s`;
 
-    const point = document.getElementById('points');
-    console.log(point);
-    point.textContent = `Punti ottenuti: ${localStorage.getItem('point')}`;
-    console.log(point);
+    document.getElementById('points').textContent = `Punti ottenuti: ${localStorage.getItem('point')}`;
     document.getElementById('playTime').textContent = `Tempo di gioco: ${formattedPlayTime}`;
 
     document.getElementById('playAgainButton').addEventListener('click', () => {

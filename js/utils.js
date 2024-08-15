@@ -297,10 +297,20 @@ export let isPaused = false;
 export function setPause() {
   isPaused = true;
 }
+
+
 /*                         DINAMICA DI GIOCO                            */
 export let isGame = false;
+export let accumulatedTime = 0
+let startTime = Date.now();
 export function setIsGame(val) {
-  isGame = val;
+  if (val) {
+    startTime = Date.now();
+  }
+  else {
+    const currentTime = Date.now();
+    accumulatedTime += Math.abs(currentTime - startTime);   
+  }
 }
 
 /*                                SOUND                                 */
