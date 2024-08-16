@@ -47,8 +47,8 @@ export function setupCameraAndLightEnd(extents) {
     [-30, 95, -15],
     [115, -50, -5],
     //[100, -50, -35], // cameraTargetOffset
-    [0, 40, -40], // lightTarget
-    [60, 120, 60] // lightPosition
+    [0, 20, -60], // lightTarget
+    [135, 120, 60] // lightPosition
   );
   beginLightCamera(params.lightPosition, params.lightTarget, params.cameraTargetOffset, params.cameraTarget);
 }

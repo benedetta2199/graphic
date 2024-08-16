@@ -31,6 +31,13 @@ export function drawScene(gl, programInfo, sharedUnifoms, parts, isEndScene) {
   // Conditionally Render PHOTO in the end scene
   if (isEndScene) {
     renderObj(gl, programInfo, parts.foto, u_worldFoto(u_world), true);
+
+    /*const prop = 20;
+    let u = m4.translation(prop, prop*2, -prop * 2);
+    u = m4.xRotate(u, degToRad(65));
+    u = m4.yRotate(u, degToRad(90));
+    u = m4.scale(u, 5*prop, 5*prop, 5*prop);
+    renderObj(gl, programInfo, parts.p, u, true);*/
   }
 
   // Render OBSTACLES periodically (only in the non-end scene)

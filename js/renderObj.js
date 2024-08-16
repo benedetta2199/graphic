@@ -50,11 +50,12 @@ export function u_worldPlane(height) {
  * @returns {Object} - World transformation matrix for the plane.
  */
 export function u_worldPlaneEnd(width) {
-  let u_world = m4.translation(0, 120 + Math.sin(time * 0.2) * 2, 22 + width * 0.03);
+  let u_world = m4.translation(20, 120 + Math.sin(time * 0.2) * 2, 22 + width * 0.03);
+  //  let u_world = m4.translation(160, -30 + Math.sin(time * 0.2) * 2, 8 + width * 0.03);
   u_world = m4.xRotate(u_world, degToRad(10));
   u_world = m4.yRotate(u_world, degToRad(30));
   u_world = m4.zRotate(u_world, degToRad(-40));
-  u_world = m4.scale(u_world, 1.5, 1.5, 1.5);
+  u_world = m4.scale(u_world, 0.5, 0.5, 0.5);
   return u_world;
 }
 
@@ -76,7 +77,7 @@ export function u_worldElica(u_world_plane) {
  */
 export function u_worldFoto(u_world_plane) {
   let u_world = u_world_plane;
-  u_world = m4.zRotate(u_world, degToRad(10));
+  u_world = m4.zRotate(u_world, degToRad(0));
   return u_world;
 }
 

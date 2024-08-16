@@ -1,11 +1,12 @@
 "use strict";
 
 import { loadPlane, getGeometriesExtents } from './createObj.js';
-import { vs, fs, setPlaneClipping, zNear, zFar, vsColor, fsColor, setCameraTargetOffset, setCameraTarget } from './utils.js';
+import { setPlaneClipping, zNear, zFar, setCameraTargetOffset, setCameraTarget } from './utils.js';
 import { setAlpha, alphaEnable, setLight, enableNormalMap, setNormalMap, enableTextureMap, setTextureMap} from "./utils.js";
 import { setupCameraAndLightEnd } from './cameraAndLightSetup.js';
 import { renderSceneEnd, posPlane } from './renderScene.js';
-  
+import { fs, fsColor, vs, vsColor } from './vsfs.js';
+
 
 /**
  * Main function to initialize and render the scene.
@@ -18,6 +19,10 @@ export async function main() {
   const gl = canvas.getContext("webgl");
   if (!gl) {
     return;
+  }
+  const ext = gl.getExtension('WEBGL_depth_texture');
+  if (!ext) {
+    return alert('need WEBGL_depth_texture');
   }
 
   // Create a WebGL program using vertex and fragment shaders

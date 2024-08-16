@@ -7,7 +7,7 @@ import { degToRad, rand, alphaEnable, zFar, zNear, setTime, clouds, obstacles, c
 import { drawScene } from './drawScene.js';
 import { createDepthFramebuffer, createDepthTexture } from './objLoad.js';
 
-export let posPlane = [0, 0, 0];
+export let posPlane = [170, -30, -20];
 
 export function renderSceneGame(gl, meshProgramInfo, colorProgramInfo, parts) {
     setListener(gl);
@@ -32,11 +32,6 @@ export function renderScene(gl, meshProgramInfo, colorProgramInfo, parts, isEndS
     const depthTextureSize = 2048;
     const depthTexture = createDepthTexture(gl, depthTextureSize);
     const depthFramebuffer = createDepthFramebuffer(gl, depthTexture);
-
-    const cubeLinesBufferInfo = webglUtils.createBufferInfoFromArrays(gl, {
-        position: [-1, -1, -1, 1, -1, -1, -1, 1, -1, 1, 1, -1, -1, -1, 1, 1, -1, 1, -1, 1, 1, 1, 1, 1],
-        indices: [0, 1, 1, 3, 3, 2, 2, 0, 4, 5, 5, 7, 7, 6, 6, 4, 0, 4, 1, 5, 3, 7, 2, 6],
-    });
 
     gl.enable(gl.CULL_FACE);
     gl.enable(gl.DEPTH_TEST);
@@ -65,7 +60,8 @@ export function renderScene(gl, meshProgramInfo, colorProgramInfo, parts, isEndS
         // luce diversa o uguale??
         let lightProjectionMatrix;
         if(isEndScene){
-            lightProjectionMatrix = m4.perspective(fieldOfViewRadians, aspect, 0.1,  // vicino
+            //lightProjectionMatrix = m4.orthographic(-100, 100, -150, 50, 0.5, 200);
+            lightProjectionMatrix = m4.perspective(fieldOfViewRadians, aspect, 15,  // vicino
                 250)   // lontano*/
         }else{
             lightProjectionMatrix = m4.orthographic(-100, 100, -150, 50, 0.5, 200);
@@ -109,22 +105,6 @@ export function renderScene(gl, meshProgramInfo, colorProgramInfo, parts, isEndS
             u_bias: -0.0099,
         };
         drawScene(gl, meshProgramInfo, sharedUniforms, parts, isEndScene);
-
-        {
-            const viewMatrix = m4.inverse(cameraMatrix);
-            gl.useProgram(colorProgramInfo.program);
-            webglUtils.setBuffersAndAttributes(gl, colorProgramInfo, cubeLinesBufferInfo);
-
-            const mat = m4.multiply(lightMatrix, m4.inverse(lightProjectionMatrix));
-            webglUtils.setUniforms(colorProgramInfo, {
-                u_color: [0, 0, 0, 1],
-                u_view: viewMatrix,
-                u_projection: projection,
-                u_world: mat,
-            });
-
-            webglUtils.drawBufferInfo(gl, cubeLinesBufferInfo, gl.LINES);
-        }
 
         requestAnimationFrame(render);
     }

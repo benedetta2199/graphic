@@ -1,10 +1,11 @@
 "use strict";
 
-import { loadPlane, getGeometriesExtents } from './planeLoader.js';
+import { loadPlane, getGeometriesExtents } from './createObj.js';
 import { setupCameraAndLight } from './cameraAndLightSetup.js';
 import { renderSceneGame } from './renderScene.js';
-import { vs, fs, vsColor, fsColor, rand, setPlaneClipping } from './utils.js';
+import { rand } from './utils.js';
 import { loadEndGameContent } from './endGame.js';
+import { fs, fsColor, vs, vsColor } from './vsfs.js';
 
 /**
  * Main function to initialize and render the scene.
