@@ -5,7 +5,7 @@ import { incrementPoint, isGame, zFar, zNear, audioContext, soundBuffer, isSound
 import { endGame } from "./endGame.js";
 
 export let mouseY = 200; // Variabile per memorizzare la posizione Y del mouse
-export let posRelX = window.innerWidth/56;
+export let posRelX = window.innerWidth/55;
 export let height;
 
 //let isClick=false; // Per tenere traccia dell'interval
