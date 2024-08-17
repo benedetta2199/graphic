@@ -120,6 +120,15 @@ export function beginLightCamera(l, lt, c, ct) {
   cameraTarget = ct;
 }
 
+export let intensityLight = 1.0;
+export function setIntensityLight(value) {
+  switch(value){
+    case 'alba': intensityLight=1.5; break;
+    case 'notte': intensityLight=0.5; break;
+    default: intensityLight=1.0;
+  }
+}
+
 
 
 /*                                POINT                                 */

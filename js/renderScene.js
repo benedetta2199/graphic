@@ -3,7 +3,7 @@
 import { setCloud } from './cloud.js';
 import { setListener } from './mousePosition.js';
 import { setCoin, setObstacle } from './collectibles.js';
-import { degToRad, rand, alphaEnable, zFar, zNear, setTime, clouds, obstacles, coins, lightPosition, lightTarget, cameraTargetOffset, cameraTarget } from './utils.js';
+import { degToRad, rand, alphaEnable, zFar, zNear, setTime, clouds, obstacles, coins, intensityLight, lightPosition, lightTarget, cameraTargetOffset, cameraTarget } from './utils.js';
 import { drawScene } from './drawScene.js';
 import { createDepthFramebuffer, createDepthTexture } from './objLoad.js';
 
@@ -95,7 +95,7 @@ export function renderScene(gl, meshProgramInfo, colorProgramInfo, parts, isEndS
         const cameraMatrix = m4.lookAt(cameraPosition, cameraTarget, up);
         const view = m4.inverse(cameraMatrix);
 
-        const sharedUniforms = {
+        let sharedUniforms = {
             u_lightDirection: m4.normalize(lightPosition),
             u_view: view,
             u_projection: projection,
@@ -104,6 +104,10 @@ export function renderScene(gl, meshProgramInfo, colorProgramInfo, parts, isEndS
             u_projectedTexture: depthTexture,
             u_bias: -0.0099,
         };
+
+        sharedUniforms.useIntensityLight = intensityLight;
+
+
         drawScene(gl, meshProgramInfo, sharedUniforms, parts, isEndScene);
 
         requestAnimationFrame(render);

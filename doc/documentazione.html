@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en" >
+<head>
+  <meta charset="UTF-8">
+  <title>CodePen - WebGL - load obj - w/mtl, textures</title>
+  <link rel="stylesheet" href="../style.css">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0"/>
+</head>
+<body class="body-documentation">
+  <h1 class="text-right">Relazione Progetto Computer Graphics</h1>
+  <h2 class="text-right">Benedetta Bottari - 0001144057</h2>
+
+  <nav class="sticky-menu">
+    <ul class="menu-documentation">
+        <li>
+            <a href="#">Descrizione del progetto</a>
+            <ul class="submenu">
+                <li><a href="#introduzione">Introduzione</a></li>
+                <li><a href="#interfaccia">Interfaccia</a></li>
+                <li><a href="#come-si-gioca">Come si gioca</a></li>
+            </ul>
+        </li>
+        <li>
+            <a href="#">Struttura del progetto</a>
+            <ul class="submenu">
+                <li><a href="#struttura-js">Struttura js</a></li>
+                <li><a href="#oggetti">Oggetti</a></li>
+            </ul>
+        </li>
+        <li>
+            <a href="#riferimenti">Riferimenti</a>
+        </li>
+    </ul>
+  </nav>
+
+  <div class="documentation">
+    <h1>Descrizione del progetto</h1>
+    <div>
+      <h2 id="Introduzione">Introduzione</h2>
+      <p>
+        <span></span>  
+        Questo progetto è stato realizzato nell'ambito del corso di "Computer Graphics A.A. 2023/2024", con l'obiettivo di sviluppare 
+        un'applicazione 3D interattiva utilizzando WebGL (HTML5, CSS e contesto webgl), linguaggi JavaScript e GLSL, su browser Chrome.
+        <br/>
+        Il fine del progetto è acquisire competenze nell'uso di WebGL, un'API JavaScript per il rendering di grafica interattiva 2D e 3D.
+        <span></span>        
+        Nello specifico, il progetto consiste nella creazione di un videogioco arcade minimale che permette all'utente di assumere
+        il ruolo di un pilota d'aerei. L'idea centrale è quella di offrire un'esperienza di gioco semplice, ma al contempo immersiva 
+        e dinamica, in cui il giocatore può esplorare i cieli raccogliendo tesori ed evitando ostacoli.
+        <span></span>  
+        <!--
+        Tutti gli oggetti sono stata importati e modificati usando Blender per poi essere convertiti in formato <i>.obj</i> <br>
+        It includes functionality for lighting, shadows, toggle of the various features, 
+        user interaction through GUI controls, mouse, keyboard, touch, and gamepad.</p>
+        <p>Please note that the project is available at <a href="https://davspada.github.io/computer_graphics_project/"> this link</a></p>
+        -->
+      </p>
+      <h2>Il gioco</h2>
+      <p>
+        <span></span> 
+        Il gioco prende ispirazione dai classici videogiochi arcade come Temple Run e Flappy Bird, caratterizzati da una scena fissa 
+        o semifissa e da semplici meccaniche di movimento che consentono di raccogliere punti e schivare ostacoli.
+        <span></span> 
+        Il progetto si basa sull'idea del gioco <a href="https://tympanus.net/Tutorials/TheAviator/index.html">the Aviator fly it to the end</a>
+        in cui l'utente, tramite dinamiche basilare, deve pilotare un aereo evitando ostacoli e raccogliendo monete posizionate lungo il percorso. 
+      </p>
+      <div class="d-flex">
+        <div class="d-flex">
+          <img src="./img/plane.png" class="small-img" alt="plane"/>
+          <div class="text-left">
+            <p class="text-b uppercase">Muovi l'aereo in verticale</p>
+          </div>
+        </div>
+        <div class="d-flex">
+          <img src="./img/coin.png" class="small-img scale-05" alt="plane"/>
+          <div class="text-left">
+            <p class="text-b uppercase">Raccogli tutte le monete</p>
+            <p class="p-left">Ogni moneta da 1 punto</p>
+            <p class="p-left">Con 999 punti il gioco termina </p>
+          
+          </div>
+        </div>
+        <div class="d-flex">
+          <img src="./img/icosfera.png" class="small-img scale-05" alt="plane"/>
+          <div class="text-left">
+            <p class="text-b uppercase">Evita gli ostacoli</p>
+            <p class="p-left">Se si tocca il gioco termina </p>
+          </div>
+        </div>
+      </div>
+      <h2>Comandi</h2>
+      <p>
+        <span></span>
+        I comandi del gioco permettono di controllare l'aeroplano, consentendo il movimento verticale del velivolo.
+      </p> 
+      <div class="d-flex">
+        <div class="col-6">
+          <p class="subTitle">Comandi per far salire l'aereo:</p>
+          <p>
+            <span></span>
+            <strong>Mouse:</strong>
+            Spostando il mouse verso l'alto l'aeroplano prenderà quota
+            <span></span>
+            <strong>Tastiera:</strong>
+            Cliccando o tenendo premuto il tasto di freccia ▲
+            <span></span>
+            <strong> Smartphone:</strong>
+            Cliccando o tenendo premuto il bottone ▲ su schermo
+            <span></span>
+          </p>   
+        </div>
+        <div class="col-6">
+          <p class="subTitle">Comandi per far abbassare l'aereo:</p>
+          <p>
+            <span></span>
+            <strong>Mouse:</strong>
+            Spostando il mouse verso il basso l'aeroplano planerà
+            <span></span>
+            <strong>Tastiera:</strong>
+            Cliccando o tenendo premuto il tasto di freccia ▼
+            <span></span>
+            <strong> Smartphone:</strong>
+            Cliccando o tenendo premuto il bottone ▼ su schermo
+            <span></span>
+          </p>
+        </div>     
+      </div>
+      <p>
+        È inoltre possibile cliccando la barra spaziatrice da tastiera attivare e disattivare la modalità di gioco, qualora fosse più
+        comodo rispetto al bottone del menù.
+        <span></span>
+      </p> 
+
+      <h2 id="interfaccia">Interfaccia</h2>
+      
+        <p class="text-b">Modalità d'interazione PC:</p>
+        <p class="p-left">Mouse: Muovi il mouse in verticale</p>
+        <p class="p-left">Tastiera: Premi le frecce ▲ e ▼</p>
+        <p class="text-b">Modalità d'interazione Smartphone:</p>
+        <p class="p-left">Premi i tasti su schermo ▲ e ▼</p>
+      <p>
+        <span></span> 
+        L'interfaccia si compone di due sezioni principali: il menu di personalizzazione del gioco e della scena, e il canvas. 
+        <span></span> 
+        Il gioco è stato progettato per essere responsive, consentendone l'utilizzo sia su PC che su dispositivi mobili. 
+        A tal fine, nel caso in cui si dovesse avviare il progetto da dispositivo mobile l'interfaccia sarà arricchia da due
+        bottoni utili per muovere l'aereo e il menu sarà modificato per essere reso a scomparsa.
+        <span></span> 
+        Questa struttura consente agli utenti di avere un controllo completo sull'esperienza di gioco, rendendola accessibile e personalizzabile.
+        <span></span> 
+      </p>
+      <img src="./img/interfaccia.png" class="big-img" alt="interfaccia"/>
+      <img src="./img/interfaccia-mobile.png" class="big-img" alt="interfaccia"/>
+      <div class="d-flex">
+        <div class="col-6">
+          <p class="subTitle">Il Menu</p>
+          <p>
+            <span></span>
+            Il menu consente di personalizzare diversi parametri del gioco. 
+            <span></span>
+            Gli utenti, tramite slider, possono modificare la velocità degli oggetti renderizzati, come nuvole, monete e ostacoli, 
+            e impostare il tempo di attesa per la loro generazione.
+            È inoltre possibile regolare la direzione della luce per creare vari effetti di illuminazione. 
+            <span></span>
+            Il menu offre anche la possibilità di attivare o disattivare l'opacità, le normal map e le texture degli oggetti, 
+            oltre che la musica di sottofondo, permettendo così un'esperienza personalizzata e adattabile alle preferenze di ciascun giocatore.
+            <span></span>
+          </p>   
+        </div>
+        <div class="col-6">
+          <p class="subTitle">Il Canva</p>
+          <p>
+            <span></span>
+            Nel canvas vengono renderizzati i modelli e gli elementi di interfaccia necessari per la fruizione della simulazione 3D. 
+            <span></span>
+            La scena di sfondo è costituita da un mondo rotante e da nuvole generate dinamicamente con cubi, al fine di creare un 
+            ambiente di volo dinamico e più realistico. 
+            <span></span>
+            Gli elementi di gioco includono un aeroplano, controllabile tramite input da mouse, tastiera o touchscreen,
+            e gli oggetti con cui può collidere, come ostacoli e monete.
+            <span></span>
+          </p>
+        </div>     
+      </div>
+    </div>
+    
+    /*AIUTOOO*//
+      Le scelte progettuali includono l'uso di shader personalizzati per gestire l'illuminazione avanzata e le normal maps, che possono essere abilitate o disabilitate dinamicamente per ottimizzare le prestazioni. Tra le funzionalità WebGL utilizzate, spiccano la gestione delle texture, la creazione di buffer per le geometrie dei modelli e le trasformazioni nello spazio 3D. Una particolarità del progetto è l'oscillazione sinusoidale applicata al movimento dell'aeroplano, che aggiunge realismo e dinamismo al volo. Inoltre, il menù di personalizzazione consente agli utenti di modificare la velocità degli oggetti, il tempo di generazione, la direzione della luce e di attivare o disattivare l'opacità, le normal maps e la musica, rendendo l'esperienza di gioco altamente configurabile e coinvolgente.
+
+    <h1>Divisione dei file</h1>
+    <h1>Spiegazione delle scelte effettuate</h1>
+    <h1>Funzionalità WebGL utilizzate</h1>
+  </div>
+  
+
+</body>
+</html>

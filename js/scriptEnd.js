@@ -1,7 +1,7 @@
 "use strict";
 
 import { loadPlane, getGeometriesExtents } from './createObj.js';
-import { setPlaneClipping, zNear, zFar, setCameraTargetOffset, setCameraTarget } from './utils.js';
+import { setPlaneClipping, zNear, zFar, setCameraTargetOffset, setCameraTarget, setIntensityLight } from './utils.js';
 import { setAlpha, alphaEnable, setLight, enableNormalMap, setNormalMap, enableTextureMap, setTextureMap} from "./utils.js";
 import { setupCameraAndLightEnd } from './cameraAndLightSetup.js';
 import { renderSceneEnd, posPlane } from './renderScene.js';
@@ -63,6 +63,24 @@ export async function main() {
  * Sets up event listeners for camera and light controls.
  */
 function setListener() {
+
+  const canvas = document.getElementById('canvas');
+  const radioButtons = document.querySelectorAll('input[name="timeOfDay"]');
+
+  const backgrounds = {
+      alba: 'radial-gradient(ellipse at center bottom, #f4ecbc 0%, #f4dfbd 43%, #f4bcd6 100%)',
+      giorno: 'radial-gradient(ellipse at center bottom, #397cb6 0%, #ccdfef 89%, #e4f0df 105%)',
+      notte: 'radial-gradient(ellipse at center bottom, #000b15 0%, #072d4d 89%, #2f456b 105%)'
+  };
+
+  radioButtons.forEach(radio => {
+      radio.addEventListener('change', (event) => {
+          const selectedValue = event.target.value;
+          canvas.style.background = backgrounds[selectedValue];
+          setIntensityLight(selectedValue);
+      });
+  });
+
   const buttons = {
     alpha: document.getElementById('alpha'),
     normalMap: document.getElementById('normalMap'),
@@ -83,7 +101,6 @@ function setListener() {
     setTextureMap();
     toggleButton(buttons.textureMap, !enableTextureMap);
   });
-
 
   const inputElements = [
     { id: 'camPosX', setter: setCameraTargetOffset, index: 0 },

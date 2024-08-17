@@ -13,6 +13,7 @@ uniform vec3 u_viewWorldPosition; // Camera position in world space
 uniform vec3 u_lightWorldPosition; // Light position in space
 uniform mat4 u_textureMatrix;
 
+
 varying vec3 v_normal;       // Normal to be passed to fragment shader
 varying vec3 v_tangent;      // Tangent to be passed to fragment shader
 varying vec3 v_surfaceToView; // Vector from surface to view to be passed to fragment shader
@@ -63,6 +64,7 @@ uniform sampler2D u_projectedTexture;
 uniform sampler2D normalMap; // Normal map texture
 uniform float useNormalMap; // Flag to determine if normal map should be used
 uniform float useTextureMap; // Flag to determine if normal map should be used
+uniform float useIntensityLight; //alba giorno notte
 
 uniform float u_bias;
 
@@ -80,7 +82,6 @@ void main () {
 
   vec3 surfaceToLightDirection = u_lightDirection-normalize(v_surfaceToLight);
   vec3 surfaceToViewDirection = normalize(v_surfaceToView); // Compute the view direction
-  //*vec3 halfVector = normalize(u_lightDirection + surfaceToViewDirection); // Compute the half vector for specular lighting
   vec3 halfVector = normalize(surfaceToLightDirection + surfaceToViewDirection);
 
   float fakeLight = dot(surfaceToLightDirection, normal)* 0.5 + 0.7; // Compute the diffuse lighting component
@@ -110,8 +111,8 @@ void main () {
     vec4 gCol = vec4(
       emissive + // Add emissive color
       ambient * u_ambientLight + // Add ambient color
-      effectiveDiffuse * fakeLight + // Add diffuse lighting
-      effectiveSpecular * pow(specularLight, shininess), // Add specular lighting
+      effectiveDiffuse*useIntensityLight * fakeLight + // Add diffuse lighting
+      effectiveSpecular*useIntensityLight * pow(specularLight, shininess), // Add specular lighting
       effectiveOpacity // Set the final opacity
   );
 

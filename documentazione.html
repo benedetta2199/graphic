@@ -3,30 +3,67 @@
 <head>
   <meta charset="UTF-8">
   <title>CodePen - WebGL - load obj - w/mtl, textures</title>
-  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="../style.css">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0"/>
 </head>
 <body class="body-documentation">
   <h1 class="text-right">Relazione Progetto Computer Graphics</h1>
   <h2 class="text-right">Benedetta Bottari - 0001144057</h2>
+
+  <nav class="sticky-menu">
+    <ul class="menu-documentation">
+        <li>
+            <a href="#">Descrizione del progetto</a>
+            <ul class="submenu">
+                <li><a href="#introduzione">Introduzione</a></li>
+                <li><a href="#interfaccia">Interfaccia</a></li>
+                <li><a href="#come-si-gioca">Come si gioca</a></li>
+            </ul>
+        </li>
+        <li>
+            <a href="#">Struttura del progetto</a>
+            <ul class="submenu">
+                <li><a href="#struttura-js">Struttura js</a></li>
+                <li><a href="#oggetti">Oggetti</a></li>
+            </ul>
+        </li>
+        <li>
+            <a href="#riferimenti">Riferimenti</a>
+        </li>
+    </ul>
+  </nav>
+
   <div class="documentation">
     <h1>Descrizione del progetto</h1>
     <div>
-      <p class="text-b uppercase">Presentazione</p>
+      <h2 id="Introduzione">Introduzione</h2>
       <p>
-        L'obiettivo del progetto è sviluppare un videogioco 3D implementato in WebGL, che permette all'utente di assumere il ruolo 
-        di un pilota d'aeroplano. L'idea centrale è quella di creare un'esperienza di gioco semplice ma allo stesso tempo immersiva e 
-        dinamica dove il giocatore può esplorare i cieli.
+        <span></span>  
+        Questo progetto è stato realizzato nell'ambito del corso di "Computer Graphics A.A. 2023/2024", con l'obiettivo di sviluppare 
+        un'applicazione 3D interattiva utilizzando WebGL (HTML5, CSS e contesto webgl), linguaggi JavaScript e GLSL, su browser Chrome.
+        <br/>
+        Il fine del progetto è acquisire competenze nell'uso di WebGL, un'API JavaScript per il rendering di grafica interattiva 2D e 3D.
+        <span></span>        
+        Nello specifico, il progetto consiste nella creazione di un videogioco arcade minimale che permette all'utente di assumere
+        il ruolo di un pilota d'aerei. L'idea centrale è quella di offrire un'esperienza di gioco semplice, ma al contempo immersiva 
+        e dinamica, in cui il giocatore può esplorare i cieli raccogliendo tesori ed evitando ostacoli.
+        <span></span>  
+        <!--
+        Tutti gli oggetti sono stata importati e modificati usando Blender per poi essere convertiti in formato <i>.obj</i> <br>
+        It includes functionality for lighting, shadows, toggle of the various features, 
+        user interaction through GUI controls, mouse, keyboard, touch, and gamepad.</p>
+        <p>Please note that the project is available at <a href="https://davspada.github.io/computer_graphics_project/"> this link</a></p>
+        -->
       </p>
-      <br/>
-      <p class="text-b uppercase">Interfaccia</p>
+      <h2 id="interfaccia">Interfaccia</h2>
+      <img src="./img/interfaccia.png" alt="interfaccia"/>
       <p>
         Il gioco è progettato per essere utilizzabile sia su PC che su dispositivi mobili, con un'interfaccia suddivisa in due sezioni
         principali: il menù di personalizzazione e il canvas.
         Questa struttura permette agli utenti di avere un controllo completo sull'esperienza di gioco, rendendola accessibile e 
         personalizzabile.
       </p>
-      <p class="text-b">Il Canva</p>
+      <p class="subTitle">Il Canva</p>
       <p>
         Il canvas renderizza una scena tridimensionale complessa che include un mondo rotante e nuvole di sfondo, creando un ambiente 
         di volo pseudo-realistico e coinvolgente. 
@@ -50,9 +87,9 @@
       Ogni moneta raccolta contribuisce al punteggio totale del giocatore, aggiungendo un elemento di sfida e incentivando il 
       perfezionamento delle proprie abilità di volo.
     </p>
-    <div class="d-flex">
+    <div class="d-flex w-120">
       <div class="d-flex">
-        <img src="./src/img/plane.png" alt="plane"/>
+        <img src="./img/plane.png" alt="plane"/>
         <div class="text-left">
           <p class="text-b uppercase">Muovi l'Areoplano in verticale</p>
           <p class="text-b">Modalità d'interazione PC:</p>
@@ -63,7 +100,7 @@
         </div>
       </div>
       <div class="d-flex">
-        <img src="./src/img/coin.png" class="scale-05" alt="plane"/>
+        <img src="./img/coin.png" class="scale-05" alt="plane"/>
         <div class="text-left">
           <p class="text-b uppercase">Raccogli tutte le monete</p>
           <p class="p-left">Ogni moneta aumenta di 1 il punteggio</p>
@@ -72,7 +109,7 @@
         </div>
       </div>
       <div class="d-flex">
-        <img src="./src/img/icosfera.png" class="scale-05" alt="plane"/>
+        <img src="./img/icosfera.png" class="scale-05" alt="plane"/>
         <div class="text-left">
           <p class="text-b uppercase">Evita tutti i palloni</p>
           <p class="p-left">Quando si tocca un pallone il gioco termina </p>
