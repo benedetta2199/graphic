@@ -73,6 +73,8 @@ code{display: block; white-space: pre-wrap}
   padding: 2px 20px;
   margin: 2px;
 }
+.active {background-color: #397cb6 !important;}
+.inactive {background-color: #7e8081 !important;}
 
 .menu {
   position: absolute;
@@ -115,17 +117,8 @@ code{display: block; white-space: pre-wrap}
   text-align: center;
   flex-direction: column;
 }
-
-.menu-items{
-  display: flex;
-  justify-content: space-around;
-  width: 100%;
-}
-.col{
-  flex-direction: column;
-  margin: 1vw auto;
-}
-
+.menu-items{display: flex; justify-content: space-around;width: 100%;}
+.col{flex-direction: column; margin: 1vw auto;}
 .menu button {
   border: rgb(244,244,244, 0.4);
   color: #ccdfef;
@@ -133,14 +126,6 @@ code{display: block; white-space: pre-wrap}
   padding: 5px 10px;
   border-radius: 5px;
   margin: 5px auto;
-}
-
-.active {
-  background-color: #397cb6 !important;
-}
-
-.inactive {
-  background-color: #7e8081 !important;
 }
 
 .container {
@@ -193,11 +178,7 @@ code{display: block; white-space: pre-wrap}
 .documentation p>span {display: block; height: 5px;}
 .documentation p>a {text-decoration: none; color: unset; font-style: italic;}
 .documentation .big-img {max-height: 250px; max-width: 100%; object-fit: contain; border-radius: 5px;}
-.documentation .small-img{
-  max-width: 10vw;
-  max-height: 8vw;
-  object-fit: contain;
-}
+.documentation .small-img{max-width: 10vw; max-height: 8vw; object-fit: contain;}
 .documentation .scale-05{transform: scale(0.8);}
 
 
@@ -250,9 +231,7 @@ code{display: block; white-space: pre-wrap}
   justify-content: center;
   align-items: center;
 }
-
 .modal-content { max-width: 90%; max-height: 90%; border-radius: 5px;}
-
 .close {
   position: absolute;
   top: 10px;
@@ -262,11 +241,7 @@ code{display: block; white-space: pre-wrap}
   font-weight: bold;
   cursor: pointer;
 }
-
-.close:hover,
-.close:focus {
-  color: #bbb;
-}
+.close:hover, .close:focus {color: #bbb;}
 
 @media only screen and (min-width: 768px) {
   .button{visibility: hidden;}
@@ -315,7 +290,6 @@ code{display: block; white-space: pre-wrap}
   .sticky-menu li:hover .submenu {display: block;}
   .sticky-menu li > a:hover{background-color: #111;}
   .submenu li a:hover {background-color: #555;}
-
 
   .d-flex{display: flex; justify-content: space-around; align-items: center;}
   .d-flex .col-3{min-width: 25%;}
