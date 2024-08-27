@@ -3,19 +3,19 @@
 import { parseOBJ, parseMTL, create1PixelTexture, createTexture, generateTangents } from './objLoad.js';
 
 /**
- * Load and parse an OBJ file along with its associated MTL files and textures.
- * @param {WebGLRenderingContext} gl - WebGL context.
- * @param {string} objHref - Path to the OBJ file.
- * @returns {Object} - Object containing parts (buffers and materials) and the parsed OBJ object.
+ * Carica e analizza un file OBJ insieme ai relativi file MTL e texture.
+ * @param {WebGLRenderingContext} gl - Contesto WebGL.
+ * @param {string} objHref - Percorso del file OBJ.
+ * @returns {Object} - Oggetto contenente le parti (buffer e materiali) e l'oggetto OBJ analizzato.
  */
 export async function loadPlane(gl, objHref) {
-  // Fetch and parse the OBJ file
+  // Fetch e parsing del file OBJ
   const response = await fetch(objHref);
   const text = await response.text();
   const obj = parseOBJ(text);
   const baseHref = new URL(objHref, window.location.href);
 
-  // Fetch and parse the associated MTL files
+  // Fetch e parsing dei file MTL associati
   const matTexts = await Promise.all(obj.materialLibs.map(async filename => {
     const matHref = new URL(filename, baseHref).href;
     const response = await fetch(matHref);
@@ -23,12 +23,12 @@ export async function loadPlane(gl, objHref) {
   }));
   const materials = parseMTL(matTexts.join('\n'));
 
-  // Default white texture
+  // Texture bianca di default
   const textures = {
     defaultWhite: create1PixelTexture(gl, [255, 255, 255, 255]),
   };
 
-  // Load textures defined in the MTL files
+  // Caricamento delle texture definite nei file MTL
   for (const material of Object.values(materials)) {
     Object.entries(material)
       .filter(([key]) => key.endsWith('Map'))
@@ -43,12 +43,12 @@ export async function loadPlane(gl, objHref) {
       });
   }
 
-  // Default material properties
+  // Proprietà del materiale di default
   const defaultMaterial = getDefaultMaterial(gl);
 
-  // Process geometries and create buffers
+  // Elaborazione delle geometrie e creazione dei buffer
   const parts = obj.geometries.map(({ material, data }) => {
-    // Handle vertex colors or default to white
+    // Gestione dei colori dei vertici o impostazione del colore bianco di default
     if (data.color) {
       if (data.position.length === data.color.length) {
         data.color = { numComponents: 3, data: data.color };
@@ -57,14 +57,14 @@ export async function loadPlane(gl, objHref) {
       data.color = { value: [1, 1, 1, 1] };
     }
 
-    // Generate tangents if possible
+    // Generazione delle tangenti se possibile
     if (data.texcoord && data.normal) {
       data.tangent = generateTangents(data.position, data.texcoord);
     } else {
       data.tangent = { value: [1, 0, 0] };
     }
 
-    // Default texcoords and normals if not present
+    // Texcoord e normali di default se non presenti
     if (!data.texcoord) {
       data.texcoord = { value: [0, 0] };
     }
@@ -72,10 +72,10 @@ export async function loadPlane(gl, objHref) {
       data.normal = { value: [0, 0, 1] };
     }
 
-    // Merge material properties with defaults
+    // Unione delle proprietà dei materiali con i valori di default
     const materialProps = { ...defaultMaterial, ...materials[material] };
 
-    // Create buffers
+    // Creazione dei buffer
     const bufferInfo = webglUtils.createBufferInfoFromArrays(gl, data);
     return { material: materialProps, bufferInfo };
   });
@@ -84,15 +84,15 @@ export async function loadPlane(gl, objHref) {
 }
 
 /**
- * Get the bounding box extents of a set of geometries.
- * @param {Array} geometries - Array of geometry objects.
- * @returns {Object} - Object containing min and max extents.
+ * Ottiene le estensioni (bounding box) di un insieme di geometrie.
+ * @param {Array} geometries - Array di oggetti geometria.
+ * @returns {Object} - Oggetto contenente i valori minimi e massimi delle estensioni.
  */
 export function getGeometriesExtents(geometries) {
   /**
-   * Calculate the min and max extents of a set of positions.
-   * @param {Array} positions - Array of vertex positions.
-   * @returns {Object} - Object containing min and max values.
+   * Calcola le estensioni minime e massime di un insieme di posizioni.
+   * @param {Array} positions - Array di posizioni dei vertici.
+   * @returns {Object} - Oggetto contenente i valori minimi e massimi.
    */
   function getExtents(positions) {
     const min = positions.slice(0, 3);
@@ -107,7 +107,7 @@ export function getGeometriesExtents(geometries) {
     return { min, max };
   }
 
-  // Reduce geometries to a single bounding box containing the min and max extents
+  // Riduce le geometrie a un singolo bounding box contenente le estensioni minime e massime
   return geometries.reduce(({ min, max }, { data }) => {
     const minMax = getExtents(data.position);
     return {
@@ -120,8 +120,13 @@ export function getGeometriesExtents(geometries) {
   });
 }
 
-export function getDefaultMaterial(gl){
-  return{
+/**
+ * Ottiene le proprietà del materiale di default.
+ * @param {WebGLRenderingContext} gl - Contesto WebGL.
+ * @returns {Object} - Oggetto contenente le proprietà del materiale di default.
+ */
+export function getDefaultMaterial(gl) {
+  return {
     diffuse: [1, 1, 1],
     diffuseMap: create1PixelTexture(gl, [255, 255, 255, 255]),
     ambient: [0, 0, 0],

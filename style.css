@@ -52,7 +52,7 @@ code{display: block; white-space: pre-wrap}
   text-align: right;
   color: rgba(255, 255, 255, 0.9);
   position: absolute; top: 0; right: 1vw;
-  z-index: 1000;
+  z-index: 100;
 }
 
 .button{
@@ -76,18 +76,18 @@ code{display: block; white-space: pre-wrap}
 
 .menu {
   position: absolute;
-  width: 98vw;
+  width: 96vw;
   height: 98vh;
   top: 1vh;
-  left: 1vw;
+  left: 2vw;
   background-color: rgb(244,244,244, 0.9);
   color: black;
   border-radius: 5px;
-  padding: 5px;
   visibility: hidden;
   transition: 0.3s;
+  z-index: 105;
+  overflow: scroll;
 }
-
 .menu-button {
   position: absolute;
   top: 1vh;
@@ -97,17 +97,19 @@ code{display: block; white-space: pre-wrap}
   border: none;
   font-size: 24px;
 }
-
 .menu-close {
-  width: 100%;
+  width: 94%;
   text-align: right;
+  color: black !important;
   background-color: rgba(10, 17, 57, 0);
   border: none;
   font-size: 24px;
+  position: fixed;
+  margin: 0 !important; padding: 0 !important;
 }
-
+.menu>.space{height: 20px;}
 .menu-items {
-  padding: 5px 2px;
+  padding: 5px 8vw;
   margin: 0;
   width: 100%;
   text-align: center;
@@ -119,7 +121,6 @@ code{display: block; white-space: pre-wrap}
   justify-content: space-around;
   width: 100%;
 }
-
 .col{
   flex-direction: column;
   margin: 1vw auto;
@@ -145,8 +146,9 @@ code{display: block; white-space: pre-wrap}
 .container {
   position: absolute;
   width: 80vw;
+  height: 90vh;
   left: 10vw;
-  top: 8vh;
+  top: 5vh;
   background-color: rgb(244,244,244, 0.9);
   padding: 20px;
   border-radius: 15px;
@@ -154,13 +156,15 @@ code{display: block; white-space: pre-wrap}
   text-align: center;
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  justify-content: start;
+  overflow-y: scroll;
 }
-
-.container *{
-  margin: 5px;
-}
-
+.container .menu-buttons{display: flex; flex-wrap: wrap; justify-content: center;}
+.container .menu-buttons button{white-space: nowrap;}
+.container>*{margin: 5px;}
+.container *{margin: 2px;}
+.container .menu-items{width: min-content; padding: 5px;}
+.container .d-flex>div {text-align: center;}
 .container button{
   border: rgb(244,244,244, 0.4);
   background-color: #397cb6;
@@ -196,52 +200,73 @@ code{display: block; white-space: pre-wrap}
 }
 .documentation .scale-05{transform: scale(0.8);}
 
+
 .sticky-menu {
-    position: sticky;
-    top: 0;
-    z-index: 1000;
-    text-align: center;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background-color: #333;
+  text-align: left;
 }
-.sticky-menu a{
-  color: #f2f2f2;
-  text-decoration: none;
-  display: block;
-}
-.sticky-menu .menu-documentation {
-    list-style-type: none;
-    margin: 10px 0 0;
-    padding: 0;
-    display: flex;
-    justify-content: center;
-    background-color: #333;
-    width: 100%;
-}
-.sticky-menu li {position: relative;}
+.sticky-menu a {color: #f2f2f2; text-decoration: none; display: block;}
+.sticky-menu .menu-documentation, .submenu { list-style-type: none; padding: 0; display: none; flex-direction: column;}
+.sticky-menu li { position: relative;}
 .sticky-menu li > a {padding: 14px 16px;}
-.sticky-menu li > a:hover {background-color: #111;}
-
-.submenu {
-  list-style-type: none;
-  display: none;
-  position: absolute;
-  top: 100%;
-  left: 0;
+.submenu {background-color: #444;}
+.submenu li a {padding: 10px;}
+.menu-toggle {
+  display: block;
   background-color: #444;
-  min-width: 200px;
-  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
-  padding: 0;
+  color: white;
+  padding: 10px;
+  font-size: 18px;
+  border: none;
+  width: 100%;
+  text-align: left;
+  cursor: pointer;
 }
-.submenu li a {padding: 5px;}
-.submenu li a:hover {background-color: #555;}
-.sticky-menu li:hover .submenu {display: block;}
+.menu-open .menu-documentation { display: flex; }
 
-
-.d-flex>div{ text-align: left; min-width: 100%;}
+.d-flex>div{ text-align: left;}
+.col-3,.col-4,.col-6,.col-5,.col-7,.col-8,.col-9{min-width: 100%}
 .d-flex .col-6{text-align: justify; align-self: baseline; padding: 10px;}
+
+.centerH{align-self: center !important;}
+.centerW{text-align: center !important;}
 
 .p-left{padding-left: 10px;}
 .text-right{text-align: right; margin-right: 5px;}
 .w-120 {width: 120%; position: relative; left: -10%;}
+
+
+/* Stile per il modal */
+.modal {
+  display: none;
+  position: fixed;
+  z-index: 150;
+  left: 0; top: 0;
+  width: 100%; height: 100%;
+  background-color: rgba(0, 0, 0, 0.8);
+  justify-content: center;
+  align-items: center;
+}
+
+.modal-content { max-width: 90%; max-height: 90%; border-radius: 5px;}
+
+.close {
+  position: absolute;
+  top: 10px;
+  right: 25px;
+  color: white;
+  font-size: 35px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.close:hover,
+.close:focus {
+  color: #bbb;
+}
 
 @media only screen and (min-width: 768px) {
   .button{visibility: hidden;}
@@ -252,17 +277,23 @@ code{display: block; white-space: pre-wrap}
     height: min-content;
     position: absolute;
     background-color: rgb(244,244,244, 0.7);
-    visibility: visible;
+    visibility: visible !important;
+    overflow: hidden;
+    left: 1vw;
   }
+  .menu>.space{height: 0px;}
   .menu-button {display: none;}
   .menu-close {display: none; }
+  .menu-items {padding: 5px 2px;}
     
   .container {
     overflow-y: auto;
     width: 40vw;
     min-height: 60vh;
+    height: auto;
     left: 30vw;
     top: 4vh;
+    justify-content: center;
   }
   
   hr{margin: 10px !important;}
@@ -271,11 +302,27 @@ code{display: block; white-space: pre-wrap}
   .documentation{padding: 10px 10%;}
   .documentation h1{ font-size: 24px; margin-top: 2vh;}
 
+  .sticky-menu {text-align: center;}
+  .sticky-menu .menu-documentation {display: flex; justify-content: center; flex-direction: row;}
+  .menu-toggle {display: none;}
+  .submenu {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    min-width: 200px;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+  }
+  .sticky-menu li:hover .submenu {display: block;}
+  .sticky-menu li > a:hover{background-color: #111;}
+  .submenu li a:hover {background-color: #555;}
+
+
   .d-flex{display: flex; justify-content: space-around; align-items: center;}
-  .d-flex .col-6{min-width: 50%;}
   .d-flex .col-3{min-width: 25%;}
   .d-flex .col-4{min-width: 33%;}
+  .d-flex .col-5{min-width: 41%;}
+  .d-flex .col-6{min-width: 50%;}
+  .d-flex .col-7{min-width: 58%;}
+  .d-flex .col-8{min-width: 67%;} 
   .d-flex .col-9{min-width: 75%;}
-  .d-flex .col-8{min-width: 67%;}
-
   }

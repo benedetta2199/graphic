@@ -9,22 +9,44 @@ import { createDepthFramebuffer, createDepthTexture } from './objLoad.js';
 
 export let posPlane = [170, -30, -20];
 
+/**
+ * Renderizza la scena di gioco, impostando gli oggetti di gioco e chiamando la funzione di rendering.
+ * @param {WebGLRenderingContext} gl - Contesto WebGL.
+ * @param {Object} meshProgramInfo - Informazioni sul programma shader per il rendering.
+ * @param {Object} colorProgramInfo - Informazioni sul programma shader per il colore.
+ * @param {Array} parts - Parti dell'oggetto da renderizzare.
+ */
 export function renderSceneGame(gl, meshProgramInfo, colorProgramInfo, parts) {
     setListener(gl);
 
-    clouds.push(setCloud(rand(4, 9), false)); //*
-    obstacles.push(setObstacle()); //*
-    coins.push(setCoin(0, rand(3, 8), rand(45, 90))); //*
+    clouds.push(setCloud(rand(4, 9), false)); // Aggiunge una nuvola alla scena
+    obstacles.push(setObstacle()); // Aggiunge un ostacolo alla scena
+    coins.push(setCoin(0, rand(3, 8), rand(45, 90))); // Aggiunge una moneta alla scena
 
-    renderScene(gl, meshProgramInfo, colorProgramInfo, parts, false)
+    renderScene(gl, meshProgramInfo, colorProgramInfo, parts, false);
 }
 
+/**
+ * Renderizza la scena finale, impostando gli oggetti di gioco e chiamando la funzione di rendering.
+ * @param {WebGLRenderingContext} gl - Contesto WebGL.
+ * @param {Object} meshProgramInfo - Informazioni sul programma shader per il rendering.
+ * @param {Object} colorProgramInfo - Informazioni sul programma shader per il colore.
+ * @param {Array} parts - Parti dell'oggetto da renderizzare.
+ */
 export function renderSceneEnd(gl, meshProgramInfo, colorProgramInfo, parts) {
-    clouds.push(setCloud(rand(4, 9), true));
+    clouds.push(setCloud(rand(4, 9), true)); // Aggiunge una nuvola alla scena finale
     
-    renderScene(gl, meshProgramInfo, colorProgramInfo, parts, true)
+    renderScene(gl, meshProgramInfo, colorProgramInfo, parts, true);
 }
 
+/**
+ * Renderizza la scena in base ai parametri forniti, gestendo la prospettiva e le ombre.
+ * @param {WebGLRenderingContext} gl - Contesto WebGL.
+ * @param {Object} meshProgramInfo - Informazioni sul programma shader per il rendering.
+ * @param {Object} colorProgramInfo - Informazioni sul programma shader per il colore.
+ * @param {Array} parts - Parti dell'oggetto da renderizzare.
+ * @param {boolean} isEndScene - Indica se si tratta della scena finale.
+ */
 export function renderScene(gl, meshProgramInfo, colorProgramInfo, parts, isEndScene ) {
     const up = [0, 1, 0];
     const fieldOfViewRadians = degToRad(60);
@@ -38,7 +60,7 @@ export function renderScene(gl, meshProgramInfo, colorProgramInfo, parts, isEndS
 
     function render(time) {
 
-        time *= 0.006; // Convert time to seconds
+        time *= 0.006; // Converti il tempo in secondi
         setTime(time);
 
         const cameraPosition = m4.addVectors(cameraTarget, cameraTargetOffset);  // Posizione della telecamera
@@ -57,15 +79,9 @@ export function renderScene(gl, meshProgramInfo, colorProgramInfo, parts, isEndS
         const projection = m4.perspective(fieldOfViewRadians, aspect, zNear, zFar);
         
         const lightMatrix = m4.lookAt(lightPosition, lightTarget, up);
-        // luce diversa o uguale??
-        let lightProjectionMatrix;
-        if(isEndScene){
-            //lightProjectionMatrix = m4.orthographic(-100, 100, -150, 50, 0.5, 200);
-            lightProjectionMatrix = m4.perspective(fieldOfViewRadians, aspect, 15,  // vicino
-                250)   // lontano*/
-        }else{
-            lightProjectionMatrix = m4.orthographic(-100, 100, -150, 50, 0.5, 200);
-        }
+        const lightProjectionMatrix = isEndScene ?
+            m4.perspective(fieldOfViewRadians, aspect, 15, 250) :
+            m4.orthographic(-100, 100, -150, 50, 0.5, 250 );
         
 
         gl.bindFramebuffer(gl.FRAMEBUFFER, depthFramebuffer);

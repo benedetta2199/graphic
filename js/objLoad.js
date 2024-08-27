@@ -4,6 +4,11 @@
 // This is not a full .obj parser.
 // see http://paulbourke.net/dataformats/obj/
 
+/** 
+  * Analizza il contenuto di un file OBJ e restituisce le geometrie e le librerie di materiali.
+  * @param {string} text - Il testo del file OBJ da analizzare.
+  * @returns {Object} Un oggetto contenente le geometrie e le librerie di materiali.
+  */
 export function parseOBJ(text) {
     // because indices are base 1 let's just fill in the 0th data
     const objPositions = [[0, 0, 0]];
@@ -168,6 +173,11 @@ export function parseOBJ(text) {
     };
   }
 
+/** 
+ * Analizza il contenuto di un file MTL per definire le proprietà dei materiali.
+ * @param {string} text - Il testo del file MTL da analizzare.
+ * @returns {Object} Un oggetto contenente le proprietà dei materiali.
+ */
 export function parseMTL(text) {
     const materials = {};
     let material;
@@ -213,9 +223,15 @@ export function parseMTL(text) {
     }
   
     return materials;
-  }
+}
 
-  export function create1PixelTexture(gl, pixel) {
+/** 
+ * Crea una texture di un solo pixel utilizzata come segnaposto durante il caricamento delle immagini.
+ * @param {WebGLRenderingContext} gl - Il contesto WebGL.
+ * @param {Array} pixel - Un array di valori RGBA per il pixel.
+ * @returns {WebGLTexture} La texture creata.
+ */
+export function create1PixelTexture(gl, pixel) {
   const texture = gl.createTexture();
 	gl.bindTexture(gl.TEXTURE_2D, texture);
 	gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, 1, 1, 0, gl.RGBA, gl.UNSIGNED_BYTE,
@@ -223,6 +239,12 @@ export function parseMTL(text) {
 	return texture;
 }
 
+/** 
+ * Carica un'immagine e la utilizza per creare una texture WebGL, gestendo correttamente il ridimensionamento e il wrapping.
+ * @param {WebGLRenderingContext} gl - Il contesto WebGL.
+ * @param {string} url - L'URL dell'immagine da caricare.
+ * @returns {WebGLTexture} La texture creata.
+ */
 export function createTexture(gl, url) {
 	const texture = create1PixelTexture(gl, [128, 192, 255, 255]);
 	// Asynchronously load an image
@@ -248,6 +270,14 @@ export function createTexture(gl, url) {
 	return texture;
 }
 
+/** 
+ * Crea una texture colorata specificando le dimensioni e il colore RGBA.
+ * @param {WebGLRenderingContext} gl - Il contesto WebGL.
+ * @param {number} width - La larghezza della texture.
+ * @param {number} height - L'altezza della texture.
+ * @param {Array} color - Un array di valori RGBA per il colore della texture.
+ * @returns {WebGLTexture} La texture creata.
+ */
 export function createColoredTexture(gl, width, height, color) {
   // Crea un canvas per manipolare l'immagine della texture
   const canvas = document.createElement('canvas');
@@ -276,6 +306,12 @@ export function createColoredTexture(gl, width, height, color) {
   return texture;
 }
 
+/** 
+ * Crea una texture di profondità per la mappatura delle ombre.
+ * @param {WebGLRenderingContext} gl - Il contesto WebGL.
+ * @param {number} depthTextureSize - La dimensione della texture di profondità.
+ * @returns {WebGLTexture} La texture di profondità creata.
+ */
 export function createDepthTexture(gl, depthTextureSize) {
   const depthTexture = gl.createTexture();
   gl.bindTexture(gl.TEXTURE_2D, depthTexture);
@@ -297,6 +333,12 @@ export function createDepthTexture(gl, depthTextureSize) {
   return depthTexture;
 }
 
+/** 
+ * Crea un framebuffer di profondità associato a una texture di profondità.
+ * @param {WebGLRenderingContext} gl - Il contesto WebGL.
+ * @param {WebGLTexture} depthTexture - La texture di profondità da associare.
+ * @returns {WebGLFramebuffer} Il framebuffer di profondità creato.
+ */
 export function createDepthFramebuffer(gl, depthTexture) {
   const depthFramebuffer = gl.createFramebuffer();
   gl.bindFramebuffer(gl.FRAMEBUFFER, depthFramebuffer);
@@ -309,7 +351,12 @@ export function createDepthFramebuffer(gl, depthTexture) {
   return depthFramebuffer;
 }
 
-
+/** 
+ * Crea una texture inutilizzata, che viene utilizzata come riempitivo per i framebuffers.
+ * @param {WebGLRenderingContext} gl - Il contesto WebGL.
+ * @param {number} depthTextureSize - La dimensione della texture.
+ * @returns {WebGLTexture} La texture inutilizzata creata.
+ */
 export function createUnusedTexture (gl, depthTextureSize) {
   // crea una texture di colore della stessa dimensione della texture di profondità
   const unusedTexture = gl.createTexture();
@@ -370,7 +417,13 @@ function makeUnindexedIterator(positions) {
 
 const subtractVector2 = (a, b) => a.map((v, ndx) => v - b[ndx]);
 
-//NUOVE FUNTION
+/** 
+ * Genera tangenti per ogni faccia di un modello 3D a partire dalle posizioni dei vertici e dalle coordinate di texture.
+ * @param {Array} position - Un array di posizioni dei vertici.
+ * @param {Array} texcoord - Un array di coordinate di texture.
+ * @param {Array} indices - Un array di indici dei vertici.
+ * @returns {Array} Un array di tangenti calcolate.
+ */
 export function generateTangents(position, texcoord, indices) {
   const getNextIndex = indices ? makeIndexIterator(indices) : makeUnindexedIterator(position);
   const numFaceVerts = getNextIndex.numElements;
@@ -409,42 +462,3 @@ export function generateTangents(position, texcoord, indices) {
 
   return tangents;
 }
-
-
-/*function createTexture(gl, url) {
-    const texture = create1PixelTexture(gl, [128, 192, 255, 255]);
-    // Asynchronously load an image
-    const image = new Image();
-    requestCORSIfNotSameOrigin(image, url)
-    image.src = url;
-    image.addEventListener('load', function() {
-      // Now that the image has loaded make copy it to the texture.
-      gl.bindTexture(gl.TEXTURE_2D, texture);
-      gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL, true);
-      gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA,gl.UNSIGNED_BYTE, image);
-  
-      // Check if the image is a power of 2 in both dimensions.
-      if (isPowerOf2(image.width) && isPowerOf2(image.height)) {
-         // Yes, it's a power of 2. Generate mips.
-         gl.generateMipmap(gl.TEXTURE_2D);
-      } else {
-         // No, it's not a power of 2. Turn of mips and set wrapping to clamp to edge
-         gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
-         gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
-         gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR);
-      }
-    });
-    return texture;
-  }
-*/
-  
-// This is needed if the images are not on the same domain
-// NOTE: The server providing the images must give CORS permissions
-// in order to be able to use the image with WebGL. Most sites
-// do NOT give permission.
-// See: https://webglfundamentals.org/webgl/lessons/webgl-cors-permission.html
-/*function requestCORSIfNotSameOrigin(img, url) {
-    if ((new URL(url, window.location.href)).origin !== window.location.origin) {
-      img.crossOrigin = "";
-    }
-  }*/

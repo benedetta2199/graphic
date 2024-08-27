@@ -11,40 +11,64 @@
   <h2 class="text-right">Benedetta Bottari - 0001144057</h2>
 
   <nav class="sticky-menu">
+    <button class="menu-toggle">☰ Menu</button>
+    
     <ul class="menu-documentation">
-        <li>
-            <a href="#">Descrizione del progetto</a>
-            <ul class="submenu">
-                <li><a href="#introduzione">Introduzione</a></li>
-                <li><a href="#interfaccia">Interfaccia</a></li>
-                <li><a href="#come-si-gioca">Come si gioca</a></li>
-            </ul>
-        </li>
-        <li>
-            <a href="#">Struttura del progetto</a>
-            <ul class="submenu">
-                <li><a href="#struttura-js">Struttura js</a></li>
-                <li><a href="#oggetti">Oggetti</a></li>
-            </ul>
-        </li>
-        <li>
-            <a href="#riferimenti">Riferimenti</a>
-        </li>
+      <li>
+        <a href="#">Descrizione del progetto</a>
+        <ul class="submenu">
+          <li><a href="#introduzione">Introduzione</a></li>
+          <li><a href="#gioco">Gioco</a></li>
+          <li><a href="#comandi">Comandi</a></li>
+        </ul>
+      </li>
+      <li>
+        <a href="#">Scelte effettuate</a>
+        <ul class="submenu">
+          <li><a href="#2_introduzione">Introduzione</a></li>
+          <li><a href="#interfaccia">Interfaccia</a></li>
+          <li><a href="#personalizzazione">Personalizzazione</a></li>
+          <li><a href="#musica">Musica</a></li>
+          <li><a href="#creazione_oggetti">Creazione d'oggetti</a></li>
+        </ul>
+      </li>
+      <li>
+        <a href="#">Struttura del progetto</a>
+        <ul class="submenu">
+          <li><a href="#divisione-file">Divisione dei file</a></li>
+          <li><a href="#file-js">File js</a></li>
+        </ul>
+      </li>
+      <li>
+        <a href="#">Funzionalità implementate</a>
+        <ul class="submenu">
+          <li><a href="#divisione-file">Texture</a></li>
+          <li><a href="#file-js">Normal Map</a></li>
+          <li><a href="#file-js">Opacità</a></li>
+          <li><a href="#file-js">Ombre</a></li>
+          <li><a href="#file-js">...</a></li>
+        </ul>
+      </li>
+      <li>
+          <a href="#riferimenti">Riferimenti</a>
+      </li>
     </ul>
   </nav>
+
 
   <div class="documentation">
     <h1>Descrizione del progetto</h1>
     <div>
       <h2 id="Introduzione">Introduzione</h2>
       <p>
-        <span></span>  
+        <span></span> 
+        Il progetto consiste nello sviluppo di un videogioco tridimensionale basato su WebGL. 
         Questo progetto è stato realizzato nell'ambito del corso di "Computer Graphics A.A. 2023/2024", con l'obiettivo di sviluppare 
         un'applicazione 3D interattiva utilizzando WebGL (HTML5, CSS e contesto webgl), linguaggi JavaScript e GLSL, su browser Chrome.
         <br/>
         Il fine del progetto è acquisire competenze nell'uso di WebGL, un'API JavaScript per il rendering di grafica interattiva 2D e 3D.
         <span></span>        
-        Nello specifico, il progetto consiste nella creazione di un videogioco arcade minimale che permette all'utente di assumere
+        Nello specifico, il progetto consiste nella creazione di un videogioco minimal che permette all'utente di assumere
         il ruolo di un pilota d'aerei. L'idea centrale è quella di offrire un'esperienza di gioco semplice, ma al contempo immersiva 
         e dinamica, in cui il giocatore può esplorare i cieli raccogliendo tesori ed evitando ostacoli.
         <span></span>  
@@ -55,14 +79,19 @@
         <p>Please note that the project is available at <a href="https://davspada.github.io/computer_graphics_project/"> this link</a></p>
         -->
       </p>
-      <h2>Il gioco</h2>
+      <h2 id="gioco">Gioco</h2>
       <p>
         <span></span> 
-        Il gioco prende ispirazione dai classici videogiochi arcade come Temple Run e Flappy Bird, caratterizzati da una scena fissa 
-        o semifissa e da semplici meccaniche di movimento che consentono di raccogliere punti e schivare ostacoli.
+        Il gioco è un infinite runner, un genere in cui il giocatore controlla un personaggio che si muove
+        continuamente su una pista piena di ostacoli, monete e altri elementi interattivi. 
+        Lo scopo del giocatore è quello di raggiungere il miglior punteggio, ottenuto sopravvivendo per il maggior tempo possibile, 
+        alcuni videogiochi infinite runner famosi sono Temple Run, flappy bird o T-Rex Game gioco sul Chrome, in assenza di connessione
+        <br/>
+        La scelta di un endless runner è stata motivata dalla sua immediatezza e facilità di gioco che permetto di godere quindi anche
+        della scena 3D. 
         <span></span> 
         Il progetto si basa sull'idea del gioco <a href="https://tympanus.net/Tutorials/TheAviator/index.html">the Aviator fly it to the end</a>
-        in cui l'utente, tramite dinamiche basilare, deve pilotare un aereo evitando ostacoli e raccogliendo monete posizionate lungo il percorso. 
+        il cui obiettivo principale è pilotare un aereo evitando gli ostacoli e raccogliendo monete lungo il percorso.   
       </p>
       <div class="d-flex">
         <div class="d-flex">
@@ -88,7 +117,7 @@
           </div>
         </div>
       </div>
-      <h2>Comandi</h2>
+      <h2 id="comandi">Comandi</h2>
       <p>
         <span></span>
         I comandi del gioco permettono di controllare l'aeroplano, consentendo il movimento verticale del velivolo.
@@ -102,7 +131,7 @@
             Spostando il mouse verso l'alto l'aeroplano prenderà quota
             <span></span>
             <strong>Tastiera:</strong>
-            Cliccando o tenendo premuto il tasto di freccia ▲
+            Cliccando o tenendo premuto il tasto di freccia ↑
             <span></span>
             <strong> Smartphone:</strong>
             Cliccando o tenendo premuto il bottone ▲ su schermo
@@ -117,7 +146,7 @@
             Spostando il mouse verso il basso l'aeroplano planerà
             <span></span>
             <strong>Tastiera:</strong>
-            Cliccando o tenendo premuto il tasto di freccia ▼
+            Cliccando o tenendo premuto il tasto di freccia ↓
             <span></span>
             <strong> Smartphone:</strong>
             Cliccando o tenendo premuto il bottone ▼ su schermo
@@ -131,16 +160,32 @@
         <span></span>
       </p> 
 
-      <h2 id="interfaccia">Interfaccia</h2>
-      
-        <p class="text-b">Modalità d'interazione PC:</p>
-        <p class="p-left">Mouse: Muovi il mouse in verticale</p>
-        <p class="p-left">Tastiera: Premi le frecce ▲ e ▼</p>
-        <p class="text-b">Modalità d'interazione Smartphone:</p>
-        <p class="p-left">Premi i tasti su schermo ▲ e ▼</p>
+    <br/>
+    <h1>Scelte effettuate</h1>
+      <h2 id="2_introduzione">Introduzione</h2>
       <p>
         <span></span> 
-        L'interfaccia si compone di due sezioni principali: il menu di personalizzazione del gioco e della scena, e il canvas. 
+        Per l'implementazione del gioco, si è deciso di adottare uno stile grafico semplice ma accattivante, caratterizzato dall'estetica low-poly.
+        Questo approccio, basato su modelli geometrici essenziali e un numero ridotto di poligoni, è stato scelto per garantire 
+        chiarezza visiva e mantenere contenuto il peso dei modelli, e quindi del progetto complessivo. In linea con questa filosofia,
+        quasi tutti gli elementi del gioco sono stati realizzati su misura, assicurando coerenza stilistica e funzionale.
+        <span></span> 
+        Un altro aspetto si cui si è posta particolare attenzione è il grado di personalizzazione, in quanto 
+        si voleva fornire la possibilità di modificare non solo per i parametri di gioco, ma anche per quelli della scena. 
+        Per questo motivo, è stata integrata la possibilità di aggiungere texture e normal map, offrendo all'utente un'opzione 
+        per ottenere un effetto visivo più realistico. 
+        <span></span> 
+      </p>
+      <h2 id="interfaccia">Interfaccia</h2>
+      <p>
+        <span></span> 
+        All'interno del gioco sono presenti due schermate principali una relativa al gioco e una finale riassuntiva delle statistiche
+        di gioco come tempo e punteggio.
+        <span></span>
+      </p>
+      <p class="subTitle">Schermata di gioco</p>
+      <p>
+        L'interfaccia di gioco si compone di due sezioni principali: il menu di personalizzazione del gioco e della scena, e il canvas. 
         <span></span> 
         Il gioco è stato progettato per essere responsive, consentendone l'utilizzo sia su PC che su dispositivi mobili. 
         A tal fine, nel caso in cui si dovesse avviare il progetto da dispositivo mobile l'interfaccia sarà arricchia da due
@@ -182,16 +227,560 @@
           </p>
         </div>     
       </div>
+      
+      <p class="subTitle">Schermata finale</p>
+      <p>
+        Alla conclusione del gioco, la schermata finale mostra i risultati ottenuti dal giocatore. 
+        Anche questa è divisa in due parti: un pannello con i dati da mostrare e un canva di sfondo.
+        <span></span>
+        Nel pannello sono presenti di dati della partita, quali il punteggio finale ed il tempo di gioco, oltre che ad opzioni per 
+        ricominciare una partita o personalizzare la scena.
+        <span></span>
+        Nel canva sono reinseriti gli oggetti ripresi dalla scena principale, quali il mondo, l'aereoplano e le nuvole.
+        La scena, al contrario di quella di gioco, ha una visione è frontale e viene aggiunto un elemento di cornice sull'aereo che, 
+        una volta attivate le texture, mostra la foto richiesta dalle indicazioni del progetto.
+        <span></span>
+      </p>
+      
+      <img src="./img/interfacciaEnd.png" class="big-img" alt="interfaccia"/>
+      <img src="./img/interfacciaEnd-mobile.png" class="big-img" alt="interfaccia"/>
+
+      <h2 id="personalizzazione">Personalizzazione</h2>
+        <p>
+          <span></span> 
+          Il gioco offre numerose opzioni di personalizzazione, come illustrato nelle schermate precedenti, per rispondere alle esigenze
+           dell'utente e consentire un'esplorazione approfondita delle funzionalità offerte da WebGL.
+          <span></span> 
+        </p>
+        <p class="subTitle">Parametri di gioco</p>
+        <p>
+          È possibile modificare la <strong>velocità degli oggetti</strong> in movimento nella scena, come monete, ostacoli e nuvole,
+          intervenendo su una variabile che viene moltiplicata per il tempo nella traslazione lungo l'asse x degli oggetti.
+          <br/>
+          Quando il valore di questa variabile aumenta, l'oggetto accelera, mentre un decremento ne rallenta il movimento. 
+          <span></span> 
+          Un altro parametro personalizzabile è l'<strong>intervallo di tempo per la creazione degli oggetti</strong>.
+          <br/>
+          Aumentando l'intervallo, gli oggetti vengono creati meno frequentemente, riducendo la loro presenza nella scena; al contrario,
+          diminuendo l'intervallo, la creazione degli oggetti avviene più rapidamente, aumentando il numero di elementi nella scena.
+          <span></span> 
+          Questi due paramenti sono necessari anche per determinare il numero massimo di elementi da renderizzare secondo la formula
+          <i>variabile / (tempo_di_creazione * velocità)</i>, dove la variabile è stata scelta in seguito a numerose prove e varia
+          a seconda del tipo di oggetto. 
+          <span></span> 
+          Inoltre, è possibile attivare o disattivare la <strong>musica e gli effetti sonori</strong>, oltre a gestire la 
+          <strong>modalità di gioco</strong>. 
+          Questa opzione è cruciale poiché, finché la modalità di gioco è disattivata, non sarà possibile avviare il gioco, 
+          e gli oggetti non interagiranno con l'aeroplano, impedendo la possibilità di accumulare punti o subire danni.
+          <span></span> 
+        </p>
+        <p class="subTitle">Parametri di scena</p>
+        <p>
+          Viene fornita la possibilità di modificare alcuni parametri di scena, nella prima schermata viene predisposto uno slider per
+          modificare la 
+          <strong>direzione della luce</strong>, che è di tipo ortografico, questo permette indirettamente di modificare anche la resa 
+          delle ombre.
+          <br/>
+          Inoltre vengono forniti bottoni per andare a modificare la resa degli oggetti 3D andando ad aggiungere o rimuovere le 
+          <strong>texture</strong>, le <strong>normal map</strong> e l'<strong>opacità</strong>.         
+          <span></span> 
+          Nella schermata finale vengono aggiunti ulteriori parametri di personalizzazione, infatti è possible variare l'
+          <strong>ambiente</strong> andando a modificare lo sfondo e l'intesità della luce. 
+          Oltre che i <strong>paramentri della camera</strong>, sia in merito alla posizione che al targert.
+          <span></span>
+        </p>
+      <h2 id="musica">Musica</h2>
+      <p>
+        <span></span>
+        Si è scelto di aggiungere musica ed effetti sonore per rendere più divertente l'esperienza di gioco. 
+        <br/>
+        Viene riprodotta in loop
+        una musica di sottofondo, in più sono stati aggiunti aggiunti due effetti sonori distinti relativi alla collisione con gli oggetti.
+        Viene riprodotto un suono tipico dell'acumulo di punti in giochi simili quando avviene una collissione con una moneta, mentre viene 
+        riprodotto un motivetto di gameOver quando avviene la collisione con un ostacolo.
+        <span></span>
+      </p>
+      <h2 id="creazione_oggetti">Creazione degli oggetti</h2>
+      <p>
+        <span></span>
+        Si è scelto di utilizzare tre approcci diversi per quanto riguarda la creazione degli oggetti
+        Per la creazione degli oggetti all'interno del gioco, sono stati adottati tre approcci distinti per adattarsi alle esigenze di 
+        modellazione e ampliare le abilità acquisite.
+        <span></span>
+      </p>
+      <p class="subTitle">Importazione degli oggetti</p>
+      <p>
+        Questo approccio è stato utilizzato per la moneta. 
+        <br/>
+        Il modello della moneta è stato scaricato da <a href="https://poly.pizza/m/QHZtj94fvh">Coin</a> by <a href="https://poly.pizza/u/Quaternius">Quaternius</a>
+        come file .glt. Il file è stato successivamente importato in Blender, dove sono state effettuate modifiche per adattarlo 
+        alle esigenze del progetto. Una volta completate le modifiche, il modello è stato esportato in formato .obj per essere 
+        integrato nel gioco. Questo processo ha permesso di utilizzare un modello esistente, ottimizzandolo per il contesto 
+        specifico del gioco.
+        <span></span>
+      </p>
+      <p class="subTitle">Creazione oggetti su blender</p>
+      <p>
+        Questo approccio è stato utilizzato per l'aereo, gli ostacoli e i cubi che compongono le nubi. 
+        <br/>
+        Per questi modelli è stato adottato un approccio di modellazione diretta in Blender. Questo processo ha permesso di realizzare
+        modelli personalizzati ed ottimizzati.
+        <span></span>
+        Gli ostacoli e i cubi delle nuvole sono stati realizzati utilizzando forme basilari, per poi modificare soltanto alle loro caratteristiche 
+        come texture, rifrazione, opacità e normal map, per conferire loro l'aspetto desiderato. 
+        <br/>
+        L'aereo, invece, è stato creato combinando più forme base, ognuna delle quali è stata opportunamente modificata e assemblata. 
+        In particolare l'elica è stata poi esportata come oggetto indipendente per consentirne il movimento all'interno del gioco 
+        una volta importata nel progetto.
+        <span></span>
+      </p>
+      <p class="subTitle">Creazione oggetti su nomad sculpt</p>
+      <p>
+        Questo approccio è stato utilizzato per il mondo. 
+        <br/>
+        Il mondo del gioco è stato creato utilizzando Nomad Sculpt, un'applicazione di modellazione 3D compatibile con Android e iOS, 
+        che consente di modellare oggetti 3D attraverso un processo che simula la scultura della creta. 
+        Questo approccio è stato il più complesso e laborioso, poiché ha richiesto l'utilizzo di un'applicazione esterna al flusso di
+        lavoro principale. Dopo la creazione del modello in Nomad Sculpt, il mondo è stato esportato e successivamente importato in 
+        Blender per ulteriori rifiniture. In Blender, sono state create le mappe UV, consentendo l'applicazione accurata delle texture 
+        e delle normal map alle varie parti del mondo. 
+        <br/>
+        Questo processo ha assicurato che il modello finale fosse altamente dettagliato e visivamente coerente con il resto del gioco.
+        <span></span>
+      </p>
+     
+    <h1>Struttura del progetto</h1>
+    <p>
+      <span></span>
+      La struttura del progetto è organizzata in modo da garantire una chiara separazione dei file e delle risorse necessarie 
+      per l'esecuzione e la gestione del gioco. 
+      <br/>
+      Dal punto di vista dell'architettura del codice, si è deciso di suddividere il progetto in moduli per garantire una 
+      maggiore manutenibilità, facilitando la loro estensione e modifica.
+      <br/>
+      Di seguito viene presentata la suddivisione dei file e delle cartelle:
+      <span></span>
+    </p>
+    <h2 id="divisione-file">Divisione dei file</h2>
+    <div class="d-flex">
+      <div class="col-4">
+        <code>
+        📁proj
+          ├─── endGame.html
+          ├─── index.html
+          ├─── style.css
+          ├───📁doc
+          │   ├─── documentazione.html
+          │   └───📁img
+          ├───📁js
+          └───📁src
+              ├─── ...
+              ├───📁sound
+              └───📁texture
+        </code> 
+      </div>
+      
+      <div class="col-8">
+        <p>
+          Nella directory principale, si trovano i file HTML delle due pagine del gioco: index.html e endGame.html. 
+          Ed il file style.css contiene l'unico foglio di stile utilizzato per uniformare l'aspetto grafico di tutte le pagine.
+          <span></span>
+          La cartella doc contiene la documentazione relativa al progetto: la pagina HTML e una sottocartella img con le immagini utilizzate.
+          <span></span>
+          Nella cartella js sono raccolti tutti i file JavaScript necessari per la gestione del gioco e la renderizzazione della scena 3D,
+          che saranno approfonditi nel prossimo paragrafo
+          <span></span>
+          La cartella src contiene tutti i modelli 3D necessari per il gioco, archiviati in formato .obj, insieme ai relativi file .mtl
+          che specificano i materiali utilizzati.
+          <br/>
+          All'interno di src sono presenti due sottocartelle: sound, che include tutti i file audio del gioco e texture, che raccoglie
+          le texture e le normal map utilizzate negli mtl per la renderizzazione degli oggetti.
+          <span></span>
+        </p>
+      </div>
     </div>
     
-    /*AIUTOOO*//
-      Le scelte progettuali includono l'uso di shader personalizzati per gestire l'illuminazione avanzata e le normal maps, che possono essere abilitate o disabilitate dinamicamente per ottimizzare le prestazioni. Tra le funzionalità WebGL utilizzate, spiccano la gestione delle texture, la creazione di buffer per le geometrie dei modelli e le trasformazioni nello spazio 3D. Una particolarità del progetto è l'oscillazione sinusoidale applicata al movimento dell'aeroplano, che aggiunge realismo e dinamismo al volo. Inoltre, il menù di personalizzazione consente agli utenti di modificare la velocità degli oggetti, il tempo di generazione, la direzione della luce e di attivare o disattivare l'opacità, le normal maps e la musica, rendendo l'esperienza di gioco altamente configurabile e coinvolgente.
+    <h2 id="file-js">File js</h2>
+    <div class="d-flex">
+    <div class="col-9">
+      <p>
+        <a href="../js/cameraAndLightSetup.js">cameraAndLightSetup.js</a>
+        gestisce la configurazione della telecamera e delle luci all'interno della scena 3D, fornendo due differenti configurazioni 
+        uno per la scena di gioco ed uno per la scena finale.
+        <span></span>
+        <a href="../js/cloud.js"> cloud.js</a>
+        gestisce la generazione ed il render delle nuvole nella scena 3D. 
+        Le nuvole sono create come combinazione di cubi con paramentri (dimensioni, posizioni e rotazioni) psedorandomici.
+        <span></span>
+        <a href="../js/collectibles.js"> collectibles.js</a>
+        gestisce la generazione ed il render degli oggetti interattivi (ostacoli e monete), oltre che le loro collisioni nella scena di gioco.
+        <span></span>
+        <a href="../js/createObj.js"> createObj.js</a>
+        gestisce il caricamento e processamento di modelli 3D nel formato OBJ insieme ai loro materiali e texture definiti nei file MTL.
+        <span></span>
+        <a href="../js/drawScene.js"> drawScene.js</a>
+        gestisce il rendering della scena e degli oggetti, fornendo due differenti configurazioni 
+        uno per la scena di gioco ed uno per la scena finale. 
+        <span></span>
+        <a href="../js/endGame.js"> endGame.js</a>
+        gestisce la transizione della schermata di fine gioco, viene utilizzato per caricare il contenuto della pagina di fine gioco,
+        salvare i dati relativi al punteggio e al tempo di gioco, e inizializzare l'interfaccia della schermata finale.
+        <span></span>
+        <a href="../js/mousePosition.js"> mousePosition.js</a>
+        gestisce l'interazione (mouse, tastiera, bottoni) per controllare il personaggio del gioco, 
+        verificando le collisioni con gli oggetti. 
+        <span></span>
+        <a href="../js/objLoad.js"> objLoad.js</a>
+        gestisce le funzioni per caricare e analizzare file OBJ e MTL, creando texture e gestendo la loro configurazione. 
+        <span></span>
+        <a href="../js/renderObj.js"> renderObj.js</a>
+        gestisce il render e le matrici di trasformazione dei principali elementi di gioco.
+        <span></span>
+        <a href="../js/renderScene.js"> renderScene.js</a>
+        gestisce il rendering delle scene, sia quella di gioco che della scena finale, impostando gli oggetti di gioco, le ombre e le matrici di proiezione.
+        <span></span>
+        <a href="../js/script.js"> script.js</a>
+        gestisce l'inizializzazione e il rendering della scena di gioco: carica gli oggetti 3D, configura la telecamera e la luce ed avvia il rendering 
+        della scena.
+        <span></span>
+        <a href="../js/scriptEnd.js"> scriptEnd.js</a>
+        <span></span>
+        gestisce l'inizializzazione e il rendering della scena finale: carica gli oggetti 3D, configura la telecamera e la luce, imposta 
+        gli eventi di input ed avvia il rendering della scena.
+        <a href="../js/utils.js"> utils.js</a>
+        <span></span>
+        contiene funzioni di utilità per gestire vari aspetti del gioco.
+        <a href="../js/vsfs.js"> vsfs.js</a>
+        contiene gli shader di vertex e fragment utilizzati per il rendering degli oggetti. */
+      </div>
+    </p>
+    <div class="col-3">
+      <code>
+        📁js
+        ├─── cameraAndLight.js
+        ├─── cloud.js
+        ├─── collectibles.js
+        ├─── createObj.js
+        ├─── drawScene.js
+        ├─── endGame.js
+        ├─── mousePosition.js
+        ├─── objLoad.js
+        ├─── renderObj.js
+        ├─── renderScene.js
+        ├─── script.js
+        ├─── scriptEnd.js
+        ├─── utils.js
+        └─── vsfs.js
+      </code>
+    </div>
 
-    <h1>Divisione dei file</h1>
-    <h1>Spiegazione delle scelte effettuate</h1>
-    <h1>Funzionalità WebGL utilizzate</h1>
+    </div>
+    
+    <h1>Funzionalità implementate </h1>
+    <div class="d-flex">
+      <div class="col-7 centerH">
+        <h2>Texture</h2>
+        <p>
+          Nel progetto, viene utilizzato il texture mapping per migliorare il realismo degli oggetti di gioco, applicando immagini 
+          bidimensionali sul superfici tridimensionali. 
+          Le texture, scaricate da <a href="https://ambientcg.com/">ambientCG</a>, sono state applicate agli oggetti tramite Blender. 
+          <span></span>
+          Il rendering delle texture può essere controllato attraverso una flag denominata <tt>`enableTextureMap`</tt>, che permette di
+          attivare o disattivare la visualizzazione delle texture sugli oggetti.
+          <br/>
+          Nello shader, la gestione delle texture viene effettuata passando la variabile useTextureMap, definita come:
+          <tt>useTextureMap: enableTextureMap && isTextured</tt>, dove <tt>`enableTextureMap`</tt> è una flag globale per l'attivazione delle texture, mentre <tt>`isTextured`</tt> è una flag
+          specifica per ogni oggetto per indicare se questo ha delle texture associate.
+          <br/>
+          Nel fragment shader, il colore finale dell'oggetto viene calcolato come segue:
+          <code>effectiveDiffuse = mix(diffuse, diffuseMapColor.rgb, useTextureMap) * v_color.rgb</code>
+          In questa formula, se <tt>useTextureMap</tt> è <tt>false (0.0)</tt>, il colore finale (v_color.rgb) sarà moltiplicato solo 
+          per il colore di base dell'oggetto. 
+          Mentre <tt>useTextureMap</tt> è <tt>true (1.0)</tt>, il colore finale sarà invece moltiplicato per la texture dell'oggetto.
+          <span></span>
+          Per permettere questa funzionalità, è stato necessario modificare i file .mtl degli oggetti, in modo tale che fosse incluso
+          anche il colore di base oltre che la texture da applicare.
+          <br/>
+          Infine come si può notare nelle immagini illustrative le texture non sono state applicate a tutti gli oggetti, ma solo al 
+          mondo, alle nuvole, alle monete e alla foto della schermata finale.
+          <span></span>
+        </p>
+      </div>
+      <div class="col-5 centerW centerH">
+        <div>
+          <img src="./img/texture1.png" class="big-img" alt="texture"/>
+          <img src="./img/texture2.png" class="big-img" alt="texture"/>
+        </div>
+      </div>
+    </div>
+    <div class="d-flex">
+      <div class="col-7 centerH">
+        <h2>Bump mapping</h2>
+        <p>
+          Nel progetto, è stato implementato il normal mapping, una tecnica di bump mapping, per aggiungere dettagli visivi alle 
+          superfici degli oggetti senza aumentare il numero di poligoni. 
+          Questa tecnica permette di simulare rilievi e asperità sulle superfici, migliorando l'ambiente di gioco e rendendolo più 
+          realistico. 
+          <br/>
+          Anche in questo caso le normal map sono scaricate da <a href="https://ambientcg.com/">ambientCG</a> e applicate agli oggetti 
+          tramite Blender. 
+          <span></span>
+          Per controllare il rendering delle normal map, è stata utilizzata una flag denominata <tt>`enableNormalMap`</tt>, che consente 
+          di attivare o disattivare la visualizzazione delle normal map sugli oggetti.
+          <br/>
+          All'interno dello shader, è stato aggiunto un controllo che utilizza le normal map solo se questa flag è attiva:
+          <code>
+          if (useNormalMap == 1.0) {
+            vec3 tangent = normalize(v_tangent);
+            vec3 bitangent = normalize(cross(normal, tangent)); 
+            
+            mat3 tbn = mat3(tangent, bitangent, normal);
+            normal = texture2D(normalMap, v_texcoord).rgb * 2.0 - 1.0;
+            normal = normalize(tbn * normal);
+          }
+          </code>
+          Anche in questo caso, come si può notare nelle immagini illustrative, le normal map non sono state applicate a tutti gli 
+          oggetti, ma solo al mondo, all'aereo ed agli ostacoli.
+          <span></span>
+        </p>
+      </div>
+      <div class="col-5 centerW">
+        <div>
+          <img src="./img/normal1.png" class="big-img" alt="normal map"/>
+          <img src="./img/normal2.png" class="big-img" alt="normal map"/>
+        </div>
+      </div>
+    </div>
+    <div class="d-flex">
+      <div class="col-7 centerH">
+        <h2>Trasparenze</h2>
+        <p>
+         Le trasparenze sono state implementate per migliorare l'aspetto visivo di elementi come le nuvole e l'acqua del mare, che 
+         richiedono un certo grado di trasparenza per apparire realistiche. 
+         <span></span>
+         Per gestire questa funzionalità, è stata introdotta una flag denominata <tt>`alphaEnable`</tt>, che consente di attivare o 
+         disattivare la visualizzazione delle trasparenze sugli oggetti.
+         <br/>
+         Durante il rendering della scena, viene effettuato un controllo che abilita o disabilita il blending in base allo stato 
+         della flag:
+         <code>
+          if (alphaEnable) {
+            gl.enable(gl.BLEND);
+            gl.blendFunc(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA);
+          } else {
+            gl.disable(gl.BLEND);
+          }
+          </code>
+          <span></span>
+        </p>
+      </div>
+      
+      <div class="col-5 centerW">
+        <img src="./img/opacità1.png" class="big-img" alt="opacità"/>
+        <img src="./img/opacità2.png" class="big-img" alt="opacità"/>
+      </div>
+    </div>
+    <div class="d-flex">
+      <div class="col-7 centerH">
+        <h2>Ombre</h2>
+        <p>
+          Per aumentare il realismo del gioco, sono state implementate ombre dinamiche che seguono il movimento degli oggetti in 
+          relazione alla fonte di luce, aggiungendo profondità alla scena e migliora la percezione spaziale. 
+          <span></span>
+          Le ombre vengono generate attraverso un processo di rendering aggiuntivo, che prevede un ulteriore render della scena 
+          con un'uniform relativa alle ombre:
+          <code>
+          const sharedShadowUniforms = {
+            u_lightDirection: m4.normalize(lightPosition),
+            u_view: m4.inverse(lightMatrix),
+            u_projection: lightProjectionMatrix,
+            u_textureMatrix: m4.identity(),
+            u_projectedTexture: depthTexture,
+            u_bias: -0.0099,
+          };
+          </code>
+          Per quanto riguarda l'illuminazione della scena di gioco, è stata scelta una proiezione ortografica per la luce, 
+          che garantisce ombre uniformi e adatte a rappresentare la superficie del mondo:
+          <code>  lightProjectionMatrix = m4.orthographic(-100, 100, -150, 50, 0.5, 250 );</code>
+          Al contrario, nella scena finale del gioco, si è optato per una luce con proiezione prospettica:
+          <code>  lightProjectionMatrix = m4.perspective(fieldOfViewRadians, aspect, 15, 250);</code>
+          In entrambi i casi, il punto di mira della luce rimane il mondo, assicurando che gli oggetti proiettino ombre coerenti 
+          sulla superficie del terreno. 
+          Questo approccio permette di ottenere ombre che variano dinamicamente a seconda della posizione e dell'orientamento degli 
+          oggetti rispetto alla luce, migliorando così l'impatto visivo complessivo del gioco.
+          <span></span>
+        </p>
+      </div>
+      <div class="col-5 centerW">
+        <img src="./img/ombre1.png" class="big-img" alt="ombre"/>
+        <img src="./img/ombre2.png" class="big-img" alt="ombre"/>
+      </div>
+    </div>
+    <div class="d-flex">
+      <div class="col-6 centerH">
+        <h2>Variazione luminosa</h2>
+        <p>
+          Nella schermata finale del gioco è stata introdotta una funzionalità di personalizzazione dell'ambiente, permette di 
+          simulare tre diverse situazioni atmosferiche, alba, giorno e notte, variando il colore di sfondo e l'intensità luminosa. 
+          <span></span>
+          Il sistema di variazione è implementato tramite il colore di sfondo del canva ed una variabile chiamata intensityLight, 
+          che regola l'intensità della luce nella scena.
+          <br/>
+          Nel fragment shader, questa variabile viene utilizzata per calcolare il colore finale degli oggetti nella scena:
+          <code>
+vec4 gCol = vec4(
+  emissive + ambient*u_ambientLight +
+  effectiveDiffuse*useIntensityLight*fakeLight + 
+  effectiveSpecular*useIntensityLight*pow(specularLight,shininess),
+  effectiveOpacity
+);
+          </code>
+          Per l'alba, l'intensità è impostata a 1.5, creando un'atmosfera più luminosa, mentre per la notte, l'intensità è ridotta a 0.5,
+          producendo un effetto più scuro. La modalità giorno utilizza un valore di default di 1.0, che rappresenta una luminosità 
+          bilanciata e naturale.
+        </p>
+      </div>
+      <div class="col-6 centerW centerH">
+        <img src="./img/luce1.png" class="big-img" alt="variazione luminosa"/>
+        <img src="./img/luce2.png" class="big-img" alt="variazione luminosa"/>
+        <img src="./img/luce3.png" class="big-img" alt="variazione luminosa"/>
+      </div>
+    </div>
+    <div class="d-flex">
+      <div class="col-6 centerH">
+        <h2>Effetti di luce</h2>
+        <p>
+          Per migliorare ulteriormente la resa visiva della scena, sono stati aggiunti effetti di luce su superfici lucide come l'acqua,
+          la neve, gli ostacoli e le monete. 
+          <br/>
+          Questi oggetti, quando illuminati direttamente, creano riflessi che aggiungono realismo e profondità all'ambiente di gioco.
+          Al contrario, altri elementi, come l'aereo e le superfici terrestri, sono stati lasciati privi di riflessi per creare un 
+          maggiore contrasto visivo nella scena.
+          <span></span>
+          Un aspetto importante da considerare è che questi effetti di luce e riflessione sono visibili solo quando gli oggetti sono 
+          colpiti direttamente dalla fonte di luce. 
+          Di conseguenza, per oggetti che variano la loro posizione lungo l'asse Z, come gli ostacoli, o per modifiche della direzione
+          della luce questi effetti potrebbero non essere sempre visibili.
+        </p>
+      </div>
+      <div class="col-6 centerW centerH">
+        <img src="./img/luceE1.png" class="big-img" alt="effetti di luce"/>
+        <img src="./img/luceE2.png" class="big-img" alt="effetti di luce"/>
+      </div>
+    </div>
+    <div class="d-flex">
+      <div class="col-6 centerH">
+        <h2>Variazione del colore degli oggetti</h2>
+        <p>
+          Nel progetto è stata implementata una funzionalità che consente di variare il colore degli ostacoli, permettendo così di 
+          utilizzare un unico modello 3D per creare oggetti visivamente differenti. Questa soluzione non solo riduce il numero di 
+          risorse necessarie per il rendering, ma aggiunge anche varietà visiva al gioco senza dover caricare ulteriori file. 
+          <span></span>
+          L'implementazione avviene attraverso l'uso della proprietà diffuse all'interno della uniform dell'ostacolo, che viene aggiornata 
+          dinamicamente per riflettere il colore calcolato randomicamente:
+      <code>
+      color: [rand(0.3, 0.9), rand(0.3, 0.9), rand(0.3, 0.9)],
+
+      const updatedMaterial = {
+        ...material,
+        diffuse: data.color,
+        u_world: u_worldObstacle(data),
+        useNormalMap: enableNormalMap, 
+        useTextureMap: 0.0
+      };
+      </code>
+          Questa tecnica potrebbe essere estesa in sviluppi futuri anche ad altri oggetti di gioco, come l'aereo o gli elementi dello 
+          scenario, aumentando ulteriormente la personalizzazione visiva del gioco. 
+          <span></span>
+        </p>
+      </div>
+      <div class="col-6 centerW centerH">
+        <img src="./img/color1.png" class="big-img" alt="non colore"/>
+        <img src="./img/ombre1.png" class="big-img" alt="colore"/>
+      </div>
+    </div>
+
+    <h1>Sviluppi futuri</h1>
+    <p>
+      Il progetto presenta opportunità di miglioramento, sia dal punto di vista delle dinamiche di gioco e dell'interazione che della 
+      qualità visiva e resa della scena 3D.
+      <span></span>
+      Un primo sviluppo potrebbe essere l'implementazione di una classifica che memorizzi lo storico dei punteggi delle partite giocate,
+      offrendo così un elemento di competizione e incentivando i giocatori a migliorarsi continuamente. 
+      Inoltre, l'introduzione di livelli progressivi o di un aumento graduale della difficoltà in base al tempo di gioco renderebbe 
+      l'esperienza più stimolante e adatta a diverse tipologie di giocatori.
+      <br/>
+      Sul fronte del gameplay, l'aggiunta di nuovi ostacoli, oggetti che conferiscono vite extra o bonus speciali, potrebbe arricchire 
+      l'esperienza e mantenere alto l'interesse del giocatore nel lungo periodo.
+      <br/>
+      Infine un'ulteriore espansione riguardante le dinamiche di gioco potrebbe riguardare l'introduzione di nuove modalità,
+      come il multiplayer, che aggiungerebbe un livello di interazione sociale e competitiva.
+      <span></span>
+      Dal punto di vista scenografico, migliorare l'aspetto realistico e dinamico della scena rappresenta un altro passo avanti. 
+      Ad esempio, simulare il ciclo giorno-notte con variazioni nei colori, nella posizione del sole e nell'intensità della luce, 
+      renderebbe l'ambiente di gioco più realistico e immersivo. 
+      Anche l'inclusione di elementi decorativi, come uccelli in volo o cambiamenti ambientali basati sul trascorrere del tempo, 
+      potrebbe contribuire a creare un'atmosfera più vivace e coinvolgente.
+      <br/>
+      Un'idea particolarmente interessante sarebbe quella di permettere ai giocatori di scegliere tra diversi scenari, pur mantenendo 
+      le stesse meccaniche di gioco; scenari alternativi potrebbero essere lo spazio con una navicella o il mare con un sottomarino. 
+      Questi potrebbero offrire una varietà maggiore e mantenere il gioco fresco e stimolante. 
+      <span></span>
+    </p>
+
+    <h1>Riferimeti</h1>
+    <p>
+      Durante lo sviluppo del progetto, sono stati consultati diversi materiali di riferimento:
+        <span></span>
+        <a href="https://webglfundamentals.org">Documentazione WebGL:</a> Per comprendere e implementare le tecniche di rendering 3D.
+        <span></span>
+        <a href="https://tympanus.net/Tutorials/TheAviator/index.html">The Aviator:</a> Per la base dell'idea di gioco.
+        <span></span>
+        <a href="https://www.blender.org/">Blender:</a> Per la creazione e la modifica di oggetti 3D.
+        <span></span>
+        <a href="https://nomadsculpt.com/">Nomad Sculpt:</a> Per la modellazione di oggetti 3D.
+        <span></span>
+        <a href="https://ambientcg.com/">AmbientCG:</a> Per l'acquisizione di texture.
+        <span></span>
+        <a href="https://poly.pizza/">Polypizza</a>: Per l'acquisizione di modelli 3D
+        <span></span>
+
+        <span></span>
+    </p>
+
   </div>
   
+  <!-- Modal -->
+  <div id="modal" class="modal">
+    <span class="close">&times;</span>
+    <img class="modal-content" id="modal-img">
+  </div>
 
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const modal = document.getElementById("modal");
+      const modalImg = document.getElementById("modal-img");
+      const closeBtn = document.querySelector(".close");
+      const images = document.querySelectorAll('.big-img');
+
+      images.forEach(image => {
+          image.addEventListener('click', () => {
+              modal.style.display = "flex";
+              modalImg.src = image.src;
+          });
+      });
+
+      closeBtn.addEventListener('click', () => {
+          modal.style.display = "none";
+      });
+
+      // Optional: Close modal by clicking outside of the image
+      modal.addEventListener('click', (e) => {
+          if (e.target === modal) {
+              modal.style.display = "none";
+          }
+      });
+  });
+  </script>
 </body>
 </html>

@@ -3,7 +3,7 @@
 import { loadPlane, getGeometriesExtents } from './createObj.js';
 import { setPlaneClipping, zNear, zFar, setCameraTargetOffset, setCameraTarget, setIntensityLight } from './utils.js';
 import { setAlpha, alphaEnable, setLight, enableNormalMap, setNormalMap, enableTextureMap, setTextureMap} from "./utils.js";
-import { setupCameraAndLightEnd } from './cameraAndLightSetup.js';
+import { setupCameraAndLightEnd } from './cameraAndLight.js';
 import { renderSceneEnd, posPlane } from './renderScene.js';
 import { fs, fsColor, vs, vsColor } from './vsfs.js';
 
@@ -86,6 +86,10 @@ function setListener() {
     normalMap: document.getElementById('normalMap'),
     textureMap: document.getElementById('textureMap'),
   };
+
+  toggleButton(buttons.alpha, !alphaEnable);
+  toggleButton(buttons.normalMap, !enableNormalMap);
+  toggleButton(buttons.textureMap, !enableTextureMap);
 
   buttons.alpha.addEventListener('click', () => {
     setAlpha();

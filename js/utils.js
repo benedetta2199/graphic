@@ -1,22 +1,5 @@
 import { endGame } from "./endGame.js";
 
-export let settings = {
-  cameraX: 0,
-  cameraY: 0,
-  cameraZ: 0,
-  posX: 2.5,
-  posY: 4.8,
-  posZ: 4.3,
-  targetX: 0,
-  targetY: 0,
-  targetZ: 0,
-  projWidth: 1,
-  projHeight: 1,
-  perspective: true,
-  fieldOfView: 120,
-  bias: -0.006,
-};
-
 
 /*                                CLIPPING                                 */
 export let zNear = 0;
@@ -30,9 +13,6 @@ export function setPlaneClipping(zN, zF) {
   zNear = zN;
   zFar = zF;
 }
-
-//export let normalMapEnabled = true;
-//export let texturesEnabled = true;
 
 export let timing = { obstacle: 1000, coin: 1100, cloud: 600 };
 export let speed = { obstacle: 1, coin: 2, cloud: 1 };
@@ -75,22 +55,22 @@ export function setAlpha() {
 
 /*                                NORMALMAP                                 */
 /*Normal map is 0.0 (false) or 1.0 (true)*/
-export let enableNormalMap = 0.0;
+export let enableNormalMap = false;
 /**
  * Toggles the normalMap enable flag.
  */
 export function setNormalMap() {
-  enableNormalMap = !enableNormalMap ? 1.0 : 0.0;
+  enableNormalMap = !enableNormalMap;
 }
 
 /*                                TEXTUREMAP                                 */
 /*Texture map is 0.0 (false) or 1.0 (true)*/
-export let enableTextureMap = 0.0;
+export let enableTextureMap = false;
 /**
  * Toggles the TextureMap enable flag.
  */
 export function setTextureMap() {
-  enableTextureMap = !enableTextureMap ? 1.0 : 0.0;
+  enableTextureMap = !enableTextureMap;
 }
 
 /*                              LIGHT AND CAMERA                                */
@@ -165,7 +145,7 @@ export function setPause() {
 }
 
 
-/*                         DINAMICA DI GIOCO                            */
+/*                             TIME                               */
 export let isGame = false;
 export let accumulatedTime = 0
 let startTime = Date.now();
@@ -177,8 +157,12 @@ export function setIsGame(val) {
     const currentTime = Date.now();
     accumulatedTime += Math.abs(currentTime - startTime);   
   }
-  console.log(accumulatedTime);
   isGame = val;
+}
+export function getTime(){
+  var min = Math.floor(accumulatedTime / 60000);
+  var sec = ((accumulatedTime % 60000) / 1000).toFixed(0);
+  return `${min}m ${sec}s`;
 }
 
 /*                                SOUND                                 */
@@ -196,14 +180,14 @@ document.body.addEventListener('click', ()=>{
   // Crea il contesto audio
   audioContext = new (window.AudioContext || window.webkitAudioContext)();
   // Carica e decodifica i file audio di gameover
-  fetch('./src/gameover.mp3')
+  fetch('./src/sound/gameover.mp3')
     .then(response => response.arrayBuffer())
     .then(arrayBuffer => audioContext.decodeAudioData(arrayBuffer))
     .then(audioBuffer => {
       soundBuffer.gameover = audioBuffer;
     })
     .catch(e => console.error('Error with decoding audio data', e));
-  fetch('./src/coin.mp3')
+  fetch('./src/sound/coin.mp3')
     .then(response => response.arrayBuffer())
     .then(arrayBuffer => audioContext.decodeAudioData(arrayBuffer))
     .then(audioBuffer => {

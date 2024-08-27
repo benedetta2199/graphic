@@ -5,6 +5,7 @@ import { beginLightCamera, setPlaneClipping } from "./utils.js";
 /**
  * Calcola i parametri comuni per la configurazione della telecamera e delle luci.
  * @param {Object} extents - Estremi dell'oggetto (min e max).
+ * @param {Array} lightTarget - Posizione del punto di mira della camera.
  * @param {Array} cameraTargetOffset - Offset della posizione della telecamera rispetto al target.
  * @param {Array} lightTarget - Posizione del punto di mira della luce.
  * @param {Array} lightPosition - Posizione della luce.
@@ -17,20 +18,18 @@ function calculateCameraAndLightParams(extents, cameraTarget, cameraTargetOffset
   const zFar = radius * 6;
   setPlaneClipping(zNear, zFar);
 
-  //const objOffset = m4.scaleVector(m4.addVectors(extents.min, m4.scaleVector(range, 0.5)), 1);
-
-  return {lightPosition, lightTarget, cameraTargetOffset, cameraTarget,};
+  return {lightPosition, lightTarget, cameraTargetOffset, cameraTarget};
 }
 
 /**
- * Configura la telecamera e le luci per la scena (Versione 1).
+ * Configura la telecamera e le luci per la scena (scena di gioco).
  * @param {Object} extents - Estremi dell'oggetto (min e max).
  */
 export function setupCameraAndLight(extents) {
   const params = calculateCameraAndLightParams(
     extents,
-    [0, 85, 0],
-    [0, 0, m4.length(m4.subtractVectors(extents.max, extents.min)) * 1.5], // cameraTargetOffset
+    [0, 85, 0], // cameraTarget
+    [0, 0, m4.length(m4.subtractVectors(extents.max, extents.min)) * 1.5], // cameraTargetOffset -> [0, 0, radius]
     [0, 20, -50], // lightTarget
     [0, 100, 61] // lightPosition
   );
@@ -38,15 +37,14 @@ export function setupCameraAndLight(extents) {
 }
 
 /**
- * Configura la telecamera e le luci per la scena (Versione 2).
+ * Configura la telecamera e le luci per la scena (scena finale).
  * @param {Object} extents - Estremi dell'oggetto (min e max).
  */
 export function setupCameraAndLightEnd(extents) {
   const params = calculateCameraAndLightParams(
     extents,
-    [-30, 95, -15],
-    [115, -50, -5],
-    //[100, -50, -35], // cameraTargetOffset
+    [-30, 95, -15], // cameraTarget
+    [115, -50, -5], // cameraTargetOffset
     [0, 20, -60], // lightTarget
     [135, 120, 60] // lightPosition
   );

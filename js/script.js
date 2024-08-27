@@ -1,17 +1,16 @@
 "use strict";
 
 import { loadPlane, getGeometriesExtents } from './createObj.js';
-import { setupCameraAndLight } from './cameraAndLightSetup.js';
+import { setupCameraAndLight } from './cameraAndLight.js';
 import { renderSceneGame } from './renderScene.js';
-import { rand } from './utils.js';
 import { loadEndGameContent } from './endGame.js';
 import { fs, fsColor, vs, vsColor } from './vsfs.js';
 
 /**
- * Main function to initialize and render the scene.
+ * Funzione principale per inizializzare e renderizzare la scena.
  */
 async function main() {
-  // Preload end game content
+  // Carica in anticipo il contenuto della fine del gioco
   loadEndGameContent();
   
   const canvas = document.querySelector("#canvas");
@@ -21,14 +20,14 @@ async function main() {
   }
   const ext = gl.getExtension('WEBGL_depth_texture');
   if (!ext) {
-    return alert('need WEBGL_depth_texture');
+    return alert('È necessaria l\'estensione WEBGL_depth_texture');
   }
 
-  // Create a WebGL program using vertex and fragment shaders
+  // Crea un programma WebGL utilizzando gli shader di vertex e frammento
   const meshProgramInfo = webglUtils.createProgramInfo(gl, [vs, fs]);
   const colorProgramInfo = webglUtils.createProgramInfo(gl, [vsColor, fsColor]);
 
-  // Object paths for asynchronous loading
+  // Percorsi degli oggetti per il caricamento asincrono
   const objectPaths = {
     plane: './src/plane.obj',
     elica: './src/elica.obj',
@@ -39,19 +38,17 @@ async function main() {
     coin: './src/coin.obj',
   };
 
-  // Asynchronously load all objects and calculate their extents
-  const loadObject = async (href, color = null) => {
-    return await loadPlane(gl, href, color ? [parseInt(rand(50, 255)), parseInt(rand(50, 255)), parseInt(rand(50, 255))] : null);
+  // Carica asincronicamente tutti gli oggetti e calcola le loro estensioni
+  const loadObject = async (href) => {
+    return await loadPlane(gl, href);
   };
 
-  const loadedObjects = await Promise.all(Object.entries(objectPaths).map(([key, path]) =>
-    loadObject(path, key === 'obstacle')
-  ));
+  const loadedObjects = await Promise.all(Object.entries(objectPaths).map(([key, path]) => loadObject(path)));
 
   const parts = Object.fromEntries(loadedObjects.map((obj, idx) => [Object.keys(objectPaths)[idx], obj.parts]));
-  const extents = loadedObjects.slice(0, 2).map(obj => getGeometriesExtents(obj.obj.geometries)); // Only calculate extents for plane and elica
+  const extents = loadedObjects.slice(0, 2).map(obj => getGeometriesExtents(obj.obj.geometries)); // Calcola le estensioni solo per plane ed elica
 
-  // Combine extents for camera setup
+  // Combina le estensioni per la configurazione della telecamera
   const combinedExtents = {
     min: [
       Math.min(extents[0].min[0], extents[1].min[0]),
@@ -65,12 +62,12 @@ async function main() {
     ],
   };
 
-  // Get camera position, target, object offset, and clipping planes based on combined extents
+  // Ottieni la posizione della telecamera, il target, l'offset dell'oggetto e i piani di clipping basati sulle estensioni combinate
   setupCameraAndLight(combinedExtents);
 
-  // Render the scene with the loaded objects and camera setup
+  // Renderizza la scena con gli oggetti caricati e la configurazione della telecamera
   renderSceneGame(gl, meshProgramInfo, colorProgramInfo, parts);
 }
 
-// Execute the main function to start the application
-main()
+// Esegue la funzione principale per avviare l'applicazione
+main();

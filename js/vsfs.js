@@ -108,16 +108,15 @@ void main () {
   
   float projectedAmount = inRange ? 1.0 : 0.0;
 
-    vec4 gCol = vec4(
-      emissive + // Add emissive color
-      ambient * u_ambientLight + // Add ambient color
-      effectiveDiffuse*useIntensityLight * fakeLight + // Add diffuse lighting
-      effectiveSpecular*useIntensityLight * pow(specularLight, shininess), // Add specular lighting
-      effectiveOpacity // Set the final opacity
+  vec4 gCol = vec4(
+    emissive + // Add emissive color
+    ambient * u_ambientLight + // Add ambient color
+    effectiveDiffuse*useIntensityLight * fakeLight + // Add diffuse lighting
+    effectiveSpecular*useIntensityLight * pow(specularLight, shininess), // Add specular lighting
+    effectiveOpacity // Set the final opacity
   );
 
   gl_FragColor = vec4(gCol.rgb * shadowLight, gCol.a);
-  //gl_FragColor = mix(gCol, projectedTexColor, projectedAmount);
 }
 `;
 

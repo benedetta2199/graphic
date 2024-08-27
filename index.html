@@ -5,8 +5,6 @@
     <title>Progetto Computer Graphics 2024</title>
     <link rel="stylesheet" href="style.css">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0"/>
-    <!--<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-    <meta name="HandheldFriendly" content="true" />-->
   </head>
   <body>
     <div class="point" id="point">000</div>
@@ -17,10 +15,11 @@
       <button id="button-down">▼</button>
     </div>
   
-    <button id="menu-button" class="menu-button" onclick="toggleMenu()">☰</button>
+    <button id="menu-button" class="menu-button">☰</button>
     <div id="menu" class="menu" onkeydown="event.preventDefault()">
-      <button id="menu-close" class="menu-close" onclick="toggleMenu()">🗙</button>
+      <button id="menu-close" class="menu-close">🗙</button>
   
+      <div class="space"></div>
       <div class="menu-items">
         <button id="play" class="inactive mx-3">Attiva mood gioco</button>
         <small>O cliccando la barra spaziatrice</small>
@@ -69,7 +68,7 @@
       </div>
     </div>
   
-    <audio id="backgroundAudio" src="./src/music.mp3" loop></audio>
+    <audio id="backgroundAudio" src="./src/sound/music.mp3" loop></audio>
 
     <script src="https://webglfundamentals.org/webgl/resources/webgl-utils.js"></script>
     <script src="https://webglfundamentals.org/webgl/resources/m4.js"></script>
@@ -104,6 +103,9 @@
         toggleButton(buttons.play, !isPlay);
         buttons.play.textContent = isPlay ? "Disattiva mood gioco" : "Attiva mood gioco";
       }
+
+      document.getElementById('menu-button').addEventListener('click', toggleMenu);
+      document.getElementById('menu-close').addEventListener('click', toggleMenu);
 
       buttons.play.addEventListener('click', toggleGameMode);
     
