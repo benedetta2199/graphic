@@ -1,16 +1,16 @@
 /*                                VERTEX - FRAGMENT SHADER                                 */
 export const vs = `
-attribute vec4 a_position;   // Vertex position in model space
-attribute vec3 a_normal;     // Vertex normal in model space
-attribute vec3 a_tangent;    // Vertex tangent in model space -> NORMAL MAP??
-attribute vec2 a_texcoord;   // Texture coordinates
-attribute vec4 a_color;      // Vertex color
+attribute vec4 a_position;   // Posizione del vertice nello spazio del modello
+attribute vec3 a_normal;     // Normale del vertice nello spazio del modello
+attribute vec3 a_tangent;    // Tangente del vertice nello spazio del modello
+attribute vec2 a_texcoord;   // Coordinate della texture
+attribute vec4 a_color;      // Colore del vertice
 
-uniform mat4 u_projection;   // Projection matrix
-uniform mat4 u_view;         // View matrix
-uniform mat4 u_world;        // World transformation matrix
-uniform vec3 u_viewWorldPosition; // Camera position in world space
-uniform vec3 u_lightWorldPosition; // Light position in space
+uniform mat4 u_projection;   // Matrice di proiezione
+uniform mat4 u_view;         // Matrice di vista
+uniform mat4 u_world;        // Matrice di trasformazione del mondo
+uniform vec3 u_viewWorldPosition; // Posizione della camera
+uniform vec3 u_lightWorldPosition; 
 uniform mat4 u_textureMatrix;
 
 
@@ -21,6 +21,14 @@ varying vec2 v_texcoord;     // Texture coordinates to be passed to fragment sha
 varying vec4 v_color;        // Color to be passed to fragment shader
 varying vec4 v_projectedTexcoord;
 varying vec3 v_surfaceToLight; //*
+
+/*         
+uniform vec3 u_lightDirection; // Direzione della luce
+uniform vec3 u_ambientLight;  // Colore della luce ambientale
+
+// Usare flat per evitare interpolazioni
+flat varying vec4 v_color; // Colore uniforme per tutti i frammenti del triangolo
+ */
 
 void main() {
   vec4 worldPosition = u_world * a_position; // Transform vertex position to world space
