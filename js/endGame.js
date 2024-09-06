@@ -6,7 +6,7 @@ import { setPause, getPoint, getTime } from "./utils.js";
  * Carica il contenuto della schermata di fine gioco dal server e lo memorizza in `localStorage`.
  */
 export async function loadEndGameContent() {
-    const response = await fetch('/endGame.html');
+    const response = await fetch('./endGame.html');
     const text = await response.text();
     localStorage.setItem('endGameContent', text);
 }
