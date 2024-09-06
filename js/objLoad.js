@@ -228,14 +228,14 @@ export function parseMTL(text) {
 /** 
  * Crea una texture di un solo pixel utilizzata come segnaposto durante il caricamento delle immagini.
  * @param {WebGLRenderingContext} gl - Il contesto WebGL.
- * @param {Array} pixel - Un array di valori RGBA per il pixel.
+ * @param {Array} color - Un array di valori RGBA per il pixel.
  * @returns {WebGLTexture} La texture creata.
  */
-export function create1PixelTexture(gl, pixel) {
+export function createPixelColorTexture(gl, color) {
   const texture = gl.createTexture();
 	gl.bindTexture(gl.TEXTURE_2D, texture);
 	gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, 1, 1, 0, gl.RGBA, gl.UNSIGNED_BYTE,
-		new Uint8Array(pixel));
+		new Uint8Array(color));
 	return texture;
 }
 
@@ -246,7 +246,7 @@ export function create1PixelTexture(gl, pixel) {
  * @returns {WebGLTexture} La texture creata.
  */
 export function createTexture(gl, url) {
-	const texture = create1PixelTexture(gl, [128, 192, 255, 255]);
+	const texture = createPixelColorTexture(gl, [128, 192, 255, 255]);
 	// Asynchronously load an image
 	const image = new Image();
 	image.src = url;
@@ -268,42 +268,6 @@ export function createTexture(gl, url) {
 		}
 	});
 	return texture;
-}
-
-/** 
- * Crea una texture colorata specificando le dimensioni e il colore RGBA.
- * @param {WebGLRenderingContext} gl - Il contesto WebGL.
- * @param {number} width - La larghezza della texture.
- * @param {number} height - L'altezza della texture.
- * @param {Array} color - Un array di valori RGBA per il colore della texture.
- * @returns {WebGLTexture} La texture creata.
- */
-export function createColoredTexture(gl, width, height, color) {
-  // Crea un canvas per manipolare l'immagine della texture
-  const canvas = document.createElement('canvas');
-  const ctx = canvas.getContext('2d');
-  canvas.width = width;
-  canvas.height = height;
-
-  // Riempie il canvas con il colore specificato
-  ctx.fillStyle = `rgba(${color[0]}, ${color[1]}, ${color[2]}, ${color[3] || 255})`;
-  ctx.fillRect(0, 0, width, height);
-
-  // Crea una nuova texture con l'immagine colorata
-  const texture = gl.createTexture();
-  gl.bindTexture(gl.TEXTURE_2D, texture);
-  gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, canvas);
-
-  // Gestisce le impostazioni delle texture
-  if (isPowerOf2(width) && isPowerOf2(height)) {
-    gl.generateMipmap(gl.TEXTURE_2D);
-  } else {
-    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
-    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
-    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR);
-  }
-
-  return texture;
 }
 
 /** 
@@ -351,46 +315,8 @@ export function createDepthFramebuffer(gl, depthTexture) {
   return depthFramebuffer;
 }
 
-/** 
- * Crea una texture inutilizzata, che viene utilizzata come riempitivo per i framebuffers.
- * @param {WebGLRenderingContext} gl - Il contesto WebGL.
- * @param {number} depthTextureSize - La dimensione della texture.
- * @returns {WebGLTexture} La texture inutilizzata creata.
- */
-export function createUnusedTexture (gl, depthTextureSize) {
-  // crea una texture di colore della stessa dimensione della texture di profondità
-  const unusedTexture = gl.createTexture();
-  gl.bindTexture(gl.TEXTURE_2D, unusedTexture);
-  gl.texImage2D(
-      gl.TEXTURE_2D,
-      0,
-      gl.RGBA,
-      depthTextureSize,
-      depthTextureSize,
-      0,
-      gl.RGBA,
-      gl.UNSIGNED_BYTE,
-      null,
-  );
-  gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.NEAREST);
-  gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.NEAREST);
-  gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
-  gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
-  
-  // lo collega al framebuffer
-  gl.framebufferTexture2D(
-      gl.FRAMEBUFFER,        // bersaglio
-      gl.COLOR_ATTACHMENT0,  // punto di attacco
-      gl.TEXTURE_2D,         // destinazione della trama
-      unusedTexture,         // struttura
-      0);                    // livello mip
-  return unusedTexture;
-}
-
-
 
 function parseMapArgs(unparsedArgs) {
-  // TODO: handle options
   return unparsedArgs;
 }
   

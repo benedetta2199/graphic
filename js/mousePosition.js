@@ -3,7 +3,7 @@
 import { incrementPoint, isGame, zFar, zNear, audioContext, soundBuffer, isSound } from "./utils.js";
 import { endGame } from "./endGame.js";
 
-export let mouseY = 200;
+export let mouseY = window.innerWidth/5;
 export let posRelX = window.innerWidth / 55;
 export let height;
 

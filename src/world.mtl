@@ -2,7 +2,7 @@
 # www.blender.org
 
 newmtl Material_1.001
-Ns 0.000000
+Ns 0.010000
 Ka 1.000000 1.000000 1.000000
 Kd 0.224263 0.375067 0.065562
 Ks 0.500000 0.500000 0.500000
@@ -48,7 +48,7 @@ map_Kd texture/waterColor.png
 map_Bump texture/cloudMap.png
 
 newmtl brown
-Ns 0.000000
+Ns 0.010000
 Ka 1.000000 1.000000 1.000000
 Kd 0.096349 0.042411 0.006887
 Ks 0.500000 0.500000 0.500000
@@ -60,7 +60,7 @@ map_Kd texture/rock2Color.jpg
 map_Bump texture/rock1.jpg
 
 newmtl dBrown
-Ns 0.000000
+Ns 0.010000
 Ka 1.000000 1.000000 1.000000
 Kd 0.224263 0.375067 0.065562
 Ks 0.500000 0.500000 0.500000
@@ -72,7 +72,7 @@ map_Kd texture/rock4Color.jpg
 map_Bump texture/meteorite.jpg
 
 newmtl dgreen
-Ns 0.000000
+Ns 0.010000
 Ka 1.000000 1.000000 1.000000
 Kd 0.090319 0.235354 0.020709
 Ks 0.500000 0.500000 0.500000
@@ -84,7 +84,7 @@ map_Kd texture/grass1Color.jpg
 map_Bump texture/grass.jpg
 
 newmtl gray
-Ns 0.000000
+Ns 0.010000
 Ka 1.000000 1.000000 1.000000
 Kd 0.241453 0.241453 0.241453
 Ks 0.500000 0.500000 0.500000
@@ -96,7 +96,7 @@ map_Kd texture/rock1Colore.jpg
 map_Bump texture/rock1.jpg
 
 newmtl sand
-Ns 0.000000
+Ns 0.010000
 Ka 1.000000 1.000000 1.000000
 Kd 0.424499 0.353480 0.147750
 Ks 0.500000 0.500000 0.500000

@@ -1,6 +1,6 @@
 "use strict";
 
-import { parseOBJ, parseMTL, create1PixelTexture, createTexture, generateTangents } from './objLoad.js';
+import { parseOBJ, parseMTL, createPixelColorTexture, createTexture, generateTangents } from './objLoad.js';
 
 /**
  * Carica e analizza un file OBJ insieme ai relativi file MTL e texture.
@@ -25,7 +25,7 @@ export async function loadPlane(gl, objHref) {
 
   // Texture bianca di default
   const textures = {
-    defaultWhite: create1PixelTexture(gl, [255, 255, 255, 255]),
+    defaultWhite: createPixelColorTexture(gl, [255, 255, 255, 255]),
   };
 
   // Caricamento delle texture definite nei file MTL
@@ -128,7 +128,7 @@ export function getGeometriesExtents(geometries) {
 export function getDefaultMaterial(gl) {
   return {
     diffuse: [1, 1, 1],
-    diffuseMap: create1PixelTexture(gl, [255, 255, 255, 255]),
+    diffuseMap: createPixelColorTexture(gl, [255, 255, 255, 255]),
     ambient: [0, 0, 0],
     specular: [1, 1, 1],
     shininess: 20,

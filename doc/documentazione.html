@@ -2,7 +2,7 @@
 <html lang="en" >
 <head>
   <meta charset="UTF-8">
-  <title>CodePen - WebGL - load obj - w/mtl, textures</title>
+  <title>Progetto Computer Graphics 2024 - documentazione</title>
   <link rel="stylesheet" href="../style.css">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0"/>
 </head>
@@ -28,6 +28,7 @@
           <li><a href="#2_introduzione">Introduzione</a></li>
           <li><a href="#interfaccia">Interfaccia</a></li>
           <li><a href="#personalizzazione">Personalizzazione</a></li>
+          <li><a href="#dinamicita">Dinamicità</a></li>
           <li><a href="#musica">Musica</a></li>
           <li><a href="#creazione_oggetti">Creazione d'oggetti</a></li>
         </ul>
@@ -42,13 +43,18 @@
       <li>
         <a href="#">Funzionalità implementate</a>
         <ul class="submenu">
-          <li><a href="#divisione-file">Texture</a></li>
-          <li><a href="#file-js">Normal Map</a></li>
-          <li><a href="#file-js">Opacità</a></li>
-          <li><a href="#file-js">Ombre</a></li>
-          <li><a href="#file-js">...</a></li>
+          <li><a href="#texture">Texture</a></li>
+          <li><a href="#normal_map">Normal Map</a></li>
+          <li><a href="#trasparenze">Trasparenze</a></li>
+          <li><a href="#ombre">Ombre</a></li>
+          <li><a href="#variazione_luminosa">Variazione luminosa</a></li>
+          <li><a href="#effetti_luce">Effetti di luce</a></li>
+          <li><a href="#variazione_colore">Variazione colore</a></li>
         </ul>
       </li>
+      <li>
+        <a href="#sviluppi_futuri">Sviluppi futuri</a>
+    </li>
       <li>
           <a href="#riferimenti">Riferimenti</a>
       </li>
@@ -59,7 +65,7 @@
   <div class="documentation">
     <h1>Descrizione del progetto</h1>
     <div>
-      <h2 id="Introduzione">Introduzione</h2>
+      <h2 id="introduzione">Introduzione</h2>
       <p>
         <span></span> 
         Il progetto consiste nello sviluppo di un videogioco tridimensionale basato su WebGL. 
@@ -164,11 +170,17 @@
     <h1>Scelte effettuate</h1>
       <h2 id="2_introduzione">Introduzione</h2>
       <p>
+        Quasi tutti gli elementi del gioco sono stati realizzati su misura, assicurando così una coerenza sia stilistica che funzionale
+      
+Particolare attenzione è stata posta anche sul grado di personalizzazione, offrendo la possibilità di modificare non solo i parametri di gioco, ma anche quelli della scena. A tal fine, è stata integrata la possibilità di aggiungere texture e normal map, permettendo agli utenti di ottenere un effetto visivo più realistico e adattabile alle proprie preferenze.
+
+
         <span></span> 
-        Per l'implementazione del gioco, si è deciso di adottare uno stile grafico semplice ma accattivante, caratterizzato dall'estetica low-poly.
-        Questo approccio, basato su modelli geometrici essenziali e un numero ridotto di poligoni, è stato scelto per garantire 
-        chiarezza visiva e mantenere contenuto il peso dei modelli, e quindi del progetto complessivo. In linea con questa filosofia,
-        quasi tutti gli elementi del gioco sono stati realizzati su misura, assicurando coerenza stilistica e funzionale.
+        Per l'implementazione del gioco, si è deciso di adottare uno stile grafico semplice ma accattivante, basato sull'estetica low-poly.
+        Questo approccio, caratterizzato da modelli geometrici essenziali e un numero ridotto di poligoni, è stato scelto per garantire 
+        chiarezza visiva e mantenere contenuto il peso dei modelli, e quindi del progetto complessivo. 
+        Inoltre questo stile è stato scelto per consentire la creazione o la modifica dei modelli 3D tramite blender, poichè utilizzando
+        uno stile più realistico e dettagliato questa procedura sarebbe rislutata molto complessa.
         <span></span> 
         Un altro aspetto si cui si è posta particolare attenzione è il grado di personalizzazione, in quanto 
         si voleva fornire la possibilità di modificare non solo per i parametri di gioco, ma anche per quelli della scena. 
@@ -246,49 +258,63 @@
       <img src="./img/interfacciaEnd-mobile.png" class="big-img" alt="interfaccia"/>
 
       <h2 id="personalizzazione">Personalizzazione</h2>
-        <p>
-          <span></span> 
-          Il gioco offre numerose opzioni di personalizzazione, come illustrato nelle schermate precedenti, per rispondere alle esigenze
-           dell'utente e consentire un'esplorazione approfondita delle funzionalità offerte da WebGL.
-          <span></span> 
-        </p>
-        <p class="subTitle">Parametri di gioco</p>
-        <p>
-          È possibile modificare la <strong>velocità degli oggetti</strong> in movimento nella scena, come monete, ostacoli e nuvole,
-          intervenendo su una variabile che viene moltiplicata per il tempo nella traslazione lungo l'asse x degli oggetti.
-          <br/>
-          Quando il valore di questa variabile aumenta, l'oggetto accelera, mentre un decremento ne rallenta il movimento. 
-          <span></span> 
-          Un altro parametro personalizzabile è l'<strong>intervallo di tempo per la creazione degli oggetti</strong>.
-          <br/>
-          Aumentando l'intervallo, gli oggetti vengono creati meno frequentemente, riducendo la loro presenza nella scena; al contrario,
-          diminuendo l'intervallo, la creazione degli oggetti avviene più rapidamente, aumentando il numero di elementi nella scena.
-          <span></span> 
-          Questi due paramenti sono necessari anche per determinare il numero massimo di elementi da renderizzare secondo la formula
-          <i>variabile / (tempo_di_creazione * velocità)</i>, dove la variabile è stata scelta in seguito a numerose prove e varia
-          a seconda del tipo di oggetto. 
-          <span></span> 
-          Inoltre, è possibile attivare o disattivare la <strong>musica e gli effetti sonori</strong>, oltre a gestire la 
-          <strong>modalità di gioco</strong>. 
-          Questa opzione è cruciale poiché, finché la modalità di gioco è disattivata, non sarà possibile avviare il gioco, 
-          e gli oggetti non interagiranno con l'aeroplano, impedendo la possibilità di accumulare punti o subire danni.
-          <span></span> 
-        </p>
-        <p class="subTitle">Parametri di scena</p>
-        <p>
-          Viene fornita la possibilità di modificare alcuni parametri di scena, nella prima schermata viene predisposto uno slider per
-          modificare la 
-          <strong>direzione della luce</strong>, che è di tipo ortografico, questo permette indirettamente di modificare anche la resa 
-          delle ombre.
-          <br/>
-          Inoltre vengono forniti bottoni per andare a modificare la resa degli oggetti 3D andando ad aggiungere o rimuovere le 
-          <strong>texture</strong>, le <strong>normal map</strong> e l'<strong>opacità</strong>.         
-          <span></span> 
-          Nella schermata finale vengono aggiunti ulteriori parametri di personalizzazione, infatti è possible variare l'
-          <strong>ambiente</strong> andando a modificare lo sfondo e l'intesità della luce. 
-          Oltre che i <strong>paramentri della camera</strong>, sia in merito alla posizione che al targert.
-          <span></span>
-        </p>
+      <p>
+        <span></span> 
+        Il gioco offre numerose opzioni di personalizzazione, come illustrato nelle schermate precedenti, per rispondere alle esigenze
+          dell'utente e consentire un'esplorazione approfondita delle funzionalità offerte da WebGL.
+        <span></span> 
+      </p>
+      <p class="subTitle">Parametri di gioco</p>
+      <p>
+        È possibile modificare la <strong>velocità degli oggetti</strong> in movimento nella scena, come monete, ostacoli e nuvole,
+        intervenendo su una variabile che viene moltiplicata per il tempo nella traslazione lungo l'asse x degli oggetti.
+        <br/>
+        Quando il valore di questa variabile aumenta, l'oggetto accelera, mentre un decremento ne rallenta il movimento. 
+        <span></span> 
+        Un altro parametro personalizzabile è l'<strong>intervallo di tempo per la creazione degli oggetti</strong>.
+        <br/>
+        Aumentando l'intervallo, gli oggetti vengono creati meno frequentemente, riducendo la loro presenza nella scena; al contrario,
+        diminuendo l'intervallo, la creazione degli oggetti avviene più rapidamente, aumentando il numero di elementi nella scena.
+        <span></span> 
+        Questi due paramenti sono necessari anche per determinare il numero massimo di elementi da renderizzare secondo la formula
+        <i>variabile / (tempo_di_creazione * velocità)</i>, dove la variabile è stata scelta in seguito a numerose prove e varia
+        a seconda del tipo di oggetto. 
+        <span></span> 
+        Inoltre, è possibile attivare o disattivare la <strong>musica e gli effetti sonori</strong>, oltre a gestire la 
+        <strong>modalità di gioco</strong>. 
+        Questa opzione è cruciale poiché, finché la modalità di gioco è disattivata, non sarà possibile avviare il gioco, 
+        e gli oggetti non interagiranno con l'aeroplano, impedendo la possibilità di accumulare punti o subire danni.
+        <span></span> 
+      </p>
+      <p class="subTitle">Parametri di scena</p>
+      <p>
+        Viene fornita la possibilità di modificare alcuni parametri di scena, nella prima schermata viene predisposto uno slider per
+        modificare la 
+        <strong>direzione della luce</strong>, che è di tipo ortografico, questo permette indirettamente di modificare anche la resa 
+        delle ombre.
+        <br/>
+        Inoltre vengono forniti bottoni per andare a modificare la resa degli oggetti 3D andando ad aggiungere o rimuovere le 
+        <strong>texture</strong>, le <strong>normal map</strong> e l'<strong>opacità</strong>.         
+        <span></span> 
+        Nella schermata finale vengono aggiunti ulteriori parametri di personalizzazione, infatti è possible variare l'
+        <strong>ambiente</strong> andando a modificare lo sfondo e l'intesità della luce. 
+        Oltre che i <strong>paramentri della camera</strong>, sia in merito alla posizione che al targert.
+        <span></span>
+      </p>
+      <h2 id="dinamicita">Dinamicità</h2>
+      <p>
+        <span></span>
+        Per rendere il gioco più dinamico e meno ripetitivo, sono stati applicati valori casuali a diversi parametri (dimensioni, 
+        posizione, velocità e rotazione...) degli oggetti che scorrono lungo lo schermo. 
+        <br/>
+        Questo approccio arricchisce la varietà visiva del gioco, consentendo di variare l'aspetto e il comportamento degli oggetti, dando 
+        l'impressione che non siano sempre gli stessi.
+        <span></span>
+        Attraverso questa scelta implementativa è stato possibile creare ostacoli di diversi colore e generare nuvole differenti. 
+        Infatti queste ultime vengono costruite a partire da un numero casuale di cubi, ad ognuno dei quali sono applicati parametri 
+        che differiscono leggermente, permettendo così di creare un numero infinito di combinazioni di nuvole differenti. 
+        <span></span>
+      </p>
       <h2 id="musica">Musica</h2>
       <p>
         <span></span>
@@ -479,7 +505,7 @@
     <h1>Funzionalità implementate </h1>
     <div class="d-flex">
       <div class="col-7 centerH">
-        <h2>Texture</h2>
+        <h2 id="texture">Texture</h2>
         <p>
           Nel progetto, viene utilizzato il texture mapping per migliorare il realismo degli oggetti di gioco, applicando immagini 
           bidimensionali sul superfici tridimensionali. 
@@ -500,9 +526,6 @@
           <span></span>
           Per permettere questa funzionalità, è stato necessario modificare i file .mtl degli oggetti, in modo tale che fosse incluso
           anche il colore di base oltre che la texture da applicare.
-          <br/>
-          Infine come si può notare nelle immagini illustrative le texture non sono state applicate a tutti gli oggetti, ma solo al 
-          mondo, alle nuvole, alle monete e alla foto della schermata finale.
           <span></span>
         </p>
       </div>
@@ -515,7 +538,7 @@
     </div>
     <div class="d-flex">
       <div class="col-7 centerH">
-        <h2>Bump mapping</h2>
+        <h2 id="normal_map">Normal mapping</h2>
         <p>
           Nel progetto, è stato implementato il normal mapping, una tecnica di bump mapping, per aggiungere dettagli visivi alle 
           superfici degli oggetti senza aumentare il numero di poligoni. 
@@ -539,8 +562,6 @@
             normal = normalize(tbn * normal);
           }
           </code>
-          Anche in questo caso, come si può notare nelle immagini illustrative, le normal map non sono state applicate a tutti gli 
-          oggetti, ma solo al mondo, all'aereo ed agli ostacoli.
           <span></span>
         </p>
       </div>
@@ -553,7 +574,7 @@
     </div>
     <div class="d-flex">
       <div class="col-7 centerH">
-        <h2>Trasparenze</h2>
+        <h2 id="trasparenze">Trasparenze</h2>
         <p>
          Le trasparenze sono state implementate per migliorare l'aspetto visivo di elementi come le nuvole e l'acqua del mare, che 
          richiedono un certo grado di trasparenza per apparire realistiche. 
@@ -582,7 +603,7 @@
     </div>
     <div class="d-flex">
       <div class="col-7 centerH">
-        <h2>Ombre</h2>
+        <h2 id="ombre">Ombre</h2>
         <p>
           Per aumentare il realismo del gioco, sono state implementate ombre dinamiche che seguono il movimento degli oggetti in 
           relazione alla fonte di luce, aggiungendo profondità alla scena e migliora la percezione spaziale. 
@@ -596,7 +617,7 @@
             u_projection: lightProjectionMatrix,
             u_textureMatrix: m4.identity(),
             u_projectedTexture: depthTexture,
-            u_bias: -0.0099,
+            u_bias: -0.02,
           };
           </code>
           Per quanto riguarda l'illuminazione della scena di gioco, è stata scelta una proiezione ortografica per la luce, 
@@ -618,7 +639,7 @@
     </div>
     <div class="d-flex">
       <div class="col-6 centerH">
-        <h2>Variazione luminosa</h2>
+        <h2 id="variazione_luminosa">Variazione luminosa</h2>
         <p>
           Nella schermata finale del gioco è stata introdotta una funzionalità di personalizzazione dell'ambiente, permette di 
           simulare tre diverse situazioni atmosferiche, alba, giorno e notte, variando il colore di sfondo e l'intensità luminosa. 
@@ -628,12 +649,9 @@
           <br/>
           Nel fragment shader, questa variabile viene utilizzata per calcolare il colore finale degli oggetti nella scena:
           <code>
-vec4 gCol = vec4(
-  emissive + ambient*u_ambientLight +
-  effectiveDiffuse*useIntensityLight*fakeLight + 
-  effectiveSpecular*useIntensityLight*pow(specularLight,shininess),
-  effectiveOpacity
-);
+          vec3 gCol = v_color.rgb * u_ambientLight +
+              diffuseColor * useIntensityLight * diffuseLight +
+              specularColor* useIntensityLight * specularLight;
           </code>
           Per l'alba, l'intensità è impostata a 1.5, creando un'atmosfera più luminosa, mentre per la notte, l'intensità è ridotta a 0.5,
           producendo un effetto più scuro. La modalità giorno utilizza un valore di default di 1.0, che rappresenta una luminosità 
@@ -648,29 +666,38 @@ vec4 gCol = vec4(
     </div>
     <div class="d-flex">
       <div class="col-6 centerH">
-        <h2>Effetti di luce</h2>
+        <h2 id="effetti_luce">Effetti di luce</h2>
         <p>
           Per migliorare ulteriormente la resa visiva della scena, sono stati aggiunti effetti di luce su superfici lucide come l'acqua,
           la neve, gli ostacoli e le monete. 
           <br/>
-          Questi oggetti, quando illuminati direttamente, creano riflessi che aggiungono realismo e profondità all'ambiente di gioco.
-          Al contrario, altri elementi, come l'aereo e le superfici terrestri, sono stati lasciati privi di riflessi per creare un 
-          maggiore contrasto visivo nella scena.
+          Questi effetti sono stati ottenuti utilizzando il modello di illuminazione di Blinn-Phong (variante di Phong), che combina 
+          luce ambientale, diffusa e speculare. 
+          Il modello Blinn-Phong è una variante di quello di Phong, che si avvicina al modello speculare in modo leggermente diverso,
+          invece di calcolare esplicitamente il vettore riflesso 𝑅, si introduce un vettore che rappresenta la direzione intermedia tra 
+          il vettore della luce incidente 𝐿 e la direzione dell'osservatore 𝑉, questo produce un risultato molto simile (un po' meno 
+          preciso) ma meno oneroso.
           <span></span>
-          Un aspetto importante da considerare è che questi effetti di luce e riflessione sono visibili solo quando gli oggetti sono 
-          colpiti direttamente dalla fonte di luce. 
-          Di conseguenza, per oggetti che variano la loro posizione lungo l'asse Z, come gli ostacoli, o per modifiche della direzione
-          della luce questi effetti potrebbero non essere sempre visibili.
+          Per garantire che gli effetti di luce siano visibile anche quando sono attive le texture, è stato aggiunto un fattore 
+          di moltiplicazione della luce speculare nel codice shader, questo fattore viene aggiunto solo se sono attive anche le normal 
+          map, evitando in questo modo che siano enfatizzate le facce poligonali delle mesh rendendo la scena meno realistica.
+          <span></span>
+          <code>     specularHN = specularHN + 0.007*useNormalMap*useTextureMap;</code>
+          <span></span>
+          Alcuni elementi, come l'aereo e le superfici terrestri, non presentano riflessi significativi, questo è dovuto al 
+          fatto che nei loro file .mtl il valore di Ns è stato impostato molto basso, creando un maggiore contrasto visivo all'interno 
+          della scena. 
         </p>
       </div>
       <div class="col-6 centerW centerH">
-        <img src="./img/luceE1.png" class="big-img" alt="effetti di luce"/>
         <img src="./img/luceE2.png" class="big-img" alt="effetti di luce"/>
+        <img src="./img/luceE1.png" class="big-img" alt="effetti di luce"/>
+        <img src="./img/luceE3.png" class="big-img" alt="effetti di luce"/>
       </div>
     </div>
     <div class="d-flex">
       <div class="col-6 centerH">
-        <h2>Variazione del colore degli oggetti</h2>
+        <h2 id="variazione_colore">Variazione del colore degli oggetti</h2>
         <p>
           Nel progetto è stata implementata una funzionalità che consente di variare il colore degli ostacoli, permettendo così di 
           utilizzare un unico modello 3D per creare oggetti visivamente differenti. Questa soluzione non solo riduce il numero di 
@@ -700,7 +727,7 @@ vec4 gCol = vec4(
       </div>
     </div>
 
-    <h1>Sviluppi futuri</h1>
+    <h1 id="sviluppi_futuri">Sviluppi futuri</h1>
     <p>
       Il progetto presenta opportunità di miglioramento, sia dal punto di vista delle dinamiche di gioco e dell'interazione che della 
       qualità visiva e resa della scena 3D.
@@ -716,7 +743,9 @@ vec4 gCol = vec4(
       Infine un'ulteriore espansione riguardante le dinamiche di gioco potrebbe riguardare l'introduzione di nuove modalità,
       come il multiplayer, che aggiungerebbe un livello di interazione sociale e competitiva.
       <span></span>
-      Dal punto di vista scenografico, migliorare l'aspetto realistico e dinamico della scena rappresenta un altro passo avanti. 
+      Dal punto di vista grafico un'aggiunte importante sarebbe quella delle soft shadow, per attenuare i bordi squadrati delle ombre,
+      sopratutto nella schermata finale.
+      Mentre dal punto di vista scenografico, migliorare l'aspetto realistico e dinamico della scena rappresenta un altro passo avanti. 
       Ad esempio, simulare il ciclo giorno-notte con variazioni nei colori, nella posizione del sole e nell'intensità della luce, 
       renderebbe l'ambiente di gioco più realistico e immersivo. 
       Anche l'inclusione di elementi decorativi, come uccelli in volo o cambiamenti ambientali basati sul trascorrere del tempo, 
@@ -728,11 +757,13 @@ vec4 gCol = vec4(
       <span></span>
     </p>
 
-    <h1>Riferimeti</h1>
+    <h1 id="riferimenti">Riferimeti</h1>
     <p>
       Durante lo sviluppo del progetto, sono stati consultati diversi materiali di riferimento:
         <span></span>
         <a href="https://webglfundamentals.org">Documentazione WebGL:</a> Per comprendere e implementare le tecniche di rendering 3D.
+        <span></span>
+        <a href="https://learnopengl.com/Advanced-Lighting/Advanced-Lighting">LearnOpenGl:</a> Per approfondimento sull'illuminazione.
         <span></span>
         <a href="https://tympanus.net/Tutorials/TheAviator/index.html">The Aviator:</a> Per la base dell'idea di gioco.
         <span></span>

@@ -26,7 +26,7 @@ export function drawScene(gl, programInfo, sharedUnifoms, parts, isEndScene) {
   if (isEndScene) {
     u_world = m4.translate(u_world, posPlane[0], posPlane[1], posPlane[2]);
   }
-  renderObj(gl, programInfo, parts.plane, u_world);
+  renderObj(gl, programInfo, parts.plane, u_world, true);
 
   // Render ELICA
   renderObj(gl, programInfo, parts.elica, u_worldElica(u_world));

@@ -1,6 +1,6 @@
 # Blender 4.1.1
 # www.blender.org
-mtllib icosfera.mtl
+mtllib obstacle.mtl
 o Icosfera
 v 0.000000 -1.000000 0.000000
 v 0.723607 -0.447220 0.525725

@@ -15,9 +15,7 @@ async function main() {
   
   const canvas = document.querySelector("#canvas");
   const gl = canvas.getContext("webgl");
-  if (!gl) {
-    return;
-  }
+  if (!gl) {return;} // Controlla se WebGL è supportato dal browser.
   const ext = gl.getExtension('WEBGL_depth_texture');
   if (!ext) {
     return alert('È necessaria l\'estensione WEBGL_depth_texture');
@@ -27,28 +25,18 @@ async function main() {
   const meshProgramInfo = webglUtils.createProgramInfo(gl, [vs, fs]);
   const colorProgramInfo = webglUtils.createProgramInfo(gl, [vsColor, fsColor]);
 
-  // Percorsi degli oggetti per il caricamento asincrono
-  const objectPaths = {
-    plane: './src/plane.obj',
-    elica: './src/elica.obj',
-    world: './src/world.obj',
-    foto: './src/foto.obj',
-    cube: './src/cube.obj',
-    obstacle: './src/icosfera.obj',
-    coin: './src/coin.obj',
-  };
+  // Elenco di nomi di oggetti da caricare in modo asincrono.
+  const objects = ['plane', 'elica', 'world', 'cube', 'obstacle', 'coin'];
+  // Crea i percorsi dei file degli oggetti .obj da caricare.
+  const objectPaths = objects.map(obj => `./src/${obj}.obj`);
+  // Carica asincronicamente tutti gli oggetti specificati e calcola le loro estensioni geometriche.
+  const loadedObjects = await Promise.all(objectPaths.map(path => loadPlane(gl, path)));
+  // Crea un oggetto che mappa ogni nome di oggetto ai suoi componenti 3D caricati.
+  const parts = Object.fromEntries(loadedObjects.map((obj, idx) => [objects[idx], obj.parts]));
+  // Calcola le estensioni geometriche per ogni oggetto caricato.
+  const extents = loadedObjects.map(obj => getGeometriesExtents(obj.obj.geometries));
 
-  // Carica asincronicamente tutti gli oggetti e calcola le loro estensioni
-  const loadObject = async (href) => {
-    return await loadPlane(gl, href);
-  };
-
-  const loadedObjects = await Promise.all(Object.entries(objectPaths).map(([key, path]) => loadObject(path)));
-
-  const parts = Object.fromEntries(loadedObjects.map((obj, idx) => [Object.keys(objectPaths)[idx], obj.parts]));
-  const extents = loadedObjects.slice(0, 2).map(obj => getGeometriesExtents(obj.obj.geometries)); // Calcola le estensioni solo per plane ed elica
-
-  // Combina le estensioni per la configurazione della telecamera
+  // Combina le estensioni dell'aereo e dell'elica per la configurazione della telecamera
   const combinedExtents = {
     min: [
       Math.min(extents[0].min[0], extents[1].min[0]),
@@ -62,10 +50,10 @@ async function main() {
     ],
   };
 
-  // Ottieni la posizione della telecamera, il target, l'offset dell'oggetto e i piani di clipping basati sulle estensioni combinate
+  // Configura la telecamera e l'illuminazione in base alle estensioni combinate degli oggetti.
   setupCameraAndLight(combinedExtents);
 
-  // Renderizza la scena con gli oggetti caricati e la configurazione della telecamera
+  // Renderizza la scena del gioco utilizzando gli oggetti caricati e le informazioni della telecamera.
   renderSceneGame(gl, meshProgramInfo, colorProgramInfo, parts);
 }
 
