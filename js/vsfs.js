@@ -75,9 +75,9 @@ float calculateShadow(vec4 shadowCoord) {
   vec3 projectedCoord = shadowCoord.xyz / shadowCoord.w;
   float currentDepth = projectedCoord.z + u_bias;
   float shadow = 0.0;
-  int blur = 1; //flag per eventuale implementazione di selezione dal menù
+  int usePCF = 1; //flag per eventuale implementazione di selezione dal menù
 
-  if (blur == 1) {
+  if (usePCF == 1) {
     float texelSize = 1.0 / 2048.0; // Dimensione shadow 2048
     for (int x = -1; x <= 1; x++) {
       for (int y = -1; y <= 1; y++) {
