@@ -71,6 +71,30 @@ uniform float useNormalMap; // Flag to determine if normal map should be used
 uniform float useTextureMap; // Flag to determine if texture should be used
 uniform float useIntensityLight; // Intensity of light (alba giorno notte)
 
+float calculateShadow(vec4 shadowCoord) {
+  vec3 projectedCoord = shadowCoord.xyz / shadowCoord.w;
+  float currentDepth = projectedCoord.z + u_bias;
+  float shadow = 0.0;
+  int blur = 1; //flag per eventuale implementazione di selezione dal menù
+
+  if (blur == 1) {
+    float texelSize = 1.0 / 2048.0; // Dimensione shadow 2048
+    for (int x = -1; x <= 1; x++) {
+      for (int y = -1; y <= 1; y++) {
+        float projectedDepth = texture2D(u_projectedTexture, projectedCoord.xy + vec2(x, y) * texelSize).r;
+        shadow += (projectedDepth <= currentDepth) ? 0.6 : 0.8;
+      }
+    }
+    shadow /= 9.0; // Calcola la media dei campioni
+  } else {
+    bool inRange = projectedCoord.x >= 0.0 && projectedCoord.x <= 1.0 &&
+                 projectedCoord.y >= 0.0 && projectedCoord.y <= 1.0;
+    float projectedDepth = texture2D(u_projectedTexture, projectedCoord.xy).r;
+    shadow = (inRange && projectedDepth <= currentDepth) ? 0.6 : 0.8;
+  }
+  return shadow;
+}
+
 void main () {
 
   vec3 normal = normalize(v_normal);// Normalize interpolated normal
@@ -102,12 +126,7 @@ void main () {
   vec3 specularColor = mix(specular, specular*specularMapColor.rgb, useTextureMap);   // k
  
   //CALCOLO OMBRE
-  vec3 projectedTexcoord = v_projectedTexcoord.xyz / v_projectedTexcoord.w;
-  float currentDepth = projectedTexcoord.z + u_bias;
-  bool inRange = projectedTexcoord.x >= 0.0 && projectedTexcoord.x <= 1.0 &&
-                 projectedTexcoord.y >= 0.0 && projectedTexcoord.y <= 1.0;
-  float projectedDepth = texture2D(u_projectedTexture, projectedTexcoord.xy).r;
-  float shadowLight = (inRange && projectedDepth <= currentDepth) ? 0.6 : 0.8;
+  float shadowLight = calculateShadow(v_projectedTexcoord);
 
   //CALCOLO COLORE con lluminazione di Phong (Blinn-Phong)
   vec3 gCol = v_color.rgb * u_ambientLight + // Luce d'ambiente I=KI
