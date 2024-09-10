@@ -94,7 +94,7 @@ float calculateShadow(vec4 shadowCoord) {
         shadow += (projectedDepth <= currentDepth) ? 0.6 : 0.8;  // applica il peso in base alla profondità
       }
     }
-    shadow /= float((2 * n + 1)^2);                                                 // calcolo della media dei campioni
+    shadow /= float((2 * n + 1) * (2 * n + 1));                                                 // calcolo della media dei campioni
   } else {                                                                  // ombre senza PCF
     bool inRange = projectedCoord.x >= 0.0 && projectedCoord.x <= 1.0 &&    // verifica che le coordinate siano valide
                    projectedCoord.y >= 0.0 && projectedCoord.y <= 1.0;

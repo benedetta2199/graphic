@@ -121,7 +121,6 @@ export function renderScene(gl, meshProgramInfo, colorProgramInfo, parts, isEndS
             u_bias: -0.02,
             useIntensityLight: intensityLight,
         };
-
         drawScene(gl, meshProgramInfo, sharedUniforms, parts, isEndScene);
 
         requestAnimationFrame(render);
